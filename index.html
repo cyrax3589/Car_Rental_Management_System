@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Car Rental System</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+</head>
+<body class="bg-gray-100 min-h-screen">
+    <nav class="bg-white shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 py-3">
+            <div class="flex justify-between items-center">
+                <div class="text-xl font-bold text-blue-600">Car Rental System</div>
+                <div class="flex items-center space-x-4">
+                    {% if session.get('customer_id') %}
+                        <span class="text-gray-700">{{ session.get('customer_name', 'Guest') }}</span>
+                        <a href="{{ url_for('logout') }}" class="text-red-500 hover:text-red-600">Logout</a>
+                    {% else %}
+                        <a href="{{ url_for('login') }}" class="text-blue-500 hover:text-blue-600">Login</a>
+                        <a href="{{ url_for('register') }}" class="text-green-500 hover:text-green-600">Register</a>
+                        <a href="{{ url_for('admin_login') }}" class="text-purple-500 hover:text-purple-600">Admin Login</a>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="max-w-7xl mx-auto p-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            {% for car in cars %}
+            <div class="bg-white rounded-lg shadow-md overflow-hidden transform hover:scale-[1.02] transition-all duration-200">
+                <div class="p-6">
+                    <h2 class="text-2xl font-bold text-gray-800">{{ car.make }} {{ car.model }}</h2>
+                    <p class="text-gray-600">Year: {{ car.year }}</p>
+                    <p class="text-blue-600 font-bold mt-2">${{ car.price_per_day }}/day</p>
+                    <div class="mt-4">
+                        <span class="px-2 py-1 rounded-full text-sm 
+                            {% if car.status == 'Available' %}
+                                bg-green-100 text-green-800
+                            {% else %}
+                                bg-red-100 text-red-800
+                            {% endif %}">
+                            {{ car.status }}
+                        </span>
+                    </div>
+                    {% if car.status == 'Available' %}
+                        {% if session.get('customer_id') %}
+                            <a href="{{ url_for('rent_page', car_id=car.car_id) }}" 
+                               class="mt-4 block w-full bg-blue-500 text-white text-center py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                                Rent Now
+                            </a>
+                        {% else %}
+                            <a href="{{ url_for('login') }}" 
+                               class="mt-4 block w-full bg-gray-500 text-white text-center py-2 rounded-lg hover:bg-gray-600 transition-colors">
+                                Login to Rent
+                            </a>
+                        {% endif %}
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </div>
+    </main>
+
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            <div class="fixed bottom-4 right-4">
+                {% for category, message in messages %}
+                    <div class="bg-white rounded-lg shadow-lg p-4 mb-2 {% if category == 'success' %}text-green-600{% else %}text-red-600{% endif %}">
+                        {{ message }}
+                    </div>
+                {% endfor %}
+            </div>
+        {% endif %}
+    {% endwith %}
+    
+    <!-- Remove the script section at the bottom since it's no longer needed -->
+</body>
+</html>
