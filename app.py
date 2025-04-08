@@ -1,3 +1,4 @@
+import os
 from flask import Flask, render_template, request, jsonify, flash, url_for, redirect, session
 from mysql.connector import pooling
 from datetime import datetime, timedelta
@@ -13,12 +14,13 @@ app.secret_key = 'qwertyuiop'
 db_config = {
     "pool_name": "mypool",
     "pool_size": 5,
-    "host": "localhost",
-    "user": "root",
-    "password": "",  # Make sure this matches your MySQL password
-    "database": "car_rental",
+    "host": "sql12.freesqldatabase.com",
+    "user": "sql12771988",
+    "password": "QC7uEfPyzk",
+    "database": "sql12771988",
+    "port": 3306,
     "charset": "utf8mb4",
-    "use_pure": True,  # Use pure Python implementation
+    "use_pure": True,
     "connect_timeout": 30
 }
 
@@ -597,4 +599,4 @@ def password_reset():
 
 if __name__ == '__main__':
     logging.basicConfig(level=logging.ERROR)
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=int(os.environ.get('PORT', 5000)))
