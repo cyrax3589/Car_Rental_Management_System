@@ -6,6 +6,10 @@ from functools import wraps
 from flask import session, redirect, url_for
 import logging
 import mysql
+from dotenv import load_dotenv
+
+# Load environment variables from .env file
+load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = 'qwertyuiop'
@@ -14,11 +18,11 @@ app.secret_key = 'qwertyuiop'
 db_config = {
     "pool_name": "mypool",
     "pool_size": 5,
-    "host": "sql12.freesqldatabase.com",
-    "user": "sql12771988",
-    "password": "QC7uEfPyzk",
-    "database": "sql12771988",
-    "port": 3306,
+    "host": os.getenv('DB_HOST'),
+    "user": os.getenv('DB_USER'),
+    "password": os.getenv('DB_PASSWORD'),
+    "database": os.getenv('DB_NAME'),
+    "port": int(os.getenv('DB_PORT', 3306)),
     "charset": "utf8mb4",
     "use_pure": True,
     "connect_timeout": 30
