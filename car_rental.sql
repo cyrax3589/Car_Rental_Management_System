@@ -1,16 +1,17 @@
--- Active: 1742929688092@@127.0.0.1@3306@car_rental
-    CREATE DATABASE car_rental;
-    USE car_rental;
--- Remove duplicate CREATE TABLE and ALTER statements
-DROP TABLE IF EXISTS Customers;
--- First drop tables with foreign key dependencies
+-- Remove database creation commands as we're using existing database
+-- First check if tables exist and drop them in correct order
+SET FOREIGN_KEY_CHECKS = 0;
+
 DROP TABLE IF EXISTS Payments;
 DROP TABLE IF EXISTS Rentals;
+DROP TABLE IF EXISTS Cars;
 DROP TABLE IF EXISTS Customers;
 DROP TABLE IF EXISTS Admins;
 
--- Then create the Customers table
-CREATE TABLE Customers (
+SET FOREIGN_KEY_CHECKS = 1;
+
+-- Then create the tables
+CREATE TABLE IF NOT EXISTS Customers (
     customer_id INT PRIMARY KEY AUTO_INCREMENT,
     first_name VARCHAR(50) NOT NULL,
     last_name VARCHAR(50) NOT NULL,
@@ -20,13 +21,13 @@ CREATE TABLE Customers (
     address VARCHAR(255)
 );
 
-CREATE TABLE Admins (
+CREATE TABLE IF NOT EXISTS Admins (
     admin_id INT PRIMARY KEY AUTO_INCREMENT,
     username VARCHAR(50) UNIQUE NOT NULL,
     password VARCHAR(255) NOT NULL
 );
 
-CREATE TABLE Cars (
+CREATE TABLE IF NOT EXISTS Cars (
     car_id INT PRIMARY KEY AUTO_INCREMENT,
     model VARCHAR(50),
     make VARCHAR(50),
@@ -36,7 +37,7 @@ CREATE TABLE Cars (
     price_per_day DECIMAL(10, 2)
 );
 
-CREATE TABLE Rentals (
+CREATE TABLE IF NOT EXISTS Rentals (
     rental_id INT PRIMARY KEY AUTO_INCREMENT,
     customer_id INT,
     car_id INT,
@@ -48,7 +49,7 @@ CREATE TABLE Rentals (
     FOREIGN KEY (car_id) REFERENCES Cars(car_id) ON DELETE CASCADE
 );
 
-CREATE TABLE Payments (
+CREATE TABLE IF NOT EXISTS Payments (
     payment_id INT PRIMARY KEY AUTO_INCREMENT,
     rental_id INT,
     amount DECIMAL(10, 2),
@@ -57,11 +58,11 @@ CREATE TABLE Payments (
     FOREIGN KEY (rental_id) REFERENCES Rentals(rental_id) ON DELETE CASCADE
 );
 
--- Insert initial data
-INSERT INTO Admins (username, password) VALUES ('admin', SHA2('admin123', 256));
+-- Insert initial data (only if not exists)
+INSERT IGNORE INTO Admins (username, password) VALUES ('admin', SHA2('admin123', 256));
 
--- Insert sample cars
-INSERT INTO Cars (model, make, year, registration_number, status, price_per_day)
+-- Insert sample cars (only if not exists)
+INSERT IGNORE INTO Cars (model, make, year, registration_number, status, price_per_day)
 VALUES 
     ('Civic', 'Honda', 2023, 'ABC123', 'Available', 50.00),
     ('Corolla', 'Toyota', 2022, 'DEF456', 'Available', 45.00),
