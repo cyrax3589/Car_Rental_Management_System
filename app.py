@@ -1,5 +1,5 @@
 import os
-from flask import Flask, render_template, request, jsonify, flash, url_for, redirect, session
+from flask import Flask, render_template, request, jsonify, flash, url_for, redirect, session, g
 from mysql.connector import pooling
 from datetime import datetime, timedelta
 from functools import wraps
@@ -31,10 +31,13 @@ db_config = {
     'password': os.getenv('DB_PASSWORD'),
     'database': os.getenv('DB_NAME'),
     'pool_name': 'mypool',
-    'pool_size': 3,  # Reduce from default
+    'pool_size': 3,
     'pool_reset_session': True,
     'connect_timeout': 120
 }
+
+# Initialize the connection pool
+connection_pool = mysql.connector.pooling.MySQLConnectionPool(**db_config)
 
 # Add connection cleanup
 @app.teardown_appcontext
@@ -42,22 +45,6 @@ def cleanup(exc):
     db = g.pop('db', None)
     if db is not None:
         db.close()
-
-# Modify your db_connection decorator
-def db_connection(f):
-    @wraps(f)
-    def decorated_function(*args, **kwargs):
-        try:
-            conn = connection_pool.get_connection()
-            cursor = conn.cursor(dictionary=True)
-            result = f(cursor, conn, *args, **kwargs)
-            cursor.close()
-            conn.close()
-            return result
-        except mysql.connector.Error as err:
-            print(f"Database error: {err}")
-            return jsonify({"error": "Database connection error"}), 500
-    return decorated_function
 
 @app.route('/admin')
 def admin_page():
