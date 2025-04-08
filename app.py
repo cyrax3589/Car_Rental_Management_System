@@ -75,7 +75,33 @@ def admin_required(f):
 def admin_login_page():
     if session.get('is_admin'):
         return redirect(url_for('admin_dashboard'))
-    return render_template('admin_login.html')
+    return render_template('admin/admin_login.html')  # Updated template path
+
+@app.route('/admin/login', methods=['GET', 'POST'])
+@db_connection
+def admin_login(cursor, conn):
+    if request.method == 'GET':
+        return redirect(url_for('admin_login_page'))
+    
+    data = request.json if request.is_json else request.form
+    
+    if not data or 'username' not in data or 'password' not in data:
+        flash("Username and password are required", "error")
+        return redirect(url_for('admin_login_page'))
+
+    cursor.execute("""
+        SELECT * FROM Admins 
+        WHERE username = %s AND password = SHA2(%s, 256)
+    """, (data['username'], data['password']))
+    
+    admin = cursor.fetchone()
+    if admin:
+        session['is_admin'] = True
+        session['admin_username'] = admin['username']
+        return redirect(url_for('admin_dashboard'))
+    
+    flash("Invalid credentials", "error")
+    return redirect(url_for('admin_login_page'))
 
 @app.route('/admin/dashboard')
 @admin_required
@@ -440,32 +466,6 @@ def admin_search(cursor, conn):
     
     return jsonify(cursor.fetchall())
 
-
-@app.route('/admin/login', methods=['GET', 'POST'])
-@db_connection
-def admin_login(cursor, conn):
-    if request.method == 'GET':
-        return render_template('admin_login.html')
-    
-    data = request.json if request.is_json else request.form
-    
-    if not data or 'username' not in data or 'password' not in data:
-        flash("Username and password are required", "error")
-        return redirect(url_for('admin_login_page'))
-
-    cursor.execute("""
-        SELECT * FROM Admins 
-        WHERE username = %s AND password = SHA2(%s, 256)
-    """, (data['username'], data['password']))
-    
-    admin = cursor.fetchone()
-    if admin:
-        session['is_admin'] = True
-        session['admin_username'] = admin['username']
-        return redirect(url_for('admin_dashboard'))
-    
-    flash("Invalid credentials", "error")
-    return redirect(url_for('admin_login_page'))
 
 @app.route('/register', methods=['GET', 'POST'])
 @db_connection
