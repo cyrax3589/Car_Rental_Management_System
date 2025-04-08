@@ -26,56 +26,38 @@ def health_check():
 
 # Database configuration
 db_config = {
-    "pool_name": "mypool",
-    "pool_size": 5,
-    "host": os.getenv('DB_HOST'),
-    "user": os.getenv('DB_USER'),
-    "password": os.getenv('DB_PASSWORD'),
-    "database": os.getenv('DB_NAME'),
-    "port": int(os.getenv('DB_PORT', 3306)),
-    "charset": "utf8mb4",
-    "use_pure": True,
-    "connect_timeout": 30
+    'host': os.getenv('DB_HOST'),
+    'user': os.getenv('DB_USER'),
+    'password': os.getenv('DB_PASSWORD'),
+    'database': os.getenv('DB_NAME'),
+    'pool_name': 'mypool',
+    'pool_size': 3,  # Reduce from default
+    'pool_reset_session': True,
+    'connect_timeout': 120
 }
 
-# Create connection pool with better error handling
-try:
-    connection_pool = mysql.connector.pooling.MySQLConnectionPool(**db_config)
-    # Test connection
-    test_conn = connection_pool.get_connection()
-    test_conn.close()
-    print("Database connection successful!")
-except mysql.connector.Error as err:
-    print(f"Failed to create connection pool: {err}")
-    raise
+# Add connection cleanup
+@app.teardown_appcontext
+def cleanup(exc):
+    db = g.pop('db', None)
+    if db is not None:
+        db.close()
 
-# Database connection decorator with improved error handling
+# Modify your db_connection decorator
 def db_connection(f):
     @wraps(f)
-    def decorator(*args, **kwargs):
-        conn = None
-        cursor = None
+    def decorated_function(*args, **kwargs):
         try:
             conn = connection_pool.get_connection()
-            cursor = conn.cursor(dictionary=True, buffered=True)
+            cursor = conn.cursor(dictionary=True)
             result = f(cursor, conn, *args, **kwargs)
+            cursor.close()
+            conn.close()
             return result
-        except mysql.connector.Error as e:
-            if conn:
-                conn.rollback()
-            logging.error(f"MySQL Error: {str(e)}")
-            return jsonify({"error": f"Database error: {str(e)}"}), 500
-        except Exception as e:
-            if conn:
-                conn.rollback()
-            logging.error(f"Application Error: {str(e)}")
-            return jsonify({"error": "An unexpected error occurred"}), 500
-        finally:
-            if cursor:
-                cursor.close()
-            if conn:
-                conn.close()
-    return decorator
+        except mysql.connector.Error as err:
+            print(f"Database error: {err}")
+            return jsonify({"error": "Database connection error"}), 500
+    return decorated_function
 
 @app.route('/admin')
 def admin_page():
