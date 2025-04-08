@@ -318,8 +318,88 @@ def rental_history(cursor, conn):
 @admin_required
 @db_connection
 def get_statistics(cursor, conn):
-    # Add your statistics queries here
-    return render_template('admin/statistics.html')
+    # Get monthly revenue data
+    cursor.execute("""
+        SELECT DATE_FORMAT(start_date, '%Y-%m') as month, 
+               SUM(total_cost) as revenue
+        FROM Rentals
+        GROUP BY month
+        ORDER BY month DESC
+        LIMIT 12
+    """)
+    revenue_data = {
+        'labels': [],
+        'datasets': [{
+            'label': 'Monthly Revenue',
+            'data': [],
+            'borderColor': 'rgb(75, 192, 192)',
+            'tension': 0.1
+        }]
+    }
+    for row in cursor.fetchall():
+        revenue_data['labels'].append(row['month'])
+        revenue_data['datasets'][0]['data'].append(float(row['revenue']))
+
+    # Get rental status distribution
+    cursor.execute("""
+        SELECT status, COUNT(*) as count
+        FROM Rentals
+        GROUP BY status
+    """)
+    status_results = cursor.fetchall()
+    status_data = {
+        'labels': [row['status'] for row in status_results],
+        'datasets': [{
+            'data': [row['count'] for row in status_results],
+            'backgroundColor': ['#FF6384', '#36A2EB', '#FFCE56']
+        }]
+    }
+
+    # Get popular cars
+    cursor.execute("""
+        SELECT CONCAT(c.make, ' ', c.model) as car,
+               COUNT(*) as rental_count
+        FROM Rentals r
+        JOIN Cars c ON r.car_id = c.car_id
+        GROUP BY c.car_id
+        ORDER BY rental_count DESC
+        LIMIT 5
+    """)
+    popular_cars_results = cursor.fetchall()
+    popular_cars_data = {
+        'labels': [row['car'] for row in popular_cars_results],
+        'datasets': [{
+            'label': 'Number of Rentals',
+            'data': [row['rental_count'] for row in popular_cars_results],
+            'backgroundColor': 'rgba(54, 162, 235, 0.5)'
+        }]
+    }
+
+    # Get customer growth
+    cursor.execute("""
+        SELECT DATE_FORMAT(created_at, '%Y-%m') as month,
+               COUNT(*) as new_customers
+        FROM Customers
+        GROUP BY month
+        ORDER BY month DESC
+        LIMIT 12
+    """)
+    growth_results = cursor.fetchall()
+    customer_growth_data = {
+        'labels': [row['month'] for row in growth_results],
+        'datasets': [{
+            'label': 'New Customers',
+            'data': [row['new_customers'] for row in growth_results],
+            'borderColor': 'rgb(153, 102, 255)',
+            'tension': 0.1
+        }]
+    }
+
+    return render_template('admin/statistics.html',
+                         revenue_data=revenue_data,
+                         status_data=status_data,
+                         popular_cars_data=popular_cars_data,
+                         customer_growth_data=customer_growth_data)
 
 @app.route('/admin/logout')
 def admin_logout():
