@@ -12,7 +12,17 @@ from dotenv import load_dotenv
 load_dotenv()
 
 app = Flask(__name__)
-app.secret_key = 'qwertyuiop'
+app.secret_key = os.getenv('SECRET_KEY', os.urandom(24))
+
+@app.route('/healthz')
+def health_check():
+    try:
+        # Test DB connection
+        test_conn = connection_pool.get_connection()
+        test_conn.close()
+        return jsonify({"status": "healthy"}), 200
+    except Exception as e:
+        return jsonify({"status": "unhealthy", "error": str(e)}), 500
 
 # Database configuration
 db_config = {
