@@ -274,47 +274,42 @@ def serve_frontend(cursor, conn):
 @admin_required
 @db_connection
 def admin_view_customers(cursor, conn):
-    cursor.execute("""
-        SELECT customer_id, first_name, last_name, email, phone, address 
-        FROM Customers
-        ORDER BY customer_id DESC
-    """)
+    cursor.execute("SELECT * FROM Customers")
     customers = cursor.fetchall()
     return render_template('admin/customers.html', customers=customers)
 
-@app.route('/admin/rentals/active')
+@app.route('/admin/manage_cars')
+@admin_required
+@db_connection
+def admin_manage_cars(cursor, conn):
+    cursor.execute("SELECT * FROM Cars")
+    cars = cursor.fetchall()
+    return render_template('admin/cars.html', cars=cars)
+
+@app.route('/admin/active_rentals')
 @admin_required
 @db_connection
 def admin_active_rentals(cursor, conn):
     cursor.execute("""
-        SELECT r.*, c.first_name, c.last_name, cars.model
+        SELECT r.*, c.first_name, c.last_name, cars.make, cars.model
         FROM Rentals r
         JOIN Customers c ON r.customer_id = c.customer_id
         JOIN Cars cars ON r.car_id = cars.car_id
         WHERE r.status = 'Ongoing'
-        ORDER BY r.start_date DESC
     """)
     rentals = cursor.fetchall()
     return render_template('admin/active_rentals.html', rentals=rentals)
 
-@app.route('/admin/cars/manage', methods=['GET'])
-@admin_required
-@db_connection
-def admin_manage_cars(cursor, conn):
-    cursor.execute("SELECT * FROM Cars ORDER BY car_id DESC")
-    cars = cursor.fetchall()
-    return render_template('admin/cars.html', cars=cars)
-
-@app.route('/admin/rentals/history')
+@app.route('/admin/rental_history')
 @admin_required
 @db_connection
 def rental_history(cursor, conn):
     cursor.execute("""
-        SELECT r.*, c.first_name, c.last_name, cars.model
+        SELECT r.*, c.first_name, c.last_name, cars.make, cars.model
         FROM Rentals r
         JOIN Customers c ON r.customer_id = c.customer_id
         JOIN Cars cars ON r.car_id = cars.car_id
-        ORDER BY r.start_date DESC
+        ORDER BY r.rental_id DESC
     """)
     rentals = cursor.fetchall()
     return render_template('admin/rental_history.html', rentals=rentals)
@@ -323,69 +318,14 @@ def rental_history(cursor, conn):
 @admin_required
 @db_connection
 def get_statistics(cursor, conn):
-    try:
-        # Get monthly revenue data
-        cursor.execute("""
-            SELECT DATE_FORMAT(start_date, '%Y-%m') as month, 
-                   SUM(total_cost) as revenue
-            FROM Rentals
-            GROUP BY month
-            ORDER BY month DESC
-            LIMIT 12
-        """)
-        revenue_data = {
-            'labels': [],
-            'datasets': [{
-                'label': 'Monthly Revenue',
-                'data': [],
-                'borderColor': 'rgb(75, 192, 192)',
-                'tension': 0.1
-            }]
-        }
-        for row in cursor.fetchall():
-            revenue_data['labels'].append(row['month'])
-            revenue_data['datasets'][0]['data'].append(float(row['revenue']))
+    # Add your statistics queries here
+    return render_template('admin/statistics.html')
 
-        # Get rental status distribution
-        cursor.execute("""
-            SELECT status, COUNT(*) as count
-            FROM Rentals
-            GROUP BY status
-        """)
-        status_counts = cursor.fetchall()
-        status_data = {
-            'labels': [row['status'] for row in status_counts],
-            'datasets': [{
-                'data': [row['count'] for row in status_counts],
-                'backgroundColor': ['#4CAF50', '#2196F3', '#F44336']
-            }]
-        }
-
-        # Get popular cars
-        cursor.execute("""
-            SELECT c.make, c.model, COUNT(*) as rental_count
-            FROM Rentals r
-            JOIN Cars c ON r.car_id = c.car_id
-            GROUP BY c.car_id
-            ORDER BY rental_count DESC
-            LIMIT 5
-        """)
-        popular_cars = cursor.fetchall()
-        popular_cars_data = {
-            'labels': [f"{row['make']} {row['model']}" for row in popular_cars],
-            'datasets': [{
-                'label': 'Number of Rentals',
-                'data': [row['rental_count'] for row in popular_cars],
-                'backgroundColor': 'rgba(54, 162, 235, 0.5)'
-            }]
-        }
-
-        return render_template('admin/statistics.html',
-                             revenue_data=revenue_data,
-                             status_data=status_data,
-                             popular_cars_data=popular_cars_data)
-    except Exception as e:
-        return jsonify({"error": str(e)}), 500
+@app.route('/admin/logout')
+def admin_logout():
+    session.pop('is_admin', None)
+    flash('Successfully logged out', 'success')
+    return redirect(url_for('admin_login_page'))
 
 @app.route('/admin/search', methods=['POST'])
 @admin_required
