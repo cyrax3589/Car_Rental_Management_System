@@ -3,7 +3,6 @@ from flask import Flask, render_template, request, jsonify, flash, url_for, redi
 from mysql.connector import pooling
 from datetime import datetime, timedelta
 from functools import wraps
-from flask import session, redirect, url_for
 import logging
 import mysql
 from dotenv import load_dotenv
@@ -13,16 +12,6 @@ load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', os.urandom(24))
-
-@app.route('/healthz')
-def health_check():
-    try:
-        # Test DB connection
-        test_conn = connection_pool.get_connection()
-        test_conn.close()
-        return jsonify({"status": "healthy"}), 200
-    except Exception as e:
-        return jsonify({"status": "unhealthy", "error": str(e)}), 500
 
 # Database configuration
 db_config = {
@@ -39,12 +28,31 @@ db_config = {
 # Initialize the connection pool
 connection_pool = mysql.connector.pooling.MySQLConnectionPool(**db_config)
 
-# Add connection cleanup
-@app.teardown_appcontext
-def cleanup(exc):
-    db = g.pop('db', None)
-    if db is not None:
-        db.close()
+# Database connection decorator
+def db_connection(f):
+    @wraps(f)
+    def decorated_function(*args, **kwargs):
+        try:
+            conn = connection_pool.get_connection()
+            cursor = conn.cursor(dictionary=True)
+            result = f(cursor, conn, *args, **kwargs)
+            cursor.close()
+            conn.close()
+            return result
+        except mysql.connector.Error as err:
+            print(f"Database error: {err}")
+            return jsonify({"error": "Database connection error"}), 500
+    return decorated_function
+
+@app.route('/healthz')
+def health_check():
+    try:
+        # Test DB connection
+        test_conn = connection_pool.get_connection()
+        test_conn.close()
+        return jsonify({"status": "healthy"}), 200
+    except Exception as e:
+        return jsonify({"status": "unhealthy", "error": str(e)}), 500
 
 @app.route('/admin')
 def admin_page():
