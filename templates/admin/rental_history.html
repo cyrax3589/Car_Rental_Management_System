@@ -73,8 +73,8 @@
                         {% for rental in rentals %}
                         <tr class="hover:bg-gray-50 transition-colors">
                             <td class="px-6 py-4">{{ rental.rental_id }}</td>
-                            <td class="px-6 py-4">{{ rental.customer_name }}</td>
-                            <td class="px-6 py-4">{{ rental.car_details }}</td>
+                            <td class="px-6 py-4">{{ rental.first_name }} {{ rental.last_name }}</td>
+                            <td class="px-6 py-4">{{ rental.model }}</td>
                             <td class="px-6 py-4">{{ rental.start_date }}</td>
                             <td class="px-6 py-4">{{ rental.end_date }}</td>
                             <td class="px-6 py-4">${{ rental.total_cost }}</td>
