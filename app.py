@@ -634,6 +634,28 @@ def password_reset():
     return render_template('password_reset.html')
 
 
+@app.route('/admin/delete_customer/<int:customer_id>', methods=['DELETE'])
+@admin_required
+@db_connection
+def admin_delete_customer(cursor, conn, customer_id):
+    try:
+        # Check if customer has active rentals
+        cursor.execute("SELECT COUNT(*) as count FROM Rentals WHERE customer_id = %s AND status = 'Ongoing'", (customer_id,))
+        active_rentals = cursor.fetchone()['count']
+        
+        if active_rentals > 0:
+            return jsonify({"error": "Cannot delete customer with active rentals"}), 400
+            
+        # Delete customer
+        cursor.execute("DELETE FROM Customers WHERE customer_id = %s", (customer_id,))
+        conn.commit()
+        
+        return jsonify({"message": "Customer deleted successfully"}), 200
+    except Exception as e:
+        logging.error(f"Error deleting customer: {str(e)}")
+        return jsonify({"error": "Failed to delete customer"}), 500
+
+
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 10000))
     app.run(host='0.0.0.0', port=port)
