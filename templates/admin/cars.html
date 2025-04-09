@@ -129,7 +129,7 @@
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="year" type="number" min="1900" max="2099" required>
                 </div>
                 <div class="mb-4">
-                    <label class="block text-gray-700 text-sm font-bold mb-2" for="registration">Registration</label>
+                    <label class="block text-gray-700 text-sm font-bold mb-2" for="registration">Registration Number</label>
                     <input class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="registration" type="text" required>
                 </div>
                 <div class="mb-4">
@@ -141,7 +141,7 @@
                     <select class="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" id="status" required>
                         <option value="Available">Available</option>
                         <option value="Rented">Rented</option>
-                        <option value="Maintenance">Maintenance</option>
+                        <option value="Under Maintenance">Under Maintenance</option>
                     </select>
                 </div>
                 <div class="flex items-center justify-between">
@@ -178,12 +178,12 @@
                 .then(response => response.json())
                 .then(car => {
                     document.getElementById('carId').value = car.car_id;
-                    document.getElementById('make').value = car.make;
-                    document.getElementById('model').value = car.model;
-                    document.getElementById('year').value = car.year;
-                    document.getElementById('registration').value = car.registration;
-                    document.getElementById('price').value = car.price_per_day;
-                    document.getElementById('status').value = car.status;
+                    document.getElementById('make').value = car.make || '';
+                    document.getElementById('model').value = car.model || '';
+                    document.getElementById('year').value = car.year || '';
+                    document.getElementById('registration').value = car.registration_number || '';
+                    document.getElementById('price').value = car.price_per_day || '';
+                    document.getElementById('status').value = car.status || 'Available';
                     
                     modalTitle.textContent = 'Edit Car';
                     modal.classList.remove('hidden');
@@ -218,7 +218,7 @@
                 make: document.getElementById('make').value,
                 model: document.getElementById('model').value,
                 year: document.getElementById('year').value,
-                registration: document.getElementById('registration').value,
+                registration_number: document.getElementById('registration').value,
                 price_per_day: document.getElementById('price').value,
                 status: document.getElementById('status').value
             };
