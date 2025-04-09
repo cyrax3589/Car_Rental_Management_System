@@ -53,8 +53,7 @@
                             <td class="px-6 py-4">{{ customer.phone }}</td>
                             <td class="px-6 py-4">{{ customer.address }}</td>
                             <td class="px-6 py-4 space-x-2">
-                                <button class="text-blue-500 hover:text-blue-700">Edit</button>
-                                <button class="text-red-500 hover:text-red-700">Delete</button>
+                                <button onclick="deleteCustomer({{ customer.customer_id }})" class="text-red-500 hover:text-red-700">Delete</button>
                             </td>
                         </tr>
                         {% endfor %}
@@ -63,5 +62,27 @@
             </div>
         </div>
     </main>
+
+    <script>
+        function deleteCustomer(customerId) {
+            if (confirm('Are you sure you want to delete this customer? This action cannot be undone.')) {
+                fetch(`/admin/delete_customer/${customerId}`, {
+                    method: 'DELETE',
+                })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.reload();
+                    } else {
+                        return response.json().then(data => {
+                            throw new Error(data.error || 'Failed to delete customer');
+                        });
+                    }
+                })
+                .catch(error => {
+                    alert(error.message);
+                });
+            }
+        }
+    </script>
 </body>
 </html>
