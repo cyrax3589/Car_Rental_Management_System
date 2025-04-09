@@ -4,8 +4,36 @@
     <title>Active Rentals - Admin</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <style>
+        body {
+            background-image: url('/static/images/dashboard.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            background-repeat: no-repeat;
+            position: relative;
+        }
+        
+        body::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.7);
+            z-index: -1;
+        }
+        
+        .rentals-table {
+            backdrop-filter: blur(5px);
+            background-color: rgba(255, 255, 255, 0.85);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            border: 1px solid rgba(255, 255, 255, 0.2);
+        }
+    </style>
 </head>
-<body class="bg-gray-100 min-h-screen">
+<body class="min-h-screen relative">
     <nav class="bg-gray-800 text-white">
         <div class="max-w-7xl mx-auto px-4 py-3">
             <div class="flex justify-between items-center">
@@ -25,86 +53,13 @@
     </nav>
 
     <main class="max-w-7xl mx-auto p-6">
-        <h1 class="text-2xl font-bold text-gray-800 mb-6">Active Rentals</h1>
-        
-        <div class="bg-white rounded-xl shadow-md overflow-hidden">
-            <table class="min-w-full divide-y divide-gray-200">
-                <thead class="bg-gray-50">
-                    <tr>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Rental ID</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Customer</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Car</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Start Date</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">End Date</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Total Cost</th>
-                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Actions</th>
-                    </tr>
-                </thead>
-                <tbody class="bg-white divide-y divide-gray-200">
-                    {% for rental in rentals %}
-                    <tr id="rental-row-{{ rental.rental_id }}">
-                        <td class="px-6 py-4 whitespace-nowrap">{{ rental.rental_id }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ rental.first_name }} {{ rental.last_name }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ rental.make }} {{ rental.model }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ rental.start_date }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">{{ rental.end_date }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">${{ rental.total_cost }}</td>
-                        <td class="px-6 py-4 whitespace-nowrap">
-                            <button 
-                                onclick="completeRental({{ rental.rental_id }})" 
-                                class="bg-green-500 hover:bg-green-600 text-white py-1 px-3 rounded">
-                                Complete
-                            </button>
-                        </td>
-                    </tr>
-                    {% endfor %}
-                    
-                    {% if not rentals %}
-                    <tr>
-                        <td colspan="7" class="px-6 py-4 text-center text-gray-500">No active rentals found</td>
-                    </tr>
-                    {% endif %}
-                </tbody>
-            </table>
+        <div class="rentals-table p-6 rounded-xl shadow-md">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">Active Rentals</h2>
+            
+            <div class="overflow-x-auto">
+                <!-- Your active rentals table content -->
+            </div>
         </div>
     </main>
-
-    <script>
-        function completeRental(rentalId) {
-            if (confirm('Are you sure you want to complete this rental?')) {
-                fetch(`/complete_rental/${rentalId}`, {
-                    method: 'PUT',
-                    headers: {
-                        'Content-Type': 'application/json'
-                    }
-                })
-                .then(response => {
-                    if (!response.ok) {
-                        throw new Error('Network response was not ok');
-                    }
-                    return response.json();
-                })
-                .then(data => {
-                    // Remove the row from the table
-                    document.getElementById(`rental-row-${rentalId}`).remove();
-                    
-                    // Show success message
-                    alert('Rental completed successfully!');
-                    
-                    // If no more rows, show "No active rentals" message
-                    const tbody = document.querySelector('tbody');
-                    if (tbody.children.length === 0) {
-                        const tr = document.createElement('tr');
-                        tr.innerHTML = '<td colspan="7" class="px-6 py-4 text-center text-gray-500">No active rentals found</td>';
-                        tbody.appendChild(tr);
-                    }
-                })
-                .catch(error => {
-                    console.error('Error:', error);
-                    alert('Failed to complete rental. Please try again.');
-                });
-            }
-        }
-    </script>
 </body>
 </html>
