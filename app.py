@@ -304,6 +304,12 @@ def admin_view_customers(cursor, conn):
     customers = cursor.fetchall()
     return render_template('admin/customers.html', customers=customers)
 
+@app.route('/admin/add_customer')
+@admin_required
+def admin_add_customer():
+    # Redirect to the existing register page
+    return redirect(url_for('register'))
+
 @app.route('/admin/manage_cars')
 @admin_required
 @db_connection
