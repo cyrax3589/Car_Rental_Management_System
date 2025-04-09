@@ -26,9 +26,10 @@
         <div class="bg-white rounded-xl shadow-md p-6 animate-fade-in">
             <div class="flex justify-between items-center mb-6">
                 <h2 class="text-2xl font-bold text-gray-800">Customer Management</h2>
-                <button class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                <!-- Update the "Add New Customer" button to link to the new route -->
+                <a href="{{ url_for('admin_add_customer') }}" class="bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700">
                     Add New Customer
-                </button>
+                </a>
             </div>
 
             <div class="overflow-x-auto">
