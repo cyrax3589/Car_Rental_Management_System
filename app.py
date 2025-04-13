@@ -390,10 +390,9 @@ def home():
 def root():
     return redirect(url_for('home'))
 
-# Rename the existing route
 @app.route('/cars')
 @db_connection
-def serve_frontend(cursor, conn):
+def cars(cursor, conn):
     cursor.execute("SELECT * FROM Cars")
     cars = cursor.fetchall()
     
