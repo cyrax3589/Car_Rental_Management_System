@@ -597,14 +597,14 @@ def logout():
 def manage_cars(cursor, conn):
     if request.method == 'POST':
         data = request.json
-        required_fields = ['model', 'year', 'price_per_day', 'status']
+        required_fields = ['model', 'make', 'year', 'registration_number', 'price_per_day', 'status']
         if not all(field in data for field in required_fields):
             return jsonify({"error": "Missing required fields"}), 400
 
         cursor.execute("""
-            INSERT INTO Cars (model, year, price_per_day, status) 
-            VALUES (%s, %s, %s, %s)
-        """, (data['model'], data['year'], data['price_per_day'], data['status']))
+            INSERT INTO Cars (model, make, year, registration_number, price_per_day, status) 
+            VALUES (%s, %s, %s, %s, %s, %s)
+        """, (data['model'], data['make'], data['year'], data['registration_number'], data['price_per_day'], data['status']))
         conn.commit()
         return jsonify({"message": "Car added successfully", "id": cursor.lastrowid})
 
@@ -612,9 +612,9 @@ def manage_cars(cursor, conn):
         data = request.json
         cursor.execute("""
             UPDATE Cars 
-            SET model = %s, year = %s, price_per_day = %s, status = %s 
+            SET model = %s, make = %s, year = %s, registration_number = %s, price_per_day = %s, status = %s 
             WHERE car_id = %s
-        """, (data['model'], data['year'], data['price_per_day'], data['status'], data['car_id']))
+        """, (data['model'], data['make'], data['year'], data['registration_number'], data['price_per_day'], data['status'], data['car_id']))
         conn.commit()
         return jsonify({"message": "Car updated successfully"})
 
