@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Welcome to Premium Car Rentals</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <style>
+        .hero-section {
+            background-image: linear-gradient(rgba(0, 0, 0, 0.5), rgba(0, 0, 0, 0.7)), url('/static/images/dashboard.jpg');
+            background-size: cover;
+            background-position: center;
+            height: 100vh;
+        }
+        .feature-card {
+            transition: transform 0.3s ease;
+        }
+        .feature-card:hover {
+            transform: translateY(-10px);
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+    <!-- Hero Section -->
+    <div class="hero-section flex items-center justify-center">
+        <div class="text-center px-4">
+            <h1 class="text-5xl md:text-6xl font-bold text-white mb-6">Premium Car Rental Service</h1>
+            <p class="text-xl md:text-2xl text-gray-200 mb-10">Experience luxury and comfort on your journey</p>
+            <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 justify-center">
+                <a href="{{ url_for('serve_frontend') }}" class="bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg text-lg transition duration-300">
+                    Browse Cars
+                </a>
+                {% if not session.get('customer_id') %}
+                <a href="{{ url_for('login') }}" class="bg-transparent hover:bg-white hover:text-blue-700 text-white font-bold py-3 px-8 border-2 border-white rounded-lg text-lg transition duration-300">
+                    Login
+                </a>
+                <a href="{{ url_for('register') }}" class="bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-8 rounded-lg text-lg transition duration-300">
+                    Register
+                </a>
+                {% else %}
+                <a href="{{ url_for('logout') }}" class="bg-transparent hover:bg-white hover:text-blue-700 text-white font-bold py-3 px-8 border-2 border-white rounded-lg text-lg transition duration-300">
+                    Logout
+                </a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <div class="py-16 bg-white">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+                    Why Choose Our Service
+                </h2>
+                <p class="mt-4 max-w-2xl text-xl text-gray-500 mx-auto">
+                    We provide the best car rental experience with premium vehicles and exceptional service.
+                </p>
+            </div>
+
+            <div class="mt-16">
+                <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
+                    <div class="feature-card bg-gray-50 rounded-xl shadow-md overflow-hidden p-6">
+                        <div class="text-blue-600 text-4xl mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">Quick & Easy Booking</h3>
+                        <p class="mt-2 text-gray-600">Book your car in minutes with our simple and intuitive booking system.</p>
+                    </div>
+
+                    <div class="feature-card bg-gray-50 rounded-xl shadow-md overflow-hidden p-6">
+                        <div class="text-blue-600 text-4xl mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">Safe & Reliable</h3>
+                        <p class="mt-2 text-gray-600">All our vehicles are regularly maintained and sanitized for your safety.</p>
+                    </div>
+
+                    <div class="feature-card bg-gray-50 rounded-xl shadow-md overflow-hidden p-6">
+                        <div class="text-blue-600 text-4xl mb-4">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
+                            </svg>
+                        </div>
+                        <h3 class="text-xl font-bold text-gray-900">Best Price Guarantee</h3>
+                        <p class="mt-2 text-gray-600">We offer competitive prices with no hidden fees or charges.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Popular Cars Section -->
+    <div class="py-16 bg-gray-100">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
+                    Our Popular Cars
+                </h2>
+                <p class="mt-4 max-w-2xl text-xl text-gray-500 mx-auto">
+                    Explore our most popular rental options
+                </p>
+            </div>
+
+            <div class="mt-12 text-center">
+                <a href="{{ url_for('serve_frontend') }}" class="inline-block bg-blue-600 hover:bg-blue-700 text-white font-bold py-3 px-8 rounded-lg text-lg transition duration-300">
+                    View All Cars
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer class="bg-gray-800 text-white py-12">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Premium Car Rentals</h3>
+                    <p class="text-gray-400">
+                        Providing quality car rental services since 2023. Your journey, our priority.
+                    </p>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="{{ url_for('home') }}" class="text-gray-400 hover:text-white">Home</a></li>
+                        <li><a href="{{ url_for('serve_frontend') }}" class="text-gray-400 hover:text-white">Cars</a></li>
+                        <li><a href="{{ url_for('login') }}" class="text-gray-400 hover:text-white">Login</a></li>
+                        <li><a href="{{ url_for('register') }}" class="text-gray-400 hover:text-white">Register</a></li>
+                    </ul>
+                </div>
+                <div>
+                    <h3 class="text-xl font-bold mb-4">Contact Us</h3>
+                    <p class="text-gray-400">
+                        123 Car Street<br>
+                        Automobile City, AC 12345<br>
+                        Phone: (123) 456-7890<br>
+                        Email: info@premiumcarrentals.com
+                    </p>
+                </div>
+            </div>
+            <div class="mt-8 pt-8 border-t border-gray-700 text-center text-gray-400">
+                <p>&copy; 2023 Premium Car Rentals. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>

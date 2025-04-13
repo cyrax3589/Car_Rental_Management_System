@@ -381,7 +381,17 @@ def admin_cancel_rental(cursor, conn, rental_id):
         return jsonify({"error": "Failed to cancel rental"}), 500
 
 
+@app.route('/home')
+def home():
+    return render_template('home.html')
+
+# Update the root route to redirect to home
 @app.route('/')
+def root():
+    return redirect(url_for('home'))
+
+# Rename the existing route
+@app.route('/cars')
 @db_connection
 def serve_frontend(cursor, conn):
     cursor.execute("SELECT * FROM Cars")
