@@ -301,6 +301,86 @@ def complete_rental(cursor, conn, rental_id):
         return jsonify({"error": "Failed to complete rental"}), 500
 
 
+@app.route('/admin/complete_rental/<int:rental_id>', methods=['POST'])
+@admin_required
+@db_connection
+def admin_complete_rental(cursor, conn, rental_id):
+    try:
+        # Get rental information
+        cursor.execute("""
+            SELECT r.*, c.car_id 
+            FROM Rentals r
+            JOIN Cars c ON r.car_id = c.car_id
+            WHERE r.rental_id = %s AND r.status = 'Ongoing'
+        """, (rental_id,))
+        
+        rental = cursor.fetchone()
+        if not rental:
+            return jsonify({"error": "Rental not found or already completed"}), 404
+        
+        # Update rental status
+        cursor.execute("""
+            UPDATE Rentals 
+            SET status = 'Completed' 
+            WHERE rental_id = %s
+        """, (rental_id,))
+        
+        # Update car status
+        cursor.execute("""
+            UPDATE Cars 
+            SET status = 'Available' 
+            WHERE car_id = %s
+        """, (rental['car_id'],))
+        
+        conn.commit()
+        
+        return jsonify({"message": "Rental completed successfully"}), 200
+    
+    except Exception as e:
+        logging.error(f"Error completing rental: {str(e)}")
+        return jsonify({"error": "Failed to complete rental"}), 500
+
+
+@app.route('/admin/cancel_rental/<int:rental_id>', methods=['POST'])
+@admin_required
+@db_connection
+def admin_cancel_rental(cursor, conn, rental_id):
+    try:
+        # Get rental information
+        cursor.execute("""
+            SELECT r.*, c.car_id 
+            FROM Rentals r
+            JOIN Cars c ON r.car_id = c.car_id
+            WHERE r.rental_id = %s AND r.status = 'Ongoing'
+        """, (rental_id,))
+        
+        rental = cursor.fetchone()
+        if not rental:
+            return jsonify({"error": "Rental not found or already completed/cancelled"}), 404
+        
+        # Update rental status
+        cursor.execute("""
+            UPDATE Rentals 
+            SET status = 'Cancelled' 
+            WHERE rental_id = %s
+        """, (rental_id,))
+        
+        # Update car status
+        cursor.execute("""
+            UPDATE Cars 
+            SET status = 'Available' 
+            WHERE car_id = %s
+        """, (rental['car_id'],))
+        
+        conn.commit()
+        
+        return jsonify({"message": "Rental cancelled successfully"}), 200
+    
+    except Exception as e:
+        logging.error(f"Error cancelling rental: {str(e)}")
+        return jsonify({"error": "Failed to cancel rental"}), 500
+
+
 @app.route('/')
 @db_connection
 def serve_frontend(cursor, conn):

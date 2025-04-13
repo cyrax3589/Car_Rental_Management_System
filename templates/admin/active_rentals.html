@@ -109,40 +109,53 @@
         </div>
     </main>
 
+    <!-- Add this JavaScript at the end of your active_rentals.html file -->
     <script>
         function completeRental(rentalId) {
-            if (confirm('Are you sure you want to mark this rental as completed?')) {
+            if (confirm('Are you sure you want to complete this rental? The car will be marked as returned.')) {
                 fetch(`/admin/complete_rental/${rentalId}`, {
                     method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
                 })
                 .then(response => {
-                    if (response.ok) {
-                        window.location.reload();
-                    } else {
+                    if (!response.ok) {
                         return response.json().then(data => {
                             throw new Error(data.error || 'Failed to complete rental');
                         });
                     }
+                    return response.json();
+                })
+                .then(data => {
+                    alert(data.message || 'Rental completed successfully');
+                    window.location.reload();
                 })
                 .catch(error => {
                     alert(error.message);
                 });
             }
         }
-        
+    
         function cancelRental(rentalId) {
-            if (confirm('Are you sure you want to cancel this rental? This action cannot be undone.')) {
+            if (confirm('Are you sure you want to cancel this rental?')) {
                 fetch(`/admin/cancel_rental/${rentalId}`, {
                     method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json'
+                    }
                 })
                 .then(response => {
-                    if (response.ok) {
-                        window.location.reload();
-                    } else {
+                    if (!response.ok) {
                         return response.json().then(data => {
                             throw new Error(data.error || 'Failed to cancel rental');
                         });
                     }
+                    return response.json();
+                })
+                .then(data => {
+                    alert(data.message || 'Rental cancelled successfully');
+                    window.location.reload();
                 })
                 .catch(error => {
                     alert(error.message);
