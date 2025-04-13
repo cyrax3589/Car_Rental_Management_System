@@ -259,31 +259,65 @@ def rent_car(cursor, conn):
     except ValueError:
         return jsonify({"error": "Invalid date format"}), 400
 
-@app.route('/complete_rental/<int:rental_id>', methods=['PUT'])
+@app.route('/complete_rental/<int:rental_id>', methods=['POST'])
 @db_connection
 def complete_rental(cursor, conn, rental_id):
-    cursor.execute("START TRANSACTION")
+    if not session.get('customer_id'):
+        return jsonify({"error": "You must be logged in"}), 401
     
-    cursor.execute("SELECT * FROM Rentals WHERE rental_id = %s FOR UPDATE", (rental_id,))
-    rental = cursor.fetchone()
-    if not rental or rental['status'] != 'Ongoing':
-        cursor.execute("ROLLBACK")
-        return jsonify({"error": "Invalid rental or already completed"}), 400
-
-    cursor.execute("UPDATE Rentals SET status = 'Completed' WHERE rental_id = %s", (rental_id,))
-    cursor.execute("""
-        UPDATE Cars 
-        SET status = 'Available' 
-        WHERE car_id = (SELECT car_id FROM Rentals WHERE rental_id = %s)
-    """, (rental_id,))
+    try:
+        # Check if rental belongs to the logged-in customer
+        cursor.execute("""
+            SELECT r.*, c.car_id 
+            FROM Rentals r
+            JOIN Cars c ON r.car_id = c.car_id
+            WHERE r.rental_id = %s AND r.customer_id = %s AND r.status = 'Ongoing'
+        """, (rental_id, session['customer_id']))
+        
+        rental = cursor.fetchone()
+        if not rental:
+            return jsonify({"error": "Rental not found or already completed"}), 404
+        
+        # Update rental status
+        cursor.execute("""
+            UPDATE Rentals 
+            SET status = 'Completed' 
+            WHERE rental_id = %s
+        """, (rental_id,))
+        
+        # Update car status
+        cursor.execute("""
+            UPDATE Cars 
+            SET status = 'Available' 
+            WHERE car_id = %s
+        """, (rental['car_id'],))
+        
+        conn.commit()
+        
+        return jsonify({"message": "Rental completed successfully"}), 200
     
-    cursor.execute("COMMIT")
-    return jsonify({"message": "Rental completed"})
+    except Exception as e:
+        logging.error(f"Error completing rental: {str(e)}")
+        return jsonify({"error": "Failed to complete rental"}), 500
 
 
 @app.route('/')
 @db_connection
 def serve_frontend(cursor, conn):
+    cursor.execute("SELECT * FROM Cars")
+    cars = cursor.fetchall()
+    
+    active_rentals = []
+    if session.get('customer_id'):
+        cursor.execute("""
+            SELECT r.*, c.make, c.model
+            FROM Rentals r
+            JOIN Cars c ON r.car_id = c.car_id
+            WHERE r.customer_id = %s AND r.status = 'Ongoing'
+        """, (session['customer_id'],))
+        active_rentals = cursor.fetchall()
+    
+    return render_template('index.html', cars=cars, active_rentals=active_rentals)
     try:
         cursor.execute("""
             SELECT * FROM Cars 

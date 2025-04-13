@@ -105,6 +105,68 @@
         {% endif %}
     {% endwith %}
     
+    <!-- Add this section after the car listings for logged-in customers -->
+    {% if session.customer_id %}
+    <div class="max-w-7xl mx-auto p-6 mt-8">
+        <div class="bg-white bg-opacity-90 p-6 rounded-xl shadow-md">
+            <h2 class="text-2xl font-bold text-gray-800 mb-6">My Active Rentals</h2>
+            
+            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+                {% for rental in active_rentals %}
+                <div class="bg-white p-6 rounded-lg shadow-md border border-gray-200">
+                    <h3 class="text-xl font-bold text-gray-800">
+                        {% if rental.make and rental.model %}
+                            {{ rental.make }} {{ rental.model }}
+                        {% elif rental.model %}
+                            {{ rental.model }}
+                        {% else %}
+                            Car #{{ rental.car_id }}
+                        {% endif %}
+                    </h3>
+                    <p class="text-gray-600">Start Date: {{ rental.start_date.strftime('%Y-%m-%d') }}</p>
+                    <p class="text-gray-600">End Date: {{ rental.end_date.strftime('%Y-%m-%d') }}</p>
+                    <p class="text-blue-600 font-bold mt-2">Total Cost: ${{ rental.total_cost }}</p>
+                    
+                    <div class="mt-4">
+                        <button onclick="completeRental({{ rental.rental_id }})" class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-full">
+                            Complete Rental
+                        </button>
+                    </div>
+                </div>
+                {% endfor %}
+                
+                {% if not active_rentals %}
+                <div class="col-span-full text-center p-6 bg-gray-100 rounded-lg">
+                    <p class="text-gray-600">You don't have any active rentals.</p>
+                </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    
+    <script>
+        function completeRental(rentalId) {
+            if (confirm('Are you sure you want to complete this rental? The car will be marked as returned.')) {
+                fetch(`/complete_rental/${rentalId}`, {
+                    method: 'POST',
+                })
+                .then(response => {
+                    if (response.ok) {
+                        window.location.reload();
+                    } else {
+                        return response.json().then(data => {
+                            throw new Error(data.error || 'Failed to complete rental');
+                        });
+                    }
+                })
+                .catch(error => {
+                    alert(error.message);
+                });
+            }
+        }
+    </script>
+    {% endif %}
+    
     <!-- Remove the script section at the bottom since it's no longer needed -->
 </body>
 </html>
