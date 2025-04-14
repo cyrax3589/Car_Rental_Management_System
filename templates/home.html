@@ -9,6 +9,22 @@
     <link href="{{ url_for('static', filename='css/home.css') }}" rel="stylesheet">
 </head>
 <body>
+    <nav class="top-nav">
+        {% if session.get('customer_id') %}
+        <div class="profile-dropdown">
+            <button class="profile-btn">
+                <i class="fas fa-user"></i>
+                <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="{{ url_for('cars') }}" class="dropdown-item">Browse Cars</a>
+                <div class="dropdown-divider"></div>
+                <a href="{{ url_for('logout') }}" class="dropdown-item logout-btn">Logout</a>
+            </div>
+        </div>
+        {% endif %}
+    </nav>
+
     <!-- Hero Section -->
     <section class="hero">
         <h2>Premium Car Rentals</h2>
@@ -18,8 +34,6 @@
             {% if not session.get('customer_id') %}
             <a href="{{ url_for('login') }}" class="secondary-btn">Login</a>
             <a href="{{ url_for('register') }}" class="success-btn">Register</a>
-            {% else %}
-            <a href="{{ url_for('logout') }}" class="secondary-btn">Logout</a>
             {% endif %}
         </div>
     </section>
@@ -58,56 +72,48 @@
     <section class="popular-cars">
         <h2>Our Popular Cars</h2>
         <p class="section-subtitle">Explore our most popular rental options</p>
-
         <div class="cars-grid">
-            <!-- Car 1 -->
             <div class="car-card">
                 <div class="car-image">
                     <img src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="BMW M4">
                 </div>
                 <div class="car-details">
                     <h3>BMW M4</h3>
-                    <p>Luxury sports car with exceptional performance and comfort.</p>
+                    <p>Luxury sports car with exceptional performance</p>
                     <div class="car-meta">
-                        <span class="car-price">$150.00/day</span>
-                        <span class="car-status">Available</span>
+                        <span class="car-price">$150/day</span>
+                        <span class="car-status available">Available</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Car 2 -->
             <div class="car-card">
                 <div class="car-image">
-                    <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Tesla Model S">
+                    <img src="https://images.unsplash.com/photo-1676856577533-1e8099932f7b?q=80&w=2021&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Tesla Model S">
                 </div>
                 <div class="car-details">
                     <h3>Tesla Model S</h3>
-                    <p>Electric luxury sedan with cutting-edge technology.</p>
+                    <p>Electric luxury sedan with cutting-edge tech</p>
                     <div class="car-meta">
-                        <span class="car-price">$180.00/day</span>
-                        <span class="car-status">Available</span>
+                        <span class="car-price">$180/day</span>
+                        <span class="car-status available">Available</span>
                     </div>
                 </div>
             </div>
 
-            <!-- Car 3 -->
             <div class="car-card">
                 <div class="car-image">
-                    <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Chevrolet Corvette">
+                    <img src="https://images.unsplash.com/photo-1634673970798-a15ae56f6c65?q=80&w=2128&auto=format&fit=crop&ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D" alt="Porsche 911">
                 </div>
                 <div class="car-details">
-                    <h3>Chevrolet Corvette</h3>
-                    <p>American sports car with powerful performance.</p>
+                    <h3>Porsche 911</h3>
+                    <p>Classic sports car with modern performance</p>
                     <div class="car-meta">
-                        <span class="car-price">$200.00/day</span>
-                        <span class="car-status">Available</span>
+                        <span class="car-price">$200/day</span>
+                        <span class="car-status available">Available</span>
                     </div>
                 </div>
             </div>
-        </div>
-
-        <div class="view-all-container">
-            <a href="{{ url_for('cars') }}" class="view-all-btn">View All Cars</a>
         </div>
     </section>
 
@@ -128,7 +134,7 @@
             <div class="contact-card">
                 <i class="fas fa-map-marker-alt"></i>
                 <h3>Visit Us</h3>
-                <p>123 Car Street, Automobile City, AC 12345</p>
+                <p>123 Car Street, Auto City, AC 12345</p>
             </div>
         </div>
     </section>
@@ -138,15 +144,17 @@
         <div class="footer-content">
             <div class="footer-section">
                 <h3>Premium Car Rentals</h3>
-                <p>Providing quality car rental services since 2023. Your journey, our priority.</p>
+                <p>Your trusted partner for premium car rentals since 2023.</p>
             </div>
             <div class="footer-section">
                 <h3>Quick Links</h3>
                 <ul>
                     <li><a href="{{ url_for('home') }}">Home</a></li>
                     <li><a href="{{ url_for('cars') }}">Cars</a></li>
+                    {% if not session.get('customer_id') %}
                     <li><a href="{{ url_for('login') }}">Login</a></li>
                     <li><a href="{{ url_for('register') }}">Register</a></li>
+                    {% endif %}
                 </ul>
             </div>
             <div class="footer-section">
@@ -163,5 +171,22 @@
             <p>&copy; 2023 Premium Car Rentals. All rights reserved.</p>
         </div>
     </footer>
+
+    <script>
+        const profileBtn = document.querySelector('.profile-btn');
+        const dropdownContent = document.querySelector('.dropdown-content');
+
+        profileBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            dropdownContent.classList.toggle('show-dropdown');
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!profileBtn.contains(e.target) && !dropdownContent.contains(e.target)) {
+                dropdownContent.classList.remove('show-dropdown');
+            }
+        });
+    </script>
 </body>
 </html>

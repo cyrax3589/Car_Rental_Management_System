@@ -1,3 +1,4 @@
+-- Active: 1742929688092@@127.0.0.1@3306@car_rental
 -- Remove database creation commands as we're using existing database
 -- First check if tables exist and drop them in correct order
 SET FOREIGN_KEY_CHECKS = 0;

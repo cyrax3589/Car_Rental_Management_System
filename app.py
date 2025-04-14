@@ -15,10 +15,10 @@ app.secret_key = os.getenv('SECRET_KEY', os.urandom(24))
 
 # Database configuration
 db_config = {
-    'host': os.getenv('DB_HOST'),
-    'user': os.getenv('DB_USER'),
-    'password': os.getenv('DB_PASSWORD'),
-    'database': os.getenv('DB_NAME'),
+    'host': 'localhost',
+    'user': 'root',
+    'password': '',  # Default empty password for local MySQL
+    'database': 'car_rental',
     'pool_name': 'mypool',
     'pool_size': 3,
     'pool_reset_session': True,
@@ -177,35 +177,39 @@ def manage_customers(cursor, conn):
 @app.route('/login', methods=['GET', 'POST'])
 @db_connection
 def login(cursor, conn):
-    if request.method == 'GET':
-        return render_template('login.html')
-    
-    data = request.json if request.is_json else request.form
-    
-    if not data or 'email' not in data or 'password' not in data:
-        flash("Email and password are required", "error")
-        return redirect(url_for('login'))
+    try:
+        if request.method == 'GET':
+            return render_template('login.html')
+        
+        data = request.form  # Changed from request.json to only use form data
+        
+        if not data or 'email' not in data or 'password' not in data:
+            flash("Email and password are required", "error")
+            return redirect(url_for('login'))
 
-    cursor.execute("""
-        SELECT * FROM Customers 
-        WHERE email = %s AND password = SHA2(%s, 256)
-    """, (data['email'], data['password']))
-    
-    customer = cursor.fetchone()
-    if customer:
-        session['customer_id'] = customer['customer_id']
-        session['customer_name'] = f"{customer['first_name']} {customer['last_name']}"
+        cursor.execute("""
+            SELECT * FROM Customers 
+            WHERE email = %s AND password = SHA2(%s, 256)
+        """, (data['email'], data['password']))
         
-        # Handle remember me
-        if 'remember' in data:
-            # Set session to last for 30 days
-            session.permanent = True
-            app.permanent_session_lifetime = timedelta(days=30)
+        customer = cursor.fetchone()
+        if customer:
+            session['customer_id'] = customer['customer_id']
+            session['customer_name'] = f"{customer['first_name']} {customer['last_name']}"
+            
+            if 'remember' in data:
+                session.permanent = True
+                app.permanent_session_lifetime = timedelta(days=30)
+            
+            return redirect(url_for('home'))  # Changed from serve_frontend to home
         
-        return redirect(url_for('serve_frontend'))
-    
-    flash("Invalid email or password", "error")
-    return redirect(url_for('login'))
+        flash("Invalid email or password", "error")
+        return redirect(url_for('login'))
+        
+    except Exception as e:
+        logging.error(f"Login error: {str(e)}")
+        flash("An error occurred during login. Please try again.", "error")
+        return redirect(url_for('login'))
 
 @app.route('/cars', methods=['GET'])
 @db_connection
@@ -393,30 +397,13 @@ def root():
 @app.route('/cars')
 @db_connection
 def cars(cursor, conn):
-    cursor.execute("SELECT * FROM Cars")
-    cars = cursor.fetchall()
-    
-    active_rentals = []
-    if session.get('customer_id'):
-        cursor.execute("""
-            SELECT r.*, c.make, c.model
-            FROM Rentals r
-            JOIN Cars c ON r.car_id = c.car_id
-            WHERE r.customer_id = %s AND r.status = 'Ongoing'
-        """, (session['customer_id'],))
-        active_rentals = cursor.fetchall()
-    
-    return render_template('index.html', cars=cars, active_rentals=active_rentals)
     try:
-        cursor.execute("""
-            SELECT * FROM Cars 
-            ORDER BY status = 'Available' DESC, price_per_day ASC
-        """)
+        cursor.execute("SELECT * FROM Cars")
         cars = cursor.fetchall()
-        return render_template('index.html', cars=cars)
+        return render_template('cars.html', cars=cars)
     except Exception as e:
-        logging.error(f"Frontend error: {str(e)}")
-        return "Error loading page. Please try again.", 500
+        logging.error(f"Error loading cars: {str(e)}")
+        return "Error loading cars", 500
 
 
 @app.route('/admin/customers')
@@ -708,7 +695,7 @@ def rent_page(cursor, conn, car_id):
 @app.route('/logout')
 def logout():
     session.clear()
-    return redirect(url_for('serve_frontend'))
+    return redirect(url_for('home'))
 
 
 

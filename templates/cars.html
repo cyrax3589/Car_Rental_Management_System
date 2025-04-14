@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Available Cars - Premium Car Rentals</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="{{ url_for('static', filename='css/home.css') }}" rel="stylesheet">
+</head>
+<body>
+    <nav class="top-nav">
+        {% if session.get('customer_id') %}
+        <div class="profile-dropdown">
+            <button class="profile-btn">
+                <i class="fas fa-user"></i>
+                <i class="fas fa-chevron-down"></i>
+            </button>
+            <div class="dropdown-content">
+                <a href="{{ url_for('cars') }}" class="dropdown-item">Browse Cars</a>
+                <div class="dropdown-divider"></div>
+                <form action="{{ url_for('logout') }}" method="post" id="logout-form">
+                    <button type="submit" class="dropdown-item logout-btn">Logout</button>
+                </form>
+            </div>
+        </div>
+        {% endif %}
+    </nav>
+
+    <div class="cars-container">
+        <h1>Available Cars</h1>
+        
+        {% if active_rentals %}
+        <section class="active-rentals">
+            <h2>Your Active Rentals</h2>
+            <div class="rentals-grid">
+                {% for rental in active_rentals %}
+                <div class="rental-card">
+                    <h3>{{ rental.make }} {{ rental.model }}</h3>
+                    <p>Start Date: {{ rental.start_date.strftime('%Y-%m-%d') }}</p>
+                    <p>End Date: {{ rental.end_date.strftime('%Y-%m-%d') }}</p>
+                    <p>Total Cost: ${{ "%.2f"|format(rental.total_cost) }}</p>
+                </div>
+                {% endfor %}
+            </div>
+        </section>
+        {% endif %}
+
+        <section class="cars-grid">
+            {% for car in cars %}
+            <div class="car-card">
+                <div class="car-image">
+                    <img src="{{ url_for('static', filename='images/cars/' + car.model.lower().replace(' ', '_') + '.jpg') }}" 
+                         alt="{{ car.make }} {{ car.model }}"
+                         onerror="this.src='{{ url_for('static', filename='images/car-placeholder.jpg') }}'">
+                </div>
+                <div class="car-details">
+                    <h3>{{ car.make }} {{ car.model }}</h3>
+                    <p>Year: {{ car.year }}</p>
+                    <p>Price per day: ${{ "%.2f"|format(car.price_per_day) }}</p>
+                    <p class="status {{ car.status.lower() }}">Status: {{ car.status }}</p>
+                    {% if car.status == 'Available' %}
+                    <a href="{{ url_for('rent_page', car_id=car.car_id) }}" class="rent-btn">Rent Now</a>
+                    {% endif %}
+                </div>
+            </div>
+            {% endfor %}
+        </section>
+    </div>
+
+    <script>
+        const profileBtn = document.querySelector('.profile-btn');
+        const dropdownContent = document.querySelector('.dropdown-content');
+
+        profileBtn.addEventListener('click', function(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            dropdownContent.classList.toggle('show-dropdown');
+        });
+
+        document.addEventListener('click', function(e) {
+            if (!profileBtn.contains(e.target) && !dropdownContent.contains(e.target)) {
+                dropdownContent.classList.remove('show-dropdown');
+            }
+        });
+    </script>
+</body>
+</html>
