@@ -17,7 +17,8 @@
                 <i class="fas fa-chevron-down"></i>
             </button>
             <div class="dropdown-content">
-                <a href="{{ url_for('cars') }}" class="dropdown-item">Browse Cars</a>
+                <a href="{{ url_for('index') }}" class="dropdown-item">Browse Cars</a>
+
                 <div class="dropdown-divider"></div>
                 <form action="{{ url_for('logout') }}" method="post" id="logout-form">
                     <button type="submit" class="dropdown-item logout-btn">Logout</button>

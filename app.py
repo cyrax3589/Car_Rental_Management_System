@@ -15,14 +15,13 @@ app.secret_key = os.getenv('SECRET_KEY', os.urandom(24))
 
 # Database configuration
 db_config = {
-    'host': 'localhost',
-    'user': 'root',
-    'password': '',  # Default empty password for local MySQL
-    'database': 'car_rental',
+    'host': os.getenv('DB_HOST'),
+    'user': os.getenv('DB_USER'),
+    'password': os.getenv('DB_PASSWORD'),
+    'database': os.getenv('DB_NAME'),
+    'port': int(os.getenv('DB_PORT', 3306)),
     'pool_name': 'mypool',
-    'pool_size': 3,
-    'pool_reset_session': True,
-    'connect_timeout': 120
+    'pool_size': 5
 }
 
 # Initialize the connection pool
@@ -769,3 +768,7 @@ def admin_delete_customer(cursor, conn, customer_id):
 if __name__ == '__main__':
     port = int(os.getenv('PORT', 10000))
     app.run(host='0.0.0.0', port=port)
+
+@app.route('/index')
+def index():
+    return render_template('index.html')
