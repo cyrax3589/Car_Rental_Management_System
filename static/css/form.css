@@ -1,0 +1,95 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: 'Poppins', sans-serif;
+    background: url('../images/car-bg2.jpg') no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.container {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 2rem;
+    border-radius: 15px;
+    box-shadow: 0 8px 32px rgba(31, 38, 135, 0.2);
+    width: 90%;
+    max-width: 500px;
+}
+
+h1 {
+    color: #222222;
+    text-align: center;
+    margin-bottom: 2rem;
+    text-shadow: none;
+}
+
+label {
+    display: block;
+    margin-bottom: 0.5rem;
+    color: #222222;
+    font-weight: 500;
+    text-shadow: none;
+}
+
+input[type="date"] {
+    width: 100%;
+    padding: 0.8rem;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    color: #222222;
+    font-size: 1rem;
+    font-family: 'Poppins', sans-serif;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.price-info {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+    padding: 1rem;
+    border-radius: 8px;
+    margin: 1.5rem 0;
+    text-align: center;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+}
+
+.price-info p {
+    margin: 0;
+    color: #222222;
+    font-weight: 500;
+    text-shadow: none;
+}
+
+.submit-btn {
+    background: rgb(171 139 80 / 58%);
+    color: white;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    padding: 1rem 2rem;
+    border-radius: 8px;
+    width: 100%;
+    font-size: 1.1rem;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    backdrop-filter: blur(5px);
+    -webkit-backdrop-filter: blur(5px);
+}
+
+.submit-btn:hover {
+    background: rgb(171 139 80 / 75%);
+    box-shadow: 0 8px 32px rgba(171, 139, 80, 0.3);
+}
+
+@media (max-width: 768px) {
+    .container {
+        width: 95%;
+        padding: 1.5rem;
+    }
+}

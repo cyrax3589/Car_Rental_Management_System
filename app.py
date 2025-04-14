@@ -637,28 +637,26 @@ def register(cursor, conn):
 @db_connection
 def rent_page(cursor, conn, car_id):
     if not session.get('customer_id'):
+        flash('Please login to rent a car', 'error')
         return redirect(url_for('login'))
     
-    if request.method == 'GET':
-        cursor.execute("""
-            SELECT c.*, 
-                   COALESCE(r.start_date, NULL) as rental_start,
-                   COALESCE(r.end_date, NULL) as rental_end
-            FROM Cars c
-            LEFT JOIN Rentals r ON c.car_id = r.car_id AND r.status = 'Ongoing'
-            WHERE c.car_id = %s
-        """, (car_id,))
-        car = cursor.fetchone()
-        
-        if not car or car['status'] != 'Available':
-            flash("Car is not available for rent", "error")
-            return redirect(url_for('serve_frontend'))
+    try:
+        if request.method == 'GET':
+            cursor.execute("""
+                SELECT * FROM Cars 
+                WHERE car_id = %s AND status = 'Available'
+            """, (car_id,))
+            car = cursor.fetchone()
             
-        return render_template('rent_form.html', car=car)
-    
-    elif request.method == 'POST':
-        data = request.form
-        try:
+            if not car:
+                flash("Car is not available for rent", "error")
+                return redirect(url_for('cars'))
+                
+            today = datetime.now().strftime('%Y-%m-%d')
+            return render_template('rent_form.html', car=car, today=today)
+            
+        elif request.method == 'POST':
+            data = request.form
             start_date = datetime.strptime(data['start_date'], '%Y-%m-%d')
             end_date = datetime.strptime(data['end_date'], '%Y-%m-%d')
             
@@ -666,12 +664,12 @@ def rent_page(cursor, conn, car_id):
                 flash("End date must be after start date", "error")
                 return redirect(url_for('rent_page', car_id=car_id))
             
-            cursor.execute("SELECT price_per_day, status FROM Cars WHERE car_id = %s", (car_id,))
+            cursor.execute("SELECT price_per_day FROM Cars WHERE car_id = %s AND status = 'Available'", (car_id,))
             car = cursor.fetchone()
             
-            if not car or car['status'] != 'Available':
+            if not car:
                 flash("Car is not available for rent", "error")
-                return redirect(url_for('serve_frontend'))
+                return redirect(url_for('cars'))
             
             days = (end_date - start_date).days
             total_cost = car['price_per_day'] * days
@@ -685,11 +683,12 @@ def rent_page(cursor, conn, car_id):
             conn.commit()
             
             flash("Car rented successfully!", "success")
-            return redirect(url_for('serve_frontend'))
+            return redirect(url_for('cars'))
             
-        except ValueError:
-            flash("Invalid date format", "error")
-            return redirect(url_for('rent_page', car_id=car_id))
+    except Exception as e:
+        logging.error(f"Error in rent_page: {str(e)}")
+        flash("An error occurred while processing your request", "error")
+        return redirect(url_for('cars'))
 
 
 @app.route('/logout')

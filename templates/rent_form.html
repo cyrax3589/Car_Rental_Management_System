@@ -1,64 +1,67 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Rent a Car - Car Rental System</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rent Car - {{ car.make }} {{ car.model }}</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/form.css') }}" rel="stylesheet">
 </head>
-<body class="bg-gradient-to-br from-blue-900 to-blue-500 min-h-screen flex items-center justify-center p-4">
-    <div class="bg-white rounded-2xl shadow-2xl w-full max-w-md p-8 animate-fade-in">
-        <div class="text-center mb-8">
-            <h1 class="text-3xl font-bold text-gray-800 mb-2">Rent a Car</h1>
-            <p class="text-gray-600">{{ car.make }} {{ car.model }} - ${{ car.price_per_day }}/day</p>
-        </div>
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const startDateInput = document.getElementById('start_date');
+        const endDateInput = document.getElementById('end_date');
+        const pricePerDay = {{ car.price_per_day }};
+        const priceInfoDiv = document.querySelector('.price-info');
 
-        <form method="POST" class="space-y-6">
-            <div class="space-y-2">
-                <label for="start_date" class="block text-gray-700 font-medium">Start Date</label>
-                <input type="date" id="start_date" name="start_date" required min="{{ today }}"
-                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
+        function updatePrice() {
+            const startDate = new Date(startDateInput.value);
+            const endDate = new Date(endDateInput.value);
+
+            if (startDate && endDate && endDate > startDate) {
+                const diffTime = endDate - startDate;
+                const days = Math.ceil(diffTime / (1000 * 60 * 60 * 24));
+                const total = pricePerDay * days;
+
+                priceInfoDiv.innerHTML = `
+                    <p>Price per day: $${pricePerDay.toFixed(2)}</p>
+                    <p><strong>Total: $${total.toFixed(2)}</strong></p>
+                `;
+            } else {
+                priceInfoDiv.innerHTML = `
+                    <p>Price per day: $${pricePerDay.toFixed(2)}</p>
+                `;
+            }
+        }
+
+        startDateInput.addEventListener('change', updatePrice);
+        endDateInput.addEventListener('change', updatePrice);
+    });
+</script>
+
+<body>
+    <div class="container">
+        <h1>Rent {{ car.make }} {{ car.model }}</h1>
+        <form action="{{ url_for('rent_page', car_id=car.car_id) }}" method="POST">
+            <input type="hidden" name="customer_id" value="{{ session['customer_id'] }}">
+        
+            <div class="form-group">
+                <label for="start_date">Start Date:</label>
+                <input type="date" id="start_date" name="start_date" required min="{{ today }}">
             </div>
-
-            <div class="space-y-2">
-                <label for="end_date" class="block text-gray-700 font-medium">End Date</label>
-                <input type="date" id="end_date" name="end_date" required
-                    class="w-full px-4 py-3 rounded-lg border border-gray-300 focus:border-blue-500 focus:ring-2 focus:ring-blue-200 transition-all duration-200">
+        
+            <div class="form-group">
+                <label for="end_date">End Date:</label>
+                <input type="date" id="end_date" name="end_date" required min="{{ today }}">
             </div>
-
-            {% with messages = get_flashed_messages(with_categories=true) %}
-                {% if messages %}
-                    {% for category, message in messages %}
-                        <div class="text-red-500 text-sm text-center">{{ message }}</div>
-                    {% endfor %}
-                {% endif %}
-            {% endwith %}
-
-            <div class="flex space-x-4">
-                <button type="submit" 
-                    class="flex-1 bg-blue-500 text-white py-3 rounded-lg font-semibold hover:bg-blue-600 transform hover:scale-[1.02] transition-all duration-200">
-                    Confirm Rental
-                </button>
-                <a href="{{ url_for('serve_frontend') }}" 
-                    class="flex-1 bg-gray-200 text-gray-700 py-3 rounded-lg font-semibold hover:bg-gray-300 text-center transform hover:scale-[1.02] transition-all duration-200">
-                    Cancel
-                </a>
+        
+            <div class="price-info">
+                <p>Price per day: ${{ "%.2f"|format(car.price_per_day) }}</p>
             </div>
+        
+            <button type="submit" class="submit-btn">Confirm Rental</button>
         </form>
+        
     </div>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const startDate = document.getElementById('start_date');
-            const endDate = document.getElementById('end_date');
-            
-            // Set minimum date to today
-            const today = new Date().toISOString().split('T')[0];
-            startDate.min = today;
-            
-            startDate.addEventListener('change', function() {
-                endDate.min = startDate.value;
-            });
-        });
-    </script>
 </body>
 </html>

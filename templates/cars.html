@@ -37,7 +37,13 @@
                     <p>Price per day: ${{ "%.2f"|format(car.price_per_day) }}</p>
                     <p class="status {{ car.status.lower() }}">Status: {{ car.status }}</p>
                     {% if car.status == 'Available' %}
-                    <a href="{{ url_for('rent_page', car_id=car.car_id) }}" class="rent-btn">Rent Now</a>
+                        {% if session.get('customer_id') %}
+                            <form action="{{ url_for('rent_page', car_id=car.car_id) }}" method="GET">
+                                <button type="submit" class="rent-btn">Rent Now</button>
+                            </form>
+                        {% else %}
+                            <a href="{{ url_for('login') }}" class="rent-btn">Login to Rent</a>
+                        {% endif %}
                     {% endif %}
                 </div>
             </div>
