@@ -218,7 +218,8 @@ def get_available_cars(cursor, conn):
         WHERE status = 'Available'
         ORDER BY price_per_day
     """)
-    return jsonify(cursor.fetchall())
+    cars = cursor.fetchall()
+    return render_template("cars.html", cars=cars)
 
 @app.route('/rentals', methods=['POST'])
 @db_connection

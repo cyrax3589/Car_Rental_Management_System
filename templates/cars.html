@@ -5,55 +5,31 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Available Cars - Premium Car Rentals</title>
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
-    <link href="{{ url_for('static', filename='css/home.css') }}" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/cars.css') }}" rel="stylesheet">
 </head>
 <body>
-    <nav class="top-nav">
-        {% if session.get('customer_id') %}
-        <div class="profile-dropdown">
-            <button class="profile-btn">
-                <i class="fas fa-user"></i>
-                <i class="fas fa-chevron-down"></i>
-            </button>
-            <div class="dropdown-content">
-                <a href="{{ url_for('index') }}" class="dropdown-item">Browse Cars</a>
-
-                <div class="dropdown-divider"></div>
-                <form action="{{ url_for('logout') }}" method="post" id="logout-form">
-                    <button type="submit" class="dropdown-item logout-btn">Logout</button>
-                </form>
-            </div>
-        </div>
-        {% endif %}
-    </nav>
-
     <div class="cars-container">
         <h1>Available Cars</h1>
-        
-        {% if active_rentals %}
-        <section class="active-rentals">
-            <h2>Your Active Rentals</h2>
-            <div class="rentals-grid">
-                {% for rental in active_rentals %}
-                <div class="rental-card">
-                    <h3>{{ rental.make }} {{ rental.model }}</h3>
-                    <p>Start Date: {{ rental.start_date.strftime('%Y-%m-%d') }}</p>
-                    <p>End Date: {{ rental.end_date.strftime('%Y-%m-%d') }}</p>
-                    <p>Total Cost: ${{ "%.2f"|format(rental.total_cost) }}</p>
-                </div>
-                {% endfor %}
-            </div>
-        </section>
-        {% endif %}
 
         <section class="cars-grid">
             {% for car in cars %}
             <div class="car-card">
                 <div class="car-image">
-                    <img src="{{ url_for('static', filename='images/cars/' + car.model.lower().replace(' ', '_') + '.jpg') }}" 
+                    {% set car_images = {
+                        'M4 Competition': 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738',
+                        'Model S Plaid': 'https://images.unsplash.com/photo-1617886753890-ff06bca5d318',
+                        '911 GT3 RS': 'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e',
+                        'G63 AMG': 'https://images.unsplash.com/photo-1520031441872-265e4ff70366',
+                        'Civic': 'https://images.unsplash.com/photo-1590347394548-826d60b53447',
+                        'Corolla': 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb',
+                        'Mustang GT': 'https://images.unsplash.com/photo-1584345604476-8ec5e12e42dd',
+                        'RS7': 'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6',
+                        'Urus': 'https://images.unsplash.com/photo-1632245889029-e406faaa34cd',
+                        'SF90': 'https://images.unsplash.com/photo-1592198084033-aade902d1aae'
+                    } %}
+                    <img src="{{ car_images[car.model] if car.model in car_images else 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?fit=crop&w=800&h=600' }}" 
                          alt="{{ car.make }} {{ car.model }}"
-                         onerror="this.src='{{ url_for('static', filename='images/car-placeholder.jpg') }}'">
+                         loading="lazy">
                 </div>
                 <div class="car-details">
                     <h3>{{ car.make }} {{ car.model }}</h3>
@@ -68,22 +44,5 @@
             {% endfor %}
         </section>
     </div>
-
-    <script>
-        const profileBtn = document.querySelector('.profile-btn');
-        const dropdownContent = document.querySelector('.dropdown-content');
-
-        profileBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            dropdownContent.classList.toggle('show-dropdown');
-        });
-
-        document.addEventListener('click', function(e) {
-            if (!profileBtn.contains(e.target) && !dropdownContent.contains(e.target)) {
-                dropdownContent.classList.remove('show-dropdown');
-            }
-        });
-    </script>
 </body>
 </html>

@@ -103,6 +103,16 @@ def setup_database():
         """
         cursor.execute(cars_data)
         
+        # Add new cars from the image
+        new_cars = """
+        INSERT INTO Cars (model, make, year, registration_number, status, price_per_day)
+        VALUES 
+            ('M4', 'BMW', 2024, 'BMW2024', 'Available', 150.00),
+            ('Model S', 'Tesla', 2024, 'TSL2024', 'Available', 180.00),
+            ('911', 'Porsche', 2024, 'POR2024', 'Available', 200.00)
+        """
+        cursor.execute(new_cars)
+        
         connection.commit()
         print("Database setup completed successfully!")
         
