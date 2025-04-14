@@ -3,184 +3,164 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Welcome to Premium Car Rentals</title>
-    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
-    <link href="/static/css/home.css" rel="stylesheet">
+    <title>Premium Car Rentals</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+    <link href="{{ url_for('static', filename='css/home.css') }}" rel="stylesheet">
 </head>
-<body class="bg-gray-100">
+<body>
     <!-- Hero Section -->
-    <div class="hero-section flex items-center justify-center">
-        <div class="text-center px-4">
-            <h1 class="text-5xl md:text-6xl font-bold text-white mb-6 animate-float">Premium Car Rentals</h1>
-            <p class="text-xl md:text-2xl text-gray-200 mb-10">Experience luxury and comfort on your journey</p>
-            <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 justify-center">
-                <a href="{{ url_for('cars') }}" class="btn-primary bg-blue-600 text-white font-bold py-3 px-8 rounded-lg text-lg">
-                    Browse Cars
-                </a>
-                {% if not session.get('customer_id') %}
-                <a href="{{ url_for('login') }}" class="btn-secondary bg-transparent hover:bg-white hover:text-blue-700 text-white font-bold py-3 px-8 border-2 border-white rounded-lg text-lg">
-                    Login
-                </a>
-                <a href="{{ url_for('register') }}" class="btn-success bg-green-600 text-white font-bold py-3 px-8 rounded-lg text-lg">
-                    Register
-                </a>
-                {% else %}
-                <a href="{{ url_for('logout') }}" class="btn-secondary bg-transparent hover:bg-white hover:text-blue-700 text-white font-bold py-3 px-8 border-2 border-white rounded-lg text-lg">
-                    Logout
-                </a>
-                {% endif %}
-            </div>
+    <section class="hero">
+        <h2>Premium Car Rentals</h2>
+        <p>We Provide Best Cars With The Best Prices. We Are Expert In Car Rental. Enjoy Your Holidays With Us. We Make Your Drive Memorable. We Care For Your Safety.</p>
+        <div class="hero-buttons">
+            <a href="{{ url_for('cars') }}" class="learn-more-btn">Browse Cars</a>
+            {% if not session.get('customer_id') %}
+            <a href="{{ url_for('login') }}" class="secondary-btn">Login</a>
+            <a href="{{ url_for('register') }}" class="success-btn">Register</a>
+            {% else %}
+            <a href="{{ url_for('logout') }}" class="secondary-btn">Logout</a>
+            {% endif %}
         </div>
-    </div>
+    </section>
 
     <!-- Features Section -->
-    <div class="py-16 bg-white">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-                    Why Choose Our Service
-                </h2>
-                <p class="mt-4 max-w-2xl text-xl text-gray-500 mx-auto">
-                    We provide the best car rental experience with premium vehicles and exceptional service.
-                </p>
+    <section class="features">
+        <h2>Why Choose Our Service</h2>
+        <div class="features-grid">
+            <div class="feature-card" style="--card-index: 0">
+                <i class="fas fa-clock"></i>
+                <h3>Quick & Easy Booking</h3>
+                <p>Book your car in minutes with our simple and intuitive booking system.</p>
             </div>
 
-            <div class="mt-16">
-                <div class="grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-                    <div class="feature-card bg-gray-50 rounded-xl shadow-md overflow-hidden p-6">
-                        <div class="text-blue-600 text-4xl mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z" />
-                            </svg>
-                        </div>
-                        <h3 class="text-xl font-bold text-gray-900">Quick & Easy Booking</h3>
-                        <p class="mt-2 text-gray-600">Book your car in minutes with our simple and intuitive booking system.</p>
-                    </div>
+            <div class="feature-card" style="--card-index: 1">
+                <i class="fas fa-shield-alt"></i>
+                <h3>Safe & Reliable</h3>
+                <p>All our vehicles are regularly maintained and sanitized for your safety.</p>
+            </div>
 
-                    <div class="feature-card bg-gray-50 rounded-xl shadow-md overflow-hidden p-6">
-                        <div class="text-blue-600 text-4xl mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />
-                            </svg>
-                        </div>
-                        <h3 class="text-xl font-bold text-gray-900">Safe & Reliable</h3>
-                        <p class="mt-2 text-gray-600">All our vehicles are regularly maintained and sanitized for your safety.</p>
-                    </div>
+            <div class="feature-card" style="--card-index: 2">
+                <i class="fas fa-dollar-sign"></i>
+                <h3>Best Price Guarantee</h3>
+                <p>We offer competitive prices with no hidden fees or charges.</p>
+            </div>
 
-                    <div class="feature-card bg-gray-50 rounded-xl shadow-md overflow-hidden p-6">
-                        <div class="text-blue-600 text-4xl mb-4">
-                            <svg xmlns="http://www.w3.org/2000/svg" class="h-12 w-12" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 9V7a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2m2 4h10a2 2 0 002-2v-6a2 2 0 00-2-2H9a2 2 0 00-2 2v6a2 2 0 002 2zm7-5a2 2 0 11-4 0 2 2 0 014 0z" />
-                            </svg>
-                        </div>
-                        <h3 class="text-xl font-bold text-gray-900">Best Price Guarantee</h3>
-                        <p class="mt-2 text-gray-600">We offer competitive prices with no hidden fees or charges.</p>
-                    </div>
-                </div>
+            <div class="feature-card" style="--card-index: 3">
+                <i class="fas fa-headset"></i>
+                <h3>24/7 Support</h3>
+                <p>Round-the-clock customer assistance for all your needs.</p>
             </div>
         </div>
-    </div>
+    </section>
 
     <!-- Popular Cars Section -->
-    <div class="py-16 bg-gray-100">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="text-center">
-                <h2 class="text-3xl font-extrabold text-gray-900 sm:text-4xl">
-                    Our Popular Cars
-                </h2>
-                <p class="mt-4 max-w-2xl text-xl text-gray-500 mx-auto">
-                    Explore our most popular rental options
-                </p>
-            </div>
+    <section class="popular-cars">
+        <h2>Our Popular Cars</h2>
+        <p class="section-subtitle">Explore our most popular rental options</p>
 
-            <!-- Add car cards here -->
-            <div class="mt-12 grid grid-cols-1 gap-8 md:grid-cols-2 lg:grid-cols-3">
-                <!-- Car 1 -->
-                <div class="car-card bg-white rounded-xl shadow-md overflow-hidden">
-                    <div class="h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="BMW M4" class="w-full h-full object-cover">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-900">BMW M4</h3>
-                        <p class="text-gray-600 mt-2">Luxury sports car with exceptional performance and comfort.</p>
-                        <div class="mt-4 flex justify-between items-center">
-                            <span class="text-blue-600 font-bold">$150.00/day</span>
-                            <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-sm font-semibold">Available</span>
-                        </div>
-                    </div>
+        <div class="cars-grid">
+            <!-- Car 1 -->
+            <div class="car-card">
+                <div class="car-image">
+                    <img src="https://images.unsplash.com/photo-1580273916550-e323be2ae537?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="BMW M4">
                 </div>
-
-                <!-- Car 2 -->
-                <div class="car-card bg-white rounded-xl shadow-md overflow-hidden">
-                    <div class="h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Tesla Model S" class="w-full h-full object-cover">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-900">Tesla Model S</h3>
-                        <p class="text-gray-600 mt-2">Electric luxury sedan with cutting-edge technology.</p>
-                        <div class="mt-4 flex justify-between items-center">
-                            <span class="text-blue-600 font-bold">$180.00/day</span>
-                            <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-sm font-semibold">Available</span>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Car 3 -->
-                <div class="car-card bg-white rounded-xl shadow-md overflow-hidden">
-                    <div class="h-48 overflow-hidden">
-                        <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Chevrolet Corvette" class="w-full h-full object-cover">
-                    </div>
-                    <div class="p-6">
-                        <h3 class="text-xl font-bold text-gray-900">Chevrolet Corvette</h3>
-                        <p class="text-gray-600 mt-2">American sports car with powerful performance.</p>
-                        <div class="mt-4 flex justify-between items-center">
-                            <span class="text-blue-600 font-bold">$200.00/day</span>
-                            <span class="bg-green-100 text-green-800 px-2 py-1 rounded-full text-sm font-semibold">Available</span>
-                        </div>
+                <div class="car-details">
+                    <h3>BMW M4</h3>
+                    <p>Luxury sports car with exceptional performance and comfort.</p>
+                    <div class="car-meta">
+                        <span class="car-price">$150.00/day</span>
+                        <span class="car-status">Available</span>
                     </div>
                 </div>
             </div>
 
-            <div class="mt-12 text-center">
-                <a href="{{ url_for('cars') }}" class="btn-primary inline-block bg-blue-600 text-white font-bold py-3 px-8 rounded-lg text-lg">
-                    View All Cars
-                </a>
+            <!-- Car 2 -->
+            <div class="car-card">
+                <div class="car-image">
+                    <img src="https://images.unsplash.com/photo-1549317661-bd32c8ce0db2?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Tesla Model S">
+                </div>
+                <div class="car-details">
+                    <h3>Tesla Model S</h3>
+                    <p>Electric luxury sedan with cutting-edge technology.</p>
+                    <div class="car-meta">
+                        <span class="car-price">$180.00/day</span>
+                        <span class="car-status">Available</span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Car 3 -->
+            <div class="car-card">
+                <div class="car-image">
+                    <img src="https://images.unsplash.com/photo-1552519507-da3b142c6e3d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=60" alt="Chevrolet Corvette">
+                </div>
+                <div class="car-details">
+                    <h3>Chevrolet Corvette</h3>
+                    <p>American sports car with powerful performance.</p>
+                    <div class="car-meta">
+                        <span class="car-price">$200.00/day</span>
+                        <span class="car-status">Available</span>
+                    </div>
+                </div>
             </div>
         </div>
-    </div>
+
+        <div class="view-all-container">
+            <a href="{{ url_for('cars') }}" class="view-all-btn">View All Cars</a>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section class="contact">
+        <h2>Get In Touch</h2>
+        <div class="contact-info">
+            <div class="contact-card">
+                <i class="fas fa-phone"></i>
+                <h3>Call Us</h3>
+                <p>(123) 456-7890</p>
+            </div>
+            <div class="contact-card">
+                <i class="fas fa-envelope"></i>
+                <h3>Email Us</h3>
+                <p>info@premiumcarrentals.com</p>
+            </div>
+            <div class="contact-card">
+                <i class="fas fa-map-marker-alt"></i>
+                <h3>Visit Us</h3>
+                <p>123 Car Street, Automobile City, AC 12345</p>
+            </div>
+        </div>
+    </section>
 
     <!-- Footer -->
-    <footer class="bg-gray-800 text-white py-12">
-        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
-                <div>
-                    <h3 class="text-xl font-bold mb-4">Premium Car Rentals</h3>
-                    <p class="text-gray-400">
-                        Providing quality car rental services since 2023. Your journey, our priority.
-                    </p>
-                </div>
-                <div>
-                    <h3 class="text-xl font-bold mb-4">Quick Links</h3>
-                    <ul class="space-y-2">
-                        <li><a href="{{ url_for('home') }}" class="footer-link text-gray-400">Home</a></li>
-                        <li><a href="{{ url_for('cars') }}" class="footer-link text-gray-400">Cars</a></li>
-                        <li><a href="{{ url_for('login') }}" class="footer-link text-gray-400">Login</a></li>
-                        <li><a href="{{ url_for('register') }}" class="footer-link text-gray-400">Register</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h3 class="text-xl font-bold mb-4">Contact Us</h3>
-                    <p class="text-gray-400">
-                        123 Car Street<br>
-                        Automobile City, AC 12345<br>
-                        Phone: (123) 456-7890<br>
-                        Email: info@premiumcarrentals.com
-                    </p>
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>Premium Car Rentals</h3>
+                <p>Providing quality car rental services since 2023. Your journey, our priority.</p>
+            </div>
+            <div class="footer-section">
+                <h3>Quick Links</h3>
+                <ul>
+                    <li><a href="{{ url_for('home') }}">Home</a></li>
+                    <li><a href="{{ url_for('cars') }}">Cars</a></li>
+                    <li><a href="{{ url_for('login') }}">Login</a></li>
+                    <li><a href="{{ url_for('register') }}">Register</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>Follow Us</h3>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-instagram"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
                 </div>
             </div>
-            <div class="mt-8 pt-8 border-t border-gray-700 text-center text-gray-400">
-                <p>&copy; 2023 Premium Car Rentals. All rights reserved.</p>
-            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>&copy; 2023 Premium Car Rentals. All rights reserved.</p>
         </div>
     </footer>
 </body>
