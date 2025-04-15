@@ -1,6 +1,7 @@
--- Active: 1742929688092@@127.0.0.1@3306@car_rental
--- Remove database creation commands as we're using existing database
+-- Active: 1744626299978@@sql12.freesqldatabase.com@3306 existing database
 -- First check if tables exist and drop them in correct order
+
+CREATE DATABASE IF NOT EXISTS car_rental;
 SET FOREIGN_KEY_CHECKS = 0;
 
 DROP TABLE IF EXISTS Payments;
@@ -65,6 +66,18 @@ INSERT IGNORE INTO Admins (username, password) VALUES ('admin', SHA2('admin123',
 -- Insert sample cars (only if not exists)
 INSERT IGNORE INTO Cars (model, make, year, registration_number, status, price_per_day)
 VALUES 
-    ('Civic', 'Honda', 2023, 'ABC123', 'Available', 50.00),
-    ('Corolla', 'Toyota', 2022, 'DEF456', 'Available', 45.00),
-    ('Mustang GT', 'Ford', 2024, 'DEF001', 'Available', 590.00);
+    ('M4', 'BMW', 2024, 'BMW001', 'Available', 150.00),
+    ('Model S', 'Tesla', 2024, 'TSL001', 'Available', 180.00),
+    ('911', 'Porsche', 2024, 'POR001', 'Available', 200.00),
+    ('A8', 'Audi', 2024, 'AUD001', 'Available', 170.00),
+    ('S-Class', 'Mercedes-Benz', 2024, 'MER001', 'Available', 190.00),
+    ('Model 3', 'Tesla', 2023, 'TSL002', 'Available', 120.00),
+    ('M3', 'BMW', 2023, 'BMW002', 'Available', 140.00),
+    ('Cayenne', 'Porsche', 2023, 'POR002', 'Available', 160.00),
+    ('Q7', 'Audi', 2023, 'AUD002', 'Available', 150.00),
+    ('GLS', 'Mercedes-Benz', 2023, 'MER002', 'Available', 170.00),
+    ('Civic Type R', 'Honda', 2024, 'HON001', 'Available', 100.00),
+    ('Supra', 'Toyota', 2024, 'TOY001', 'Available', 130.00),
+    ('GT-R', 'Nissan', 2024, 'NIS001', 'Available', 180.00),
+    ('RC F', 'Lexus', 2024, 'LEX001', 'Available', 140.00),
+    ('Stinger GT', 'Kia', 2024, 'KIA001', 'Available', 90.00);

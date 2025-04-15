@@ -15,11 +15,11 @@ app.secret_key = os.getenv('SECRET_KEY', os.urandom(24))
 
 # Database configuration
 db_config = {
-    'host': os.getenv('DB_HOST'),
-    'user': os.getenv('DB_USER'),
-    'password': os.getenv('DB_PASSWORD'),
-    'database': os.getenv('DB_NAME'),
-    'port': int(os.getenv('DB_PORT', 3306)),
+    'host': 'localhost',
+    'user': 'root',
+    'password': '',  # Update this if you have set a password
+    'database': 'car_rental',
+    'port': 3306,
     'pool_name': 'mypool',
     'pool_size': 5
 }
@@ -765,10 +765,49 @@ def admin_delete_customer(cursor, conn, customer_id):
         return jsonify({"error": "Failed to delete customer"}), 500
 
 
-if __name__ == '__main__':
-    port = int(os.getenv('PORT', 10000))
-    app.run(host='0.0.0.0', port=port)
+@app.route('/profile')
+@db_connection
+def profile(cursor, conn):
+    if not session.get('customer_id'):
+        return redirect(url_for('login'))
+        
+    try:
+        # Get customer details
+        cursor.execute("""
+            SELECT * FROM Customers 
+            WHERE customer_id = %s
+        """, (session['customer_id'],))
+        customer = cursor.fetchone()
+        
+        # Get active rentals
+        cursor.execute("""
+            SELECT r.*, c.make, c.model, c.registration_number
+            FROM Rentals r
+            JOIN Cars c ON r.car_id = c.car_id
+            WHERE r.customer_id = %s AND r.status = 'Ongoing'
+            ORDER BY r.start_date DESC
+        """, (session['customer_id'],))
+        active_rentals = cursor.fetchall()
+        
+        # Get rental history
+        cursor.execute("""
+            SELECT r.*, c.make, c.model, c.registration_number
+            FROM Rentals r
+            JOIN Cars c ON r.car_id = c.car_id
+            WHERE r.customer_id = %s AND r.status != 'Ongoing'
+            ORDER BY r.start_date DESC
+        """, (session['customer_id'],))
+        rental_history = cursor.fetchall()
+        
+        return render_template('profile.html', 
+                             customer=customer,
+                             active_rentals=active_rentals,
+                             rental_history=rental_history)
+                             
+    except Exception as e:
+        logging.error(f"Profile error: {str(e)}")
+        flash("Error loading profile", "error")
+        return redirect(url_for('home'))
 
-@app.route('/index')
-def index():
-    return render_template('index.html')
+if __name__ == '__main__':
+    app.run(host='127.0.0.1', port=10000, debug=True)

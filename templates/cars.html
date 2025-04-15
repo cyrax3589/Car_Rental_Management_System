@@ -1,46 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Available Cars - Premium Car Rentals</title>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link href="{{ url_for('static', filename='css/cars.css') }}" rel="stylesheet">
-</head>
-<body>
-    <div class="cars-container">
-        <h1>Available Cars</h1>
+{% extends 'base.html' %}
 
-        <section class="cars-grid">
+{% block content %}
+<div class="cars-hero">
+    <h1 class="hero-title">Explore Our Cars</h1>
+    <p class="hero-subtitle">Find the perfect vehicle for your needs</p>
+    
+    <div class="cars-section">
+        <h2 class="section-title">Available Cars</h2>
+        <div class="car-grid">
             {% for car in cars %}
             <div class="car-card">
-                <div class="car-image">
-                    {% set car_images = {
-                        'M4 Competition': 'https://images.unsplash.com/photo-1617814076367-b759c7d7e738',
-                        'Model S Plaid': 'https://images.unsplash.com/photo-1617886753890-ff06bca5d318',
-                        '911 GT3 RS': 'https://images.unsplash.com/photo-1614162692292-7ac56d7f7f1e',
-                        'G63 AMG': 'https://images.unsplash.com/photo-1520031441872-265e4ff70366',
-                        'Civic': 'https://images.unsplash.com/photo-1590347394548-826d60b53447',
-                        'Corolla': 'https://images.unsplash.com/photo-1621007947382-bb3c3994e3fb',
-                        'Mustang GT': 'https://images.unsplash.com/photo-1584345604476-8ec5e12e42dd',
-                        'RS7': 'https://images.unsplash.com/photo-1606664515524-ed2f786a0bd6',
-                        'Urus': 'https://images.unsplash.com/photo-1632245889029-e406faaa34cd',
-                        'SF90': 'https://images.unsplash.com/photo-1592198084033-aade902d1aae'
-                    } %}
-                    <img src="{{ car_images[car.model] if car.model in car_images else 'https://images.unsplash.com/photo-1583121274602-3e2820c69888?fit=crop&w=800&h=600' }}" 
-                         alt="{{ car.make }} {{ car.model }}"
-                         loading="lazy">
-                </div>
+                <img src="{{ url_for('static', filename='images/' + car.model + '.jpg') }}" alt="{{ car.make }} {{ car.model }}" class="car-image">
                 <div class="car-details">
-                    <h3>{{ car.make }} {{ car.model }}</h3>
-                    <p>Year: {{ car.year }}</p>
-                    <p>Price per day: ${{ "%.2f"|format(car.price_per_day) }}</p>
-                    <p class="status {{ car.status.lower() }}">Status: {{ car.status }}</p>
+                    <h2 class="car-title">{{ car.make }} {{ car.model }}</h2>
+                    <p class="car-description">Premium vehicle for an exceptional driving experience</p>
+                    <div class="price-status-container">
+                        <span class="price">${{ "%.0f"|format(car.price_per_day) }}/day</span>
+                        <span class="status-tag">{{ car.status }}</span>
+                    </div>
                     {% if car.status == 'Available' %}
-                        {% if session.get('customer_id') %}
-                            <form action="{{ url_for('rent_page', car_id=car.car_id) }}" method="GET">
-                                <button type="submit" class="rent-btn">Rent Now</button>
-                            </form>
+                        {% if session.customer_id %}
+                            <a href="{{ url_for('rent_page', car_id=car.car_id) }}" class="rent-btn">Rent Now</a>
                         {% else %}
                             <a href="{{ url_for('login') }}" class="rent-btn">Login to Rent</a>
                         {% endif %}
@@ -48,7 +28,7 @@
                 </div>
             </div>
             {% endfor %}
-        </section>
+        </div>
     </div>
-</body>
-</html>
+</div>
+{% endblock %}

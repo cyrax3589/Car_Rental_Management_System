@@ -1,0 +1,282 @@
+/* --- General Reset --- */
+body {
+    margin: 0;
+    font-family: 'Segoe UI', sans-serif;
+    background: #000;
+    color: #fff;
+}
+
+/* --- Hero Section --- */
+.cars-hero {
+    text-align: center;
+    padding: 3rem 2rem 2rem;
+    background-image: url('/static/images/bg3.jpg'); /* replace with your cityscape image path */
+    background-size: cover;
+    background-position: center;
+    color: white;
+    position: relative;
+    z-index: 1;
+}
+
+.hero-title {
+    font-size: 3.5rem;
+    font-weight: bold;
+    text-shadow: 0 2px 4px rgba(0,0,0,0.8);
+}
+
+.hero-subtitle {
+    font-size: 1.8rem;
+    opacity: 0.85;
+    text-shadow: 1px 1px 2px black;
+}
+
+/* --- Cars Section --- */
+.cars-section {
+    padding: 2rem;
+    background-color: transparent;
+    text-align: center;
+    z-index: 2;
+    position: relative;
+}
+
+.section-title {
+    font-size: 2rem;
+    margin-bottom: 2rem;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.7);
+}
+
+/* --- Grid Layout --- */
+.car-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 2rem;
+}
+
+/* --- Car Card --- */
+.car-card {
+    background: rgba(0, 0, 0, 0.4);
+    backdrop-filter: blur(6px);
+    border-radius: 1rem;
+    overflow: hidden;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.5);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.car-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.6);
+}
+
+/* --- Image --- */
+.car-image {
+    width: 100%;
+    height: 180px;
+    object-fit: cover;
+    display: block;
+}
+
+/* --- Details --- */
+.car-details {
+    padding: 1rem;
+}
+
+.car-title {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #fff;
+    margin-bottom: 0.5rem;
+    text-shadow: 0 1px 2px rgba(0,0,0,0.6);
+}
+
+.car-description {
+    font-size: 0.95rem;
+    color: #ccc;
+    margin-bottom: 1rem;
+}
+
+.price-status-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 1rem;
+}
+
+.price {
+    font-weight: bold;
+    color: #3fa9f5;
+}
+
+.status-tag {
+    font-weight: bold;
+    color: #4caf50;
+}
+
+/* --- Rent Button --- */
+.rent-btn {
+    display: block;
+    width: 89%;
+    text-align: center;
+    padding: 0.75rem 1rem;
+    background-color: rgb(165, 118, 64);
+    color: rgb(255, 255, 255);
+    text-shadow: 1px 1px 0.6px rgb(0, 0, 0);
+    text-decoration: none;
+    border-radius: 0.5rem;
+    font-weight: bold;
+    transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.rent-btn:hover {
+    background-color: rgba(165, 118, 64, 0.4);
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
+}
+
+.navbar {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 1rem 2rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+}
+
+/* --- Navbar Brand --- */
+.nav-brand a {
+    color: rgb(154, 139, 55);
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-decoration: none;
+    text-shadow: 0 1px 2px rgba(154, 139, 55, 0.5);
+    letter-spacing: 0.5px;
+}
+
+.nav-brand a:hover {
+    color: rgba(255, 215, 0, 0.7);
+}
+
+.nav-link {
+    color: rgb(154, 139, 55);
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-decoration: none;
+    text-shadow: 0 1px 2px rgba(154, 139, 55, 0.5);
+    letter-spacing: 0.5px;
+    padding-right: 20px;
+}
+
+.nav-link:hover {
+    color: rgba(255, 215, 0, 0.7); /* Darker gold on hover */
+}
+.login-button {
+    margin: 0;
+    color: rgb(154, 139, 55);
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-decoration: none;
+    text-shadow: 0 1px 2px rgba(154, 139, 55, 0.5);
+    letter-spacing: 0.5px;
+    padding-right: 15px;
+}
+.login-button:hover {
+    color: rgba(255, 215, 0, 0.7); /* Darker gold on hover */
+}
+
+.reg-button{
+    margin: 0;
+    color: rgb(154, 139, 55);
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-decoration: none;
+    text-shadow: 0 1px 2px rgba(154, 139, 55, 0.5);
+    letter-spacing: 0.5px;
+    padding-right: 15px;  
+}
+.reg-button:hover {
+    color: rgba(255, 215, 0, 0.7); /* Darker gold on hover */
+}
+
+.nav-link,
+.login-button,
+.reg-button {
+    color: rgb(154, 139, 55);
+    font-size: 1.5rem;
+    font-weight: 700;
+    text-decoration: none;
+    text-shadow: 0 1px 2px rgba(154, 139, 55, 0.5);
+    letter-spacing: 0.5px;
+    margin-left: 0.5rem;
+}
+
+.nav-link:hover,
+.login-button:hover,
+.reg-button:hover {
+    color: rgba(255, 215, 0, 0.7);
+}
+
+.auth-buttons {
+    display: flex;
+    align-items: center;
+    
+}
+
+.profile-dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.profile-btn {
+    background-color: transparent;
+    border: none;
+    color: #f5f5f5;
+    font-weight: 500;
+    font-family: 'Poppins', sans-serif;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.95rem;
+    padding: 10px;
+    border-radius: 8px;
+    transition: background-color 0.2s ease;
+}
+
+.profile-btn:hover {
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
+.dropdown-content {
+    color: rgb(255, 255, 255);
+    display: none;
+    position: absolute;
+    top: 100%;
+    right: 0;
+    margin-top: 6px;
+    background-color: rgba(255, 255, 255, 0.1); /* semi-transparent white */
+    min-width: 160px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
+    border-radius: 10px;
+    z-index: 1000;
+    overflow: hidden;
+    backdrop-filter: blur(1px); /* subtle glass-like blur */
+    animation: fadeIn 0.15s ease-in-out;
+}
+
+.dropdown-content a {
+    color: #333;
+    padding: 10px 14px;
+    text-decoration: none;
+    display: block;
+    font-size: 0.92rem;
+    font-family: 'Poppins', sans-serif;
+    transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.dropdown-content a:hover {
+    background-color: none;
+    color: #ffffff;
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(-5px); }
+    to { opacity: 1; transform: translateY(0); }
+}

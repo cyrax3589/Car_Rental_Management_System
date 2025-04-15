@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Rental System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/base.css') }}">
+    {% block extra_css %}{% endblock %}
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-brand">
+            <a href="{{ url_for('home') }}">Premium Car Rentals</a>
+        </div>
+        <div class="nav-links">
+            <div class="auth-buttons">
+                <a href="{{ url_for('cars') }}" class="nav-link">Cars</a>
+                {% if session.customer_id %}
+                <div class="profile-dropdown" id="profileDropdown">
+                    <button class="profile-btn" onclick="toggleDropdown()">
+                        <i class="fas fa-user"></i>
+                        <span>{{ session.customer_name }}</span>
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div class="dropdown-content" id="dropdownContent">
+                        <a href="{{ url_for('profile') }}">Profile</a>
+                        <a href="{{ url_for('logout') }}">Logout</a>
+                    </div>
+                </div>
+                {% else %}
+                <a href="{{ url_for('login') }}" class="login-button">Login</a>
+                <a href="{{ url_for('register') }}" class="reg-button">Register</a>
+                {% endif %}
+            </div>
+        </div>
+        
+    </nav>
+
+    <main class="container">
+        {% with messages = get_flashed_messages(with_categories=true) %}
+            {% if messages %}
+                {% for category, message in messages %}
+                    <div class="alert alert-{{ category }}">{{ message }}</div>
+                {% endfor %}
+            {% endif %}
+        {% endwith %}
+        
+        {% block content %}{% endblock %}
+    </main>
+
+    <footer>
+        <p>&copy; 2024 Car Rental System. All rights reserved.</p>
+    </footer>
+    
+
+    {% block extra_js %}{% endblock %}
+    <script>
+        function toggleDropdown() {
+            const dropdown = document.getElementById("dropdownContent");
+            dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
+        }
+    
+        // Optional: Close dropdown when clicking outside
+        window.addEventListener("click", function (e) {
+            const profileDropdown = document.getElementById("profileDropdown");
+            if (!profileDropdown.contains(e.target)) {
+                document.getElementById("dropdownContent").style.display = "none";
+            }
+        });
+    </script>
+    
+</body>
+</html>

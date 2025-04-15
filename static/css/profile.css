@@ -1,0 +1,94 @@
+body {
+    margin: 0;
+    padding: 20px;
+    font-family: 'Poppins', sans-serif;
+    background: url('../images/car-bg2.jpg') no-repeat center center fixed;
+    background-size: cover;
+    min-height: 100vh;
+}
+
+.profile-container {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 20px;
+}
+
+.profile-header {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.profile-header h1 {
+    color: #333;
+    margin: 0;
+}
+
+.profile-details, .rentals-section {
+    background: rgba(255, 255, 255, 0.9);
+    border-radius: 15px;
+    padding: 2rem;
+    margin-bottom: 2rem;
+    backdrop-filter: blur(10px);
+}
+
+.info-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1.5rem;
+}
+
+.info-item {
+    margin-bottom: 1rem;
+}
+
+.info-item label {
+    font-weight: 600;
+    color: #666;
+    display: block;
+    margin-bottom: 0.5rem;
+}
+
+.rental-card {
+    background: rgba(255, 255, 255, 0.8);
+    border-radius: 10px;
+    padding: 1.5rem;
+    margin-bottom: 1rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+
+.rental-card h3 {
+    margin: 0 0 1rem 0;
+    color: #333;
+}
+
+.rental-details {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 1rem;
+}
+
+.rental-details p {
+    margin: 0.5rem 0;
+    color: #666;
+}
+
+.status {
+    font-weight: 600;
+    color: #28a745;
+}
+
+.history .status {
+    color: #6c757d;
+}
+
+.no-rentals {
+    text-align: center;
+    color: #666;
+    font-style: italic;
+}
+
+@media (max-width: 768px) {
+    .rental-details {
+        grid-template-columns: 1fr;
+    }
+}

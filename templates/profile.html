@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile - Premium Car Rentals</title>
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link href="{{ url_for('static', filename='css/profile.css') }}" rel="stylesheet">
+</head>
+<body>
+    <div class="profile-container">
+        <div class="profile-header">
+            <h1>Welcome, {{ customer.first_name }}</h1>
+        </div>
+
+        <div class="profile-details">
+            <h2>Personal Information</h2>
+            <div class="info-grid">
+                <div class="info-item">
+                    <label>Name:</label>
+                    <span>{{ customer.first_name }} {{ customer.last_name }}</span>
+                </div>
+                <div class="info-item">
+                    <label>Email:</label>
+                    <span>{{ customer.email }}</span>
+                </div>
+                <div class="info-item">
+                    <label>Phone:</label>
+                    <span>{{ customer.phone }}</span>
+                </div>
+                <div class="info-item">
+                    <label>Address:</label>
+                    <span>{{ customer.address }}</span>
+                </div>
+            </div>
+        </div>
+
+        <div class="rentals-section">
+            <h2>Active Rentals</h2>
+            {% if active_rentals %}
+                {% for rental in active_rentals %}
+                    <div class="rental-card">
+                        <h3>{{ rental.make }} {{ rental.model }}</h3>
+                        <div class="rental-details">
+                            <p>Registration: {{ rental.registration_number }}</p>
+                            <p>Start Date: {{ rental.start_date.strftime('%Y-%m-%d') }}</p>
+                            <p>End Date: {{ rental.end_date.strftime('%Y-%m-%d') }}</p>
+                            <p>Total Cost: ${{ "%.2f"|format(rental.total_cost) }}</p>
+                            <p class="status">Status: {{ rental.status }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="no-rentals">No active rentals</p>
+            {% endif %}
+
+            <h2>Rental History</h2>
+            {% if rental_history %}
+                {% for rental in rental_history %}
+                    <div class="rental-card history">
+                        <h3>{{ rental.make }} {{ rental.model }}</h3>
+                        <div class="rental-details">
+                            <p>Registration: {{ rental.registration_number }}</p>
+                            <p>Start Date: {{ rental.start_date.strftime('%Y-%m-%d') }}</p>
+                            <p>End Date: {{ rental.end_date.strftime('%Y-%m-%d') }}</p>
+                            <p>Total Cost: ${{ "%.2f"|format(rental.total_cost) }}</p>
+                            <p class="status">Status: {{ rental.status }}</p>
+                        </div>
+                    </div>
+                {% endfor %}
+            {% else %}
+                <p class="no-rentals">No rental history</p>
+            {% endif %}
+        </div>
+    </div>
+</body>
+</html>
