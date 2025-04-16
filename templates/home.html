@@ -151,8 +151,14 @@
             <div class="footer-section">
                 <h3>Quick Links</h3>
                 <ul>
-                    <li><a href="{{ url_for('home') }}">Home</a></li>
-                    <li><a href="{{ url_for('cars') }}">Cars</a></li>
+                    <li><a href="{{ url_for('home') }}" target="_blank">Home</a></li>
+                    <li><a href="{{ url_for('cars') }}" target="_blank">Cars</a></li>
+                    <li><a href="{{ url_for('policy') }}" target="_blank">Privacy Policy</a></li>
+                    <li><a href="{{ url_for('terms') }}" target="_blank">Terms Of Service</a></li>
+                    <li><a href="{{ url_for('disclaimer') }}" target="_blank">Disclaimer</a></li>
+                    <li><a href="{{ url_for('FAQs') }}" target="_blank">FAQs</a></li>
+
+
                     {% if not session.get('customer_id') %}
                     <li><a href="{{ url_for('login') }}">Login</a></li>
                     <li><a href="{{ url_for('register') }}">Register</a></li>

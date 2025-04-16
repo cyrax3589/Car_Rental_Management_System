@@ -1,7 +1,9 @@
--- Active: 1744626299978@@sql12.freesqldatabase.com@3306 existing database
+-- Active: 1744720891582@@127.0.0.1@3306
 -- First check if tables exist and drop them in correct order
 
 CREATE DATABASE IF NOT EXISTS car_rental;
+
+USE  car_rental;
 SET FOREIGN_KEY_CHECKS = 0;
 
 DROP TABLE IF EXISTS Payments;

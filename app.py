@@ -809,5 +809,21 @@ def profile(cursor, conn):
         flash("Error loading profile", "error")
         return redirect(url_for('home'))
 
+@app.route('/policy', methods=['GET', 'POST'])
+def policy():
+    return render_template('policy.html')
+
+@app.route('/terms', methods=['GET', 'POST'])
+def terms():
+    return render_template('terms.html')
+
+@app.route('/disclaimer', methods=['GET', 'POST'])
+def disclaimer():
+    return render_template('disclaimer.html')
+
+@app.route('/FAQs', methods=['GET', 'POST'])
+def FAQs():
+    return render_template('FAQs.html')
+
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=10000, debug=True)
