@@ -4,40 +4,34 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>FAQs</title>
-  <style>
-    body {
-      font-family: 'Helvetica Neue', sans-serif;
-      padding: 40px;
-      background-color: #f0f8ff;
-      color: #333;
-    }
-    h1 {
-      color: #0077b6;
-    }
-    .faq {
-      margin-bottom: 20px;
-    }
-    .question {
-      font-weight: bold;
-    }
-    .answer {
-      margin-left: 20px;
-    }
-  </style>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/faqs.css') }}">
 </head>
 <body>
-  <h1>Frequently Asked Questions</h1>
-  <div class="faq">
-    <p class="question">Q: How do I sign up?</p>
-    <p class="answer">A: Click the "Sign Up" button and fill out your details.</p>
+  <div class="faq-container">
+    <h1>Frequently Asked Questions</h1>
+    <div class="faq">
+      <div class="faq-item">
+        <div class="question">How do I sign up?</div>
+        <div class="answer">Click the "Sign Up" button and fill out your details.</div>
+      </div>
+      <div class="faq-item">
+        <div class="question">Can I change my email?</div>
+        <div class="answer">Yes, you can update your email from your profile settings.</div>
+      </div>
+      <div class="faq-item">
+        <div class="question">Who can I contact for support?</div>
+        <div class="answer">Please reach out via our contact page or email support@example.com.</div>
+      </div>
+    </div>
   </div>
-  <div class="faq">
-    <p class="question">Q: Can I change my email?</p>
-    <p class="answer">A: Yes, you can update your email from your profile settings.</p>
-  </div>
-  <div class="faq">
-    <p class="question">Q: Who can I contact for support?</p>
-    <p class="answer">A: Please reach out via our contact page or email support@example.com.</p>
-  </div>
+  <script>
+    document.querySelectorAll('.question').forEach(q => {
+      q.addEventListener('click', function() {
+        this.classList.toggle('active');
+        const answer = this.nextElementSibling;
+        answer.style.display = answer.style.display === 'block' ? 'none' : 'block';
+      });
+    });
+  </script>
 </body>
 </html>
