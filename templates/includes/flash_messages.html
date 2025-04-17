@@ -1,0 +1,91 @@
+<div id="flash-popup" class="flash-popup">
+    {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+                <div class="flash-message {% if category == 'error' %}flash-error{% else %}flash-success{% endif %}">
+                    <div class="flash-content">
+                        <span>{{ message }}</span>
+                        <button onclick="closeFlash(this)" class="flash-close">&times;</button>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+    {% endwith %}
+</div>
+
+<style>
+    .flash-popup {
+        position: fixed;
+        top: 20px;
+        right: 20px;
+        z-index: 1000;
+        max-width: 400px;
+    }
+    
+    .flash-message {
+        margin-bottom: 10px;
+        padding: 12px 16px;
+        border-radius: 4px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        animation: slideIn 0.3s ease-out;
+    }
+    
+    .flash-success {
+        background-color: #4CAF50;
+        color: white;
+    }
+    
+    .flash-error {
+        background-color: #F44336;
+        color: white;
+    }
+    
+    .flash-content {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
+    
+    .flash-close {
+        background: none;
+        border: none;
+        color: white;
+        font-size: 20px;
+        cursor: pointer;
+        margin-left: 10px;
+    }
+    
+    @keyframes slideIn {
+        from {
+            transform: translateX(100%);
+            opacity: 0;
+        }
+        to {
+            transform: translateX(0);
+            opacity: 1;
+        }
+    }
+</style>
+
+<script>
+    function closeFlash(button) {
+        const message = button.closest('.flash-message');
+        message.style.opacity = '0';
+        setTimeout(() => {
+            message.style.display = 'none';
+        }, 300);
+    }
+    
+    // Auto-hide flash messages after 5 seconds
+    document.addEventListener('DOMContentLoaded', function() {
+        const messages = document.querySelectorAll('.flash-message');
+        messages.forEach(message => {
+            setTimeout(() => {
+                message.style.opacity = '0';
+                setTimeout(() => {
+                    message.style.display = 'none';
+                }, 300);
+            }, 5000);
+        });
+    });
+</script>

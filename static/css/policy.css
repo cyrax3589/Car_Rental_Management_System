@@ -1,47 +1,50 @@
 body {
-    margin: 0;
-    padding: 0;
-    background: linear-gradient(
-        rgba(255, 255, 255, 0.15), 
-        rgba(0, 0, 0, 0.15)
-    ), url('/static/images/policy.jpg');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-    min-height: 100vh;
-    font-family: 'Poppins', sans-serif;
-    color: aqua;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(
+    rgba(0, 0, 0, 0.6), 
+    rgba(0, 0, 0, 0.6)
+  ), url('/static/images/policy.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  color: #2f2f2f;
 }
+
 .policy-container {
-able 
-  max-width: 800px;
-  margin: 09rem 24rem auto;  /* Changed from 'center' to '3rem auto' */
-  padding: 1rem 2.5rem;
-  border-radius: 30px;
-  font-size: 1.1rem;
-  text-decoration: none;
-  transition: all 0.3s ease;
-  display: inline-block;
-  border: 2px solid rgba(255, 255, 255, 0.2);
-  backdrop-filter: blur(10px);
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+  max-width: 850px;
+  margin: 4rem auto;
+  background: #ffffffee;
+  border-radius: 14px;
+  box-shadow: 0 6px 28px rgba(0, 0, 0, 0.12);
+  padding: 3rem 2.5rem;
+  backdrop-filter: blur(5px);
 }
+
 h1 {
-  color: #393939;
-  text-shadow: rgb(141, 141, 141) 0.1em 0.1em 0.09em;
-  font-size: 2.5rem;
-  margin-bottom: 1.5rem;
+  color: #1e272e;
+  font-size: 2.6rem;
+  margin-bottom: 2rem;
   text-align: center;
+  font-weight: 700;
 }
+
 h2 {
-  color: #ffffff;
+  color: #0077b6;
   font-size: 1.3rem;
   margin-top: 2rem;
+  font-weight: 600;
 }
+
 section {
-  margin-bottom: 1.5rem;
+  margin-bottom: 2rem;
 }
+
 p {
-  line-height: 1.7;
+  line-height: 1.8;
+  font-size: 1.05rem;
+  color: #333;
 }

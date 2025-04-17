@@ -213,13 +213,52 @@ def login(cursor, conn):
 @app.route('/cars', methods=['GET'])
 @db_connection
 def get_available_cars(cursor, conn):
-    cursor.execute("""
-        SELECT * FROM Cars 
-        WHERE status = 'Available'
-        ORDER BY price_per_day
-    """)
-    cars = cursor.fetchall()
-    return render_template("cars.html", cars=cars)
+    try:
+        # Get customer ID from session
+        customer_id = session.get('customer_id')
+        
+        # Modified query to fetch ALL cars with rental information
+        cursor.execute("""
+            SELECT c.*, 
+                   r.customer_id as rented_by,
+                   DATE_FORMAT(r.end_date, '%d %b %Y') as end_date
+            FROM Cars c
+            LEFT JOIN Rentals r ON c.car_id = r.car_id AND r.status = 'Ongoing'
+            ORDER BY 
+                CASE 
+                    WHEN c.status = 'Available' THEN 1
+                    WHEN r.customer_id = %s THEN 2
+                    ELSE 3 
+                END
+        """, (customer_id or 0,))
+        
+        cars = cursor.fetchall()
+        return render_template("cars.html", cars=cars)
+    except Exception as e:
+        logging.error(f"Error loading cars: {str(e)}")
+        return "Error loading cars", 500
+
+# Remove or comment out this duplicate route
+# @app.route('/cars')
+# @db_connection
+# def cars(cursor, conn):
+#     try:
+#         # Modified query to fetch ALL cars regardless of status
+#         cursor.execute("""
+#             SELECT * FROM Cars 
+#             ORDER BY 
+#                 CASE 
+#                    WHEN status = 'Available' THEN 1 
+#                    WHEN status = 'Rented' THEN 2 
+#                    ELSE 3 
+#                END
+#         """)
+#         cars = cursor.fetchall()
+#         return render_template('cars.html', cars=cars, customer_name=session.get('customer_name'))
+#     except Exception as e:
+#         logging.error(f"Error loading cars: {str(e)}")
+#         return "Error loading cars", 500
+
 
 @app.route('/rentals', methods=['POST'])
 @db_connection
@@ -398,9 +437,18 @@ def root():
 @db_connection
 def cars(cursor, conn):
     try:
-        cursor.execute("SELECT * FROM Cars")
+        # Modified query to fetch ALL cars regardless of status
+        cursor.execute("""
+            SELECT * FROM Cars 
+            ORDER BY 
+                CASE 
+                    WHEN status = 'Available' THEN 1 
+                    WHEN status = 'Rented' THEN 2 
+                    ELSE 3 
+                END
+        """)
         cars = cursor.fetchall()
-        return render_template('cars.html', cars=cars)
+        return render_template('cars.html', cars=cars, customer_name=session.get('customer_name'))
     except Exception as e:
         logging.error(f"Error loading cars: {str(e)}")
         return "Error loading cars", 500
@@ -682,7 +730,8 @@ def rent_page(cursor, conn, car_id):
             cursor.execute("UPDATE Cars SET status = 'Rented' WHERE car_id = %s", (car_id,))
             conn.commit()
             
-            flash("Car rented successfully!", "success")
+            # More professional success message
+            flash("Your vehicle reservation has been confirmed. Thank you for choosing our service!", "success")
             return redirect(url_for('cars'))
             
     except Exception as e:
@@ -824,6 +873,49 @@ def disclaimer():
 @app.route('/FAQs', methods=['GET', 'POST'])
 def FAQs():
     return render_template('FAQs.html')
+
+@app.route('/edit_profile', methods=['GET', 'POST'])
+@db_connection
+def edit_profile(cursor, conn):
+    if not session.get('customer_id'):
+        return redirect(url_for('login'))
+    
+    customer_id = session['customer_id']
+    
+    if request.method == 'POST':
+        first_name = request.form.get('first_name')
+        last_name = request.form.get('last_name')
+        email = request.form.get('email')
+        phone = request.form.get('phone')
+        address = request.form.get('address')
+        new_password = request.form.get('new_password')
+        
+        if new_password:
+            cursor.execute("""
+                UPDATE Customers 
+                SET first_name=%s, last_name=%s, email=%s, phone=%s, address=%s, password=SHA2(%s, 256)
+                WHERE customer_id=%s
+            """, (first_name, last_name, email, phone, address, new_password, customer_id))
+        else:
+            cursor.execute("""
+                UPDATE Customers 
+                SET first_name=%s, last_name=%s, email=%s, phone=%s, address=%s 
+                WHERE customer_id=%s
+            """, (first_name, last_name, email, phone, address, customer_id))
+        
+        conn.commit()
+        
+        # Update session with combined first and last name
+        session['customer_name'] = f"{first_name} {last_name}"
+        
+        flash('Profile updated successfully!', 'success')
+        return redirect(url_for('home'))
+    
+    # GET request - show the form
+    cursor.execute("SELECT * FROM Customers WHERE customer_id = %s", (customer_id,))
+    customer = cursor.fetchone()
+    
+    return render_template('edit_profile.html', customer=customer)
 
 if __name__ == '__main__':
     app.run(host='127.0.0.1', port=10000, debug=True)

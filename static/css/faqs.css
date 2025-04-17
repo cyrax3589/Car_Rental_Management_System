@@ -1,49 +1,73 @@
 body {
-    margin: 0;
-    padding: 0;
-    background: linear-gradient(
-        rgba(0, 0, 0, 0.6), 
-        rgba(0, 0, 0, 0.6)
-    ), url('/static/images/faqs.jpg');
-    background-position: center;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-attachment: fixed;
-    min-height: 100vh;
-    font-family: 'Poppins', sans-serif;
+  margin: 0;
+  padding: 0;
+  background: linear-gradient(
+    rgba(0, 0, 0, 0.6),
+    rgba(0, 0, 0, 0.6)
+  ), url('/static/images/faqs.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  min-height: 100vh;
+  font-family: 'Poppins', sans-serif;
+  color: #333;
 }
+
 .faq-container {
-  max-width: 700px;
-  margin: 3rem auto;
-  background: #fff;
-  border-radius: 12px;
-  box-shadow: 0 4px 24px rgba(0,0,0,0.08);
-  padding: 2.5rem 2rem;
+  max-width: 750px;
+  margin: 4rem auto;
+  background: #ffffffee;
+  border-radius: 16px;
+  box-shadow: 0 8px 28px rgba(0,0,0,0.1);
+  padding: 3rem 2.5rem;
+  backdrop-filter: blur(4px);
 }
+
 h1 {
   color: #009688;
-  font-size: 2.2rem;
-  margin-bottom: 2rem;
+  font-size: 2.4rem;
+  margin-bottom: 2.5rem;
   text-align: center;
+  font-weight: 700;
 }
+
 .faq-item {
-  margin-bottom: 1.5rem;
-  border-bottom: 1px solid #eee;
+  margin-bottom: 1.8rem;
+  border-bottom: 1px solid #e0e0e0;
   padding-bottom: 1rem;
+  transition: all 0.3s ease;
 }
+
 .question {
   font-weight: 600;
+  font-size: 1.1rem;
   cursor: pointer;
   color: #00796b;
-  transition: color 0.2s;
+  transition: color 0.2s ease;
+  position: relative;
 }
-.question.active {
+
+.question:hover {
   color: #004d40;
 }
+
+.question::after {
+  content: '▼';
+  float: right;
+  font-size: 0.8rem;
+  transition: transform 0.3s ease;
+}
+
+.question.active::after {
+  transform: rotate(-180deg);
+}
+
 .answer {
   display: none;
-  margin-top: 0.5rem;
+  margin-top: 0.6rem;
   color: #444;
-  padding-left: 1rem;
-  line-height: 1.6;
+  padding-left: 1.2rem;
+  line-height: 1.7;
+  font-size: 0.95rem;
 }

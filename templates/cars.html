@@ -6,23 +6,29 @@
     <p class="hero-subtitle">Find the perfect vehicle for your needs</p>
     
     <div class="cars-section">
-        <h2 class="section-title">Available Cars</h2>
+        <h2 class="section-title">All Cars</h2>
         <div class="car-grid">
             {% for car in cars %}
-            <div class="car-card">
+            <div class="car-card {% if car.status == 'Rented' %}rented{% endif %}">
                 <img src="{{ url_for('static', filename='images/' + car.model + '.jpg') }}" alt="{{ car.make }} {{ car.model }}" class="car-image">
                 <div class="car-details">
                     <h2 class="car-title">{{ car.make }} {{ car.model }}</h2>
                     <p class="car-description">Premium vehicle for an exceptional driving experience</p>
                     <div class="price-status-container">
                         <span class="price">${{ "%.0f"|format(car.price_per_day) }}/day</span>
-                        <span class="status-tag">{{ car.status }}</span>
+                        <span class="status-tag {% if car.status == 'Rented' %}status-rented{% endif %}">{{ car.status }}</span>
                     </div>
                     {% if car.status == 'Available' %}
                         {% if session.customer_id %}
                             <a href="{{ url_for('rent_page', car_id=car.car_id) }}" class="rent-btn">Rent Now</a>
                         {% else %}
                             <a href="{{ url_for('login') }}" class="rent-btn">Login to Rent</a>
+                        {% endif %}
+                    {% else %}
+                        {% if session.customer_id and car.rented_by == session.customer_id %}
+                            <div class="rented-info user-rented">Already Rented till {{ car.end_date }}</div>
+                        {% else %}
+                            <div class="rented-info">Currently Unavailable</div>
                         {% endif %}
                     {% endif %}
                 </div>
@@ -31,4 +37,25 @@
         </div>
     </div>
 </div>
+
+<style>
+.car-card.rented {
+    opacity: 0.8;
+}
+
+.status-tag.status-rented {
+    background-color: none;
+}
+
+.rented-info {
+    color: #ff4444;
+    text-align: center;
+    padding: 10px;
+    font-weight: 500;
+}
+
+.user-rented {
+    color: #ff9900;
+}
+</style>
 {% endblock %}
