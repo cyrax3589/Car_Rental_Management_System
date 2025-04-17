@@ -4,7 +4,7 @@ body {
     background: linear-gradient(
         rgba(0, 0, 0, 0.6), 
         rgba(0, 0, 0, 0.6)
-    ), url('/static/images/profile.jpg');
+    ), url('/static/images/profile-edit.jpg');
     background-position: center;
     background-repeat: no-repeat;
     background-size: cover;

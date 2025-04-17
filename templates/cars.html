@@ -10,7 +10,7 @@
         <div class="car-grid">
             {% for car in cars %}
             <div class="car-card {% if car.status == 'Rented' %}rented{% endif %}">
-                <img src="{{ url_for('static', filename='images/' + car.model + '.jpg') }}" alt="{{ car.make }} {{ car.model }}" class="car-image">
+                <img src="{{ url_for('static', filename='images/cars/' + car.model + '.jpg') }}" alt="{{ car.make }} {{ car.model }}" class="car-image">
                 <div class="car-details">
                     <h2 class="car-title">{{ car.make }} {{ car.model }}</h2>
                     <p class="car-description">Premium vehicle for an exceptional driving experience</p>
