@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Car Rental Assistant</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/chatbot.css') }}">
+</head>
+<body>
+    <div class="chat-toggle">
+        <img src="{{ url_for('static', filename='chat-icon.png') }}" alt="Chat">
+    </div>
+
+    <div class="chat-container">
+        <div class="chat-header">
+            <span>Car Rental Assistant</span>
+            <button onclick="toggleChat()" style="background: none; border: none; color: white; cursor: pointer;">×</button>
+        </div>
+        <div class="chat-messages"></div>
+        <div class="chat-input">
+            <input type="text" placeholder="Type your message..." id="messageInput">
+            <button onclick="sendMessage()">Send</button>
+        </div>
+    </div>
+
+    <script>
+        function toggleChat() {
+            const container = document.querySelector('.chat-container');
+            const toggle = document.querySelector('.chat-toggle');
+            if (container.style.display === 'none' || container.style.display === '') {
+                container.style.display = 'flex';
+                toggle.style.display = 'none';
+            } else {
+                container.style.display = 'none';
+                toggle.style.display = 'flex';
+            }
+        }
+
+        function addMessage(message, isUser) {
+            const messagesDiv = document.querySelector('.chat-messages');
+            const messageDiv = document.createElement('div');
+            messageDiv.className = `message ${isUser ? 'user-message' : 'bot-message'}`;
+            messageDiv.textContent = message;
+            messagesDiv.appendChild(messageDiv);
+            messagesDiv.scrollTop = messagesDiv.scrollHeight;
+        }
+
+        function sendMessage() {
+            const input = document.getElementById('messageInput');
+            const message = input.value.trim();
+            if (!message) return;
+
+            addMessage(message, true);
+            input.value = '';
+
+            fetch('/gemini_chatbot', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({ message: message })
+            })
+            .then(response => response.json())
+            .then(data => {
+                addMessage(data.reply, false);
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                addMessage('Sorry, I encountered an error. Please try again.', false);
+            });
+        }
+
+        // Allow sending message with Enter key
+        document.getElementById('messageInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                sendMessage();
+            }
+        });
+
+        // Show chat toggle button initially
+        document.querySelector('.chat-toggle').addEventListener('click', toggleChat);
+    </script>
+</body>
+</html>
