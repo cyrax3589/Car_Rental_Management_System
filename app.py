@@ -410,17 +410,12 @@ def admin_complete_rental(cursor, conn, rental_id):
             # Calculate points (1 point per $100)
             points_earned = int(rental['total_cost'] / 100)
             
-            # Update or insert customer points
+            # Update or insert customer points - remove tier from INSERT/UPDATE
             cursor.execute("""
-                INSERT INTO CustomerPoints (customer_id, points, tier)
-                VALUES (%s, %s, 'Bronze')
+                INSERT INTO CustomerPoints (customer_id, points)
+                VALUES (%s, %s)
                 ON DUPLICATE KEY UPDATE 
                     points = points + VALUES(points),
-                    tier = CASE 
-                        WHEN points + VALUES(points) >= 1000 THEN 'Gold'
-                        WHEN points + VALUES(points) >= 500 THEN 'Silver'
-                        ELSE 'Bronze'
-                    END,
                     last_updated = CURRENT_TIMESTAMP
             """, (rental['customer_id'], points_earned))
             
@@ -544,10 +539,10 @@ def rewards(cursor, conn):
     
     points_data = cursor.fetchone()
     if not points_data:
-        # Initialize points if not exists
+        # Initialize points if not exists - remove tier from INSERT
         cursor.execute("""
-            INSERT INTO CustomerPoints (customer_id, points, tier)
-            VALUES (%s, 0, 'Bronze')
+            INSERT INTO CustomerPoints (customer_id, points)
+            VALUES (%s, 0)
         """, (customer_id,))
         conn.commit()
         points_data = {'points': 0, 'tier': 'Bronze'}

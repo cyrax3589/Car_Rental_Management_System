@@ -3,9 +3,11 @@
 
 CREATE DATABASE IF NOT EXISTS car_rental;
 
-USE  car_rental;
+USE car_rental;
 SET FOREIGN_KEY_CHECKS = 0;
 
+DROP TABLE IF EXISTS RewardHistory;
+DROP TABLE IF EXISTS CustomerPoints;
 DROP TABLE IF EXISTS Payments;
 DROP TABLE IF EXISTS Rentals;
 DROP TABLE IF EXISTS Cars;
@@ -84,4 +86,28 @@ VALUES
     ('RC F', 'Lexus', 2024, 'LEX001', 'Available', 140.00),
     ('Stinger GT', 'Kia', 2024, 'KIA001', 'Available', 90.00);
 
-    
+    -- Create CustomerPoints table
+CREATE TABLE IF NOT EXISTS CustomerPoints (
+    customer_id INT PRIMARY KEY,
+    points INT DEFAULT 0,
+    tier VARCHAR(10) GENERATED ALWAYS AS (
+        CASE 
+            WHEN points >= 1000 THEN 'Gold'
+            WHEN points >= 500 THEN 'Silver'
+            ELSE 'Bronze'
+        END
+    ) STORED,
+    last_updated TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id)
+);
+
+-- Create RewardHistory table
+CREATE TABLE IF NOT EXISTS RewardHistory (
+    history_id INT AUTO_INCREMENT PRIMARY KEY,
+    customer_id INT,
+    points_earned INT,
+    transaction_type VARCHAR(20),
+    description TEXT,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    FOREIGN KEY (customer_id) REFERENCES Customers(customer_id)
+);
