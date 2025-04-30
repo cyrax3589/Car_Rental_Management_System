@@ -185,7 +185,7 @@
             </div>
             <div id="chatbot-messages" style="flex:1;overflow-y:auto;padding:12px;height:220px;"></div>
             <form id="chatbot-form" style="display:flex;border-top:1px solid #eee;" onsubmit="return sendMessage(event)">
-                <input id="chatbot-input" type="text" placeholder="Type your question..." autocomplete="off" style="flex:1;padding:10px;border:none;">
+                <input id="chatbot-input" type="text" placeholder="Hi how can i help you?..." autocomplete="off" style="flex:1;padding:10px;border:none;">
                 <button type="submit" style="background:#2563eb;color:#fff;border:none;padding:0 18px;cursor:pointer;">Send</button>
             </form>
         </div>
@@ -215,13 +215,15 @@
         appendMessage('You', text);
         input.value = '';
         appendMessage('Bot', '<span style="color:#888;">Thinking...</span>');
-        // Call backend endpoint
-        const resp = await fetch('/gemini_chatbot', {
+        
+        // Call RAG chatbot API
+        const resp = await fetch('/RAG_chatbot', {
             method: 'POST',
             headers: {'Content-Type': 'application/json'},
             body: JSON.stringify({message: text})
         });
         const data = await resp.json();
+        
         // Remove "Thinking..." and add response
         const messagesDiv = document.getElementById('chatbot-messages');
         messagesDiv.removeChild(messagesDiv.lastChild);

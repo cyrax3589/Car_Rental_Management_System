@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "car-rental-cblx",
+  "private_key_id": "d9f3900495e8911ec0ae07037a09ed5034551e4b",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvQIBADANBgkqhkiG9w0BAQEFAASCBKcwggSjAgEAAoIBAQDT3mwuWTwfSRNi\nhh0TRg6tJ0pVy1nlf58bh4XjM0ycVtGU9f69muvpY4uKaWYvAS2OVJFAKpRh6VbN\nLy2tWy/0XKobsqdmEnEmEdXijN1H8oHvbmSlLoZv1NPwXcUz0Z0KcJkmy8S3V5Qg\nIAv/SFhsO+fLQwy88NjuqnTrXdbEjHvHaDc+wodl0WiQIZM8vSJ0EhczQm3Z+d//\n/8OAIxnFhGiA0wbQ5SGg57b8Kkesq33M7KJfL2ndnCCre+PbkFa7iWufXNXiBnrP\nSoiRXIUSqViU3M3rvxkcU4iEFBIU5qTDQg6d09PUJr89NqsshPLJ7vnPO6s80tub\n8SIOzjkvAgMBAAECggEAHj6cq9siOYcZhNGHWgaAttgqhOfUC+51fJ0SkFX05EaC\ngaTCOjfg4H7M3zPfmestoSlSWNobN4TzVrQa7ancRSJrSCvvOKN+UoRuR3p7Zjdo\ntBDKvkfPeixkGuaP7a9JH0HmowKosNGIPDPG8qjVspG0q7AFI/2vwhZEPYs2SvVO\ncgNpWzOPRT/aws2rx8rVMdAM92jiR49Q9ww6qKRsF8LwBSVtGC0kit2tIGEMzGBp\nS2fHGM0waqnVzxiLufUg2VJ/N1NjThBlT3QSHYTal6W+2+iiH/0zD1/VVWIBmy/B\nEiJXOLQwblXsZYHuwteJPN3gIouI5WifnINNp5oE4QKBgQDzRGibUOfU7CzmADc4\nBi1qOmOBbAB6qm3t8YQ2E6vl/pvk9rVbo17QY/DnPJBy5X81ntlRiQXRiNV5sc2b\n3KL3unBv97YtT1bF4gRjKUw+cKs6efDIhOweeP92fkwjMmQ1zTQ+ZqF1keFp+hAA\nwWHcXmdfRBjBBNPGipJ0FklEDwKBgQDe9UzRqwjjPgcSxxGQ5sefsJxvdOy4jA9w\nx/KbEWW85BA17yFJqjbK83ylomYtc6PQqS6m5JNEaTyvkcID5sTn2dXG6ptaj4w4\nOLD4vyYmaYFFZSHYJxJhDtDCtAzjwZhNt6rbXXQXgnhDllrMthPpi+JQXO2nP3dU\nvTqqHXgY4QKBgBXkkC16KIMHBjtkxZNrKucmfhIFsD1Z3S7Oz4E2YAAA2/LNKSEo\nIL5MYD/POYi9kqc2toQZ+sYStHORRtnCD4CP7NKGzoRhYYPJhW+PJedwqFhI5RyG\nqeFMLmFxmFSKkm4tG4iKH/m+uTSaZppKzQ3SCSePr1Kfppd1nRyJbOqNAoGAYHKA\nnpp8J8EnUionISWT6TJ/GX/c/yAndcQo4IewGPwXPx2IqtMlDLozi3sq9DJ4BMWK\n1ss+IXPcup407XcgaqNC5N+MAKrkH1X2yEP3/tnY/+n1sAmG29GK4Q7+HHAcsFHp\naSeOFrVrzOD3umJxTrAiYF0yuQytVEzfWcORtkECgYEAhWZTGrtqqSti3yatQikz\n7Eriu7hI98MYs3G0m4SKAlrnpDDXyP6FIrMQg9QhEYA6uwKHoC/GlvX8ouYGP2Od\nW7p675peonYgp9rntmIUxmPN4D74grWoX8w8f09XGNHMDBOKxZ1o9ReFh/EWklOX\n+/C3+4+z4iEn0uhAIUkKqeU=\n-----END PRIVATE KEY-----\n",
+  "client_email": "car-rental-chatbot@car-rental-cblx.iam.gserviceaccount.com",
+  "client_id": "114607166994405298437",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/car-rental-chatbot%40car-rental-cblx.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

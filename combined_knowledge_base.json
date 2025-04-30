@@ -1,0 +1,34 @@
+[
+  {
+    "question": "What are your business hours?",
+    "answer": "Our car rental service is open from 8:00 AM to 8:00 PM, Monday through Saturday, and from 10:00 AM to 6:00 PM on Sundays."
+  },
+  {
+    "question": "What documents do I need to rent a car?",
+    "answer": "To rent a car, you'll need a valid driver's license, a credit card in your name, and proof of insurance. International customers will need a passport and an international driver's permit."
+  },
+  {
+    "question": "Do you offer insurance?",
+    "answer": "Yes, we offer several insurance options including basic coverage, comprehensive coverage, and premium protection. You can select your preferred insurance option during the booking process."
+  },
+  {
+    "question": "What is your cancellation policy?",
+    "answer": "Reservations can be cancelled up to 24 hours before the pickup time for a full refund. Cancellations made less than 24 hours in advance may be subject to a cancellation fee."
+  },
+  {
+    "question": "Can I return the car to a different location?",
+    "answer": "Yes, we offer one-way rentals. Additional fees may apply depending on the distance between pickup and drop-off locations."
+  },
+  {
+    "question": "What happens if I return the car late?",
+    "answer": "Late returns are charged at an hourly rate. If you know you'll be late, please contact us as soon as possible to extend your rental period."
+  },
+  {
+    "question": "Do you have age restrictions?",
+    "answer": "Drivers must be at least 21 years old to rent a car. Drivers under 25 may be subject to a young driver surcharge."
+  },
+  {
+    "question": "How do I extend my rental period?",
+    "answer": "You can extend your rental by contacting our customer service team or visiting one of our locations. Extensions are subject to vehicle availability."
+  }
+]

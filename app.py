@@ -7,13 +7,67 @@ import logging
 import mysql
 from dotenv import load_dotenv
 import requests
-from flask import request, jsonify
+import json
+import numpy as np
+from sentence_transformers import SentenceTransformer
+import faiss
+import uuid
 
 # Load environment variables from .env file
 load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.getenv('SECRET_KEY', os.urandom(24))
+
+# RAG model for chatbot
+try:
+    with open("combined_knowledge_base.json", "r") as f:
+        knowledge_data = json.load(f)
+    
+    if not isinstance(knowledge_data, list):
+        raise ValueError("Knowledge base must be a list of question-answer pairs")
+    
+    questions = [item["question"] for item in knowledge_data]
+    answers = [item["answer"] for item in knowledge_data]
+except (FileNotFoundError, json.JSONDecodeError, ValueError) as e:
+    logging.error(f"Error loading knowledge base: {str(e)}")
+    questions = []
+    answers = []
+
+# Load embedding model
+embedder = SentenceTransformer('all-MiniLM-L6-v2')
+if questions:  # Only encode if we have questions
+    question_embeddings = embedder.encode(questions)
+    
+    # Build FAISS index
+    index = faiss.IndexFlatL2(question_embeddings.shape[1])
+    index.add(np.array(question_embeddings))
+else:
+    # Create empty index with correct dimensions
+    index = faiss.IndexFlatL2(embedder.get_sentence_embedding_dimension())
+
+# RAG pipeline
+def get_context(user_input):
+    if not questions:
+        return None
+        
+    user_embedding = embedder.encode([user_input])
+    distances, indices = index.search(np.array(user_embedding), k=1)
+    
+    # Add distance threshold to ensure relevant matches
+    if distances[0][0] < 2.0:  # Adjust threshold as needed
+        return answers[indices[0][0]]
+    return None
+
+def generate_response(user_input):
+    context = get_context(user_input)
+    
+    if context:
+        response = f"{context}"
+    else:
+        response = "I apologize, but I don't have specific information about that. Please contact our customer service for more detailed assistance."
+    
+    return response
 
 # Database configuration
 db_config = {
@@ -239,27 +293,6 @@ def get_available_cars(cursor, conn):
     except Exception as e:
         logging.error(f"Error loading cars: {str(e)}")
         return "Error loading cars", 500
-
-# Remove or comment out this duplicate route
-# @app.route('/cars')
-# @db_connection
-# def cars(cursor, conn):
-#     try:
-#         # Modified query to fetch ALL cars regardless of status
-#         cursor.execute("""
-#             SELECT * FROM Cars 
-#             ORDER BY 
-#                 CASE 
-#                    WHEN status = 'Available' THEN 1 
-#                    WHEN status = 'Rented' THEN 2 
-#                    ELSE 3 
-#                END
-#         """)
-#         cars = cursor.fetchall()
-#         return render_template('cars.html', cars=cars, customer_name=session.get('customer_name'))
-#     except Exception as e:
-#         logging.error(f"Error loading cars: {str(e)}")
-#         return "Error loading cars", 500
 
 
 @app.route('/rentals', methods=['POST'])
@@ -741,43 +774,6 @@ def rent_page(cursor, conn, car_id):
         flash("An error occurred while processing your request", "error")
         return redirect(url_for('cars'))
 
-'''
-@app.route('/admin/cars', methods=['POST', 'PUT', 'DELETE'])
-@admin_required
-@db_connection
-def manage_cars(cursor, conn):
-    if request.method == 'POST':
-        data = request.json
-        required_fields = ['model', 'make', 'year', 'registration_number', 'price_per_day', 'status']
-        if not all(field in data for field in required_fields):
-            return jsonify({"error": "Missing required fields"}), 400
-
-        cursor.execute("""
-            INSERT INTO Cars (model, make, year, registration_number, price_per_day, status) 
-            VALUES (%s, %s, %s, %s, %s, %s)
-        """, (data['model'], data['make'], data['year'], data['registration_number'], data['price_per_day'], data['status']))
-        conn.commit()
-        return jsonify({"message": "Car added successfully", "id": cursor.lastrowid})
-
-    if request.method == 'PUT':
-        data = request.json
-        cursor.execute("""
-            UPDATE Cars 
-            SET model = %s, make = %s, year = %s, registration_number = %s, price_per_day = %s, status = %s 
-            WHERE car_id = %s
-        """, (data['model'], data['make'], data['year'], data['registration_number'], data['price_per_day'], data['status'], data['car_id']))
-        conn.commit()
-        return jsonify({"message": "Car updated successfully"})
-
-    if request.method == 'DELETE':
-        car_id = request.args.get('car_id')
-        cursor.execute("DELETE FROM Cars WHERE car_id = %s", (car_id,))
-        conn.commit()
-        return jsonify({"message": "Car deleted successfully"})
-
-'''
-
-
 
 @app.route('/password_reset', methods=['GET', 'POST'])
 def password_reset():
@@ -912,52 +908,24 @@ def edit_profile(cursor, conn):
     
     return render_template('edit_profile.html', customer=customer)
 
-@app.route('/gemini_chatbot', methods=['POST'])
-def gemini_chatbot():
+
+
+
+# Define the RAG chatbot route properly
+@app.route('/RAG_chatbot', methods=['POST'])
+def rag_chatbot():
     data = request.get_json()
     user_message = data.get('message', '')
     if not user_message:
         return jsonify({'reply': 'Please enter a message.'})
+
     try:
-        api_key = "AIzaSyCSPn86nH2MCLChzqfCzs5cfC4L-qAIwI0"  # Replace with your actual API key
-        url = "https://generativelanguage.googleapis.com/v1beta/models/gemini-2.0-flash:generateContent?key=" + api_key
-        headers = {
-            "Content-Type": "application/json"
-        }
-        
-        # Refine the system prompt for concise responses
-        payload = {
-            "contents": [
-                {
-                    "parts": [
-                        {"text": "You are a car rental assistant. Please ask one question at a time and provide concise responses to help users with their car rental inquiries. User question: " + user_message}
-                    ]
-                }
-            ],
-            "generationConfig": {
-                "temperature": 0.5,  # Lower temperature for more deterministic responses
-                "maxOutputTokens": 256  # Further reduce token count for shorter responses
-            }
-        }
-        
-        response = requests.post(url, headers=headers, json=payload)
-        
-        if response.status_code != 200:
-            logging.error(f"Gemini API error: {response.status_code}, {response.text}")
-            return jsonify({'reply': "I'm sorry, I'm having trouble connecting to my knowledge base right now. Please try again later."}), 200
-            
-        result = response.json()
-        if 'candidates' in result and len(result['candidates']) > 0:
-            reply = result['candidates'][0]['content']['parts'][0]['text']
-            return jsonify({'reply': reply})
-        else:
-            return jsonify({'reply': "I apologize, but I couldn't generate a response at this time."})
-            
+        # Use our RAG model
+        bot_response = generate_response(user_message)
+        return jsonify({'reply': bot_response})
     except Exception as e:
-        logging.error(f"Gemini API error: {str(e)}")
-        return jsonify({'reply': "I apologize, but I'm having trouble connecting to the service right now."})
-
-
+        logging.error(f"Chatbot error: {str(e)}")
+        return jsonify({'reply': "I apologize, but I'm having trouble processing your request right now."})
 
 @app.route('/logout')
 def logout():
