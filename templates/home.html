@@ -230,26 +230,89 @@
         document.getElementById('chatbot-messages').appendChild(msgDiv);
         document.getElementById('chatbot-messages').scrollTop = document.getElementById('chatbot-messages').scrollHeight;
     }
+    
+    // Add typing indicator function
+    function showTypingIndicator() {
+        const typingDiv = document.createElement('div');
+        typingDiv.id = 'typing-indicator';
+        typingDiv.style.margin = '10px 0';
+        typingDiv.style.padding = '8px 12px';
+        typingDiv.style.borderRadius = '12px';
+        typingDiv.style.backgroundColor = '#e9ecef';
+        typingDiv.style.color = '#333';
+        typingDiv.style.marginRight = 'auto';
+        typingDiv.style.maxWidth = '60px';
+        typingDiv.style.display = 'flex';
+        typingDiv.style.alignItems = 'center';
+        typingDiv.style.justifyContent = 'center';
+        
+        // Create typing animation dots
+        typingDiv.innerHTML = `
+            <div class="typing-dots">
+                <span class="dot"></span>
+                <span class="dot"></span>
+                <span class="dot"></span>
+            </div>
+        `;
+        
+        document.getElementById('chatbot-messages').appendChild(typingDiv);
+        document.getElementById('chatbot-messages').scrollTop = document.getElementById('chatbot-messages').scrollHeight;
+        
+        // Add animation style
+        const style = document.createElement('style');
+        style.textContent = `
+            .typing-dots {
+                display: flex;
+                gap: 4px;
+            }
+            .dot {
+                width: 6px;
+                height: 6px;
+                background-color: #666;
+                border-radius: 50%;
+                opacity: 0.6;
+            }
+            .dot:nth-child(1) {
+                animation: pulse 1.2s infinite ease-in-out;
+            }
+            .dot:nth-child(2) {
+                animation: pulse 1.2s infinite ease-in-out 0.4s;
+            }
+            .dot:nth-child(3) {
+                animation: pulse 1.2s infinite ease-in-out 0.8s;
+            }
+            @keyframes pulse {
+                0%, 100% {
+                    opacity: 0.6;
+                    transform: scale(1);
+                }
+                50% {
+                    opacity: 1;
+                    transform: scale(1.2);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    }
+    
+    function removeTypingIndicator() {
+        const typingIndicator = document.getElementById('typing-indicator');
+        if (typingIndicator) {
+            typingIndicator.remove();
+        }
+    }
+    
     async function sendMessage(e) {
         e.preventDefault();
         const input = document.getElementById('chatbot-input');
         const text = input.value.trim();
         if (!text) return false;
+        
         appendMessage('You', text);
         input.value = '';
         
-        const loadingDiv = document.createElement('div');
-        loadingDiv.style.margin = '10px 0';
-        loadingDiv.style.padding = '8px 12px';
-        loadingDiv.style.borderRadius = '12px';
-        loadingDiv.style.backgroundColor = '#e9ecef';
-        loadingDiv.style.color = '#333';
-        loadingDiv.style.marginRight = 'auto';
-        loadingDiv.style.display = 'flex';
-        loadingDiv.style.alignItems = 'center';
-        loadingDiv.innerHTML = '<div style="width:40px;text-align:center;"><span style="display:inline-block;animation:pulse 1.2s infinite;font-size:14px;">...</span></div>';
-        document.getElementById('chatbot-messages').appendChild(loadingDiv);
-        document.getElementById('chatbot-messages').scrollTop = document.getElementById('chatbot-messages').scrollHeight;
+        // Show typing indicator
+        showTypingIndicator();
         
         // Call RAG chatbot API
         const resp = await fetch('/RAG_chatbot', {
@@ -259,9 +322,12 @@
         });
         const data = await resp.json();
         
-        // Remove loading indicator and add response
-        const messagesDiv = document.getElementById('chatbot-messages');
-        messagesDiv.removeChild(messagesDiv.lastChild);
+        // Add artificial delay to simulate thinking (between 1-2 seconds)
+        const thinkingTime = Math.floor(Math.random() * 1000) + 1000;
+        await new Promise(resolve => setTimeout(resolve, thinkingTime));
+        
+        // Remove typing indicator and add response
+        removeTypingIndicator();
         appendMessage('Bot', data.reply || 'Sorry, no response.');
         return false;
     }
