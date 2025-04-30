@@ -1,0 +1,93 @@
+{% extends "base.html" %}
+
+{% block extra_css %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/rewards.css') }}">
+{% endblock %}
+
+{% block content %}
+<div class="container">
+    <h1 class="title">Your Rewards</h1>
+    
+    <div class="points-section">
+        <h2>Current Points: {{ points_data.points }}</h2>
+        <div class="tier">{{ points_data.tier }} Member</div>
+        
+        <div class="progress-bar">
+            <div class="progress" style="width: {{ progress }}%"></div>
+        </div>
+        <div class="tier">
+            {% if points_data.tier != 'Gold' %}
+            {{ points_data.points }} / {{ next_tier_points }} points to next tier
+            {% else %}
+            Maximum tier achieved!
+            {% endif %}
+        </div>
+    </div>
+
+    <div class="rewards-grid">
+        <!-- Bronze Rewards -->
+        <div class="reward-card">
+            <h3>Bronze Benefits</h3>
+            <p>Basic support and rewards program access</p>
+            <div class="tier-badge bronze">0+ points</div>
+            <button class="redeem-btn" {% if points_data.tier == 'Bronze' %}disabled{% endif %}>
+                Active
+            </button>
+        </div>
+
+        <!-- Silver Rewards -->
+        <div class="reward-card">
+            <h3>Silver Benefits</h3>
+            <p>5% off your next booking</p>
+            <div class="tier-badge silver">500+ points</div>
+            <button class="redeem-btn" 
+                    {% if points_data.tier not in ['Silver', 'Gold'] %}disabled{% endif %}>
+                {% if points_data.tier in ['Silver', 'Gold'] %}Redeem{% else %}Locked{% endif %}
+            </button>
+        </div>
+
+        <!-- Gold Rewards -->
+        <div class="reward-card">
+            <h3>Gold Benefits</h3>
+            <p>Free upgrade or 10% discount</p>
+            <div class="tier-badge gold">1000+ points</div>
+            <button class="redeem-btn" 
+                    {% if points_data.tier != 'Gold' %}disabled{% endif %}>
+                {% if points_data.tier == 'Gold' %}Redeem{% else %}Locked{% endif %}
+            </button>
+        </div>
+    </div>
+
+    {% if history %}
+    <div class="history-section">
+        <h2>Reward History</h2>
+        <div class="history-list">
+            {% for item in history %}
+            <div class="history-item">
+                <span class="points">+{{ item.points_earned }} points</span>
+                <span class="description">{{ item.description }}</span>
+                <span class="date">{{ item.created_at.strftime('%Y-%m-%d') }}</span>
+            </div>
+            {% endfor %}
+        </div>
+    </div>
+    {% else %}
+    <div class="history-section">
+        <h2>Reward History</h2>
+        <div class="no-history">
+            <p>Complete rentals to earn points and see your history here!</p>
+        </div>
+    </div>
+    {% endif %}
+    
+    <div class="how-to-earn">
+        <h2>How to Earn Points</h2>
+        <p>Earn 1 point for every $100 spent on rentals</p>
+        <ul>
+            <li>Complete rentals to earn points automatically</li>
+            <li>Reach Silver tier (500 points) for 5% off your next booking</li>
+            <li>Reach Gold tier (1000 points) for free upgrades or 10% discount</li>
+        </ul>
+    </div>
+</div>
+{% endblock %}

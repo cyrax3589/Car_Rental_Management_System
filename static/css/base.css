@@ -333,3 +333,27 @@ body {
     object-fit: contain;
     margin: 5px 0;
 }
+
+.rewards-link {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    color: rgb(255, 255, 255);
+    font-size: 1rem;
+    font-weight: 700;
+    text-transform: capitalize ;
+    letter-spacing: 1px;
+    padding: 8px 15px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+}
+
+.rewards-link i {
+    font-size: 1.2rem;
+    color: rgb(154, 139, 55);
+}
+
+.rewards-link:hover {
+    background: rgba(154, 139, 55, 0.1);
+    transform: translateY(-2px);
+}

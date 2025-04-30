@@ -83,3 +83,5 @@ VALUES
     ('GT-R', 'Nissan', 2024, 'NIS001', 'Available', 180.00),
     ('RC F', 'Lexus', 2024, 'LEX001', 'Available', 140.00),
     ('Stinger GT', 'Kia', 2024, 'KIA001', 'Available', 90.00);
+
+    

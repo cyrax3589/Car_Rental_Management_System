@@ -337,6 +337,10 @@ def rent_car(cursor, conn):
     except ValueError:
         return jsonify({"error": "Invalid date format"}), 400
 
+def calculate_points(amount):
+    # 1 point per $100
+    return int(amount / 100)
+
 @app.route('/complete_rental/<int:rental_id>', methods=['POST'])
 @db_connection
 def complete_rental(cursor, conn, rental_id):
@@ -356,28 +360,17 @@ def complete_rental(cursor, conn, rental_id):
         if not rental:
             return jsonify({"error": "Rental not found or already completed"}), 404
         
-        # Update rental status
-        cursor.execute("""
-            UPDATE Rentals 
-            SET status = 'Completed' 
-            WHERE rental_id = %s
-        """, (rental_id,))
+        # ... rest of the try block ...
         
-        # Update car status
-        cursor.execute("""
-            UPDATE Cars 
-            SET status = 'Available' 
-            WHERE car_id = %s
-        """, (rental['car_id'],))
-        
-        conn.commit()
-        
-        return jsonify({"message": "Rental completed successfully"}), 200
+        return jsonify({
+            "message": "Rental completed successfully",
+            "points_earned": points_earned
+        }), 200
     
     except Exception as e:
+        cursor.execute("ROLLBACK")
         logging.error(f"Error completing rental: {str(e)}")
         return jsonify({"error": "Failed to complete rental"}), 500
-
 
 @app.route('/admin/complete_rental/<int:rental_id>', methods=['POST'])
 @admin_required
@@ -396,24 +389,59 @@ def admin_complete_rental(cursor, conn, rental_id):
         if not rental:
             return jsonify({"error": "Rental not found or already completed"}), 404
         
-        # Update rental status
-        cursor.execute("""
-            UPDATE Rentals 
-            SET status = 'Completed' 
-            WHERE rental_id = %s
-        """, (rental_id,))
+        # Start transaction
+        cursor.execute("START TRANSACTION")
         
-        # Update car status
-        cursor.execute("""
-            UPDATE Cars 
-            SET status = 'Available' 
-            WHERE car_id = %s
-        """, (rental['car_id'],))
-        
-        conn.commit()
-        
-        return jsonify({"message": "Rental completed successfully"}), 200
-    
+        try:
+            # Update rental status
+            cursor.execute("""
+                UPDATE Rentals 
+                SET status = 'Completed' 
+                WHERE rental_id = %s
+            """, (rental_id,))
+            
+            # Update car status
+            cursor.execute("""
+                UPDATE Cars 
+                SET status = 'Available' 
+                WHERE car_id = %s
+            """, (rental['car_id'],))
+            
+            # Calculate points (1 point per $100)
+            points_earned = int(rental['total_cost'] / 100)
+            
+            # Update or insert customer points
+            cursor.execute("""
+                INSERT INTO CustomerPoints (customer_id, points, tier)
+                VALUES (%s, %s, 'Bronze')
+                ON DUPLICATE KEY UPDATE 
+                    points = points + VALUES(points),
+                    tier = CASE 
+                        WHEN points + VALUES(points) >= 1000 THEN 'Gold'
+                        WHEN points + VALUES(points) >= 500 THEN 'Silver'
+                        ELSE 'Bronze'
+                    END,
+                    last_updated = CURRENT_TIMESTAMP
+            """, (rental['customer_id'], points_earned))
+            
+            # Add to reward history
+            cursor.execute("""
+                INSERT INTO RewardHistory 
+                (customer_id, points_earned, transaction_type, description)
+                VALUES (%s, %s, 'RENTAL', 'Points earned from rental completion (admin)')
+            """, (rental['customer_id'], points_earned))
+            
+            conn.commit()
+            
+            return jsonify({
+                "message": "Rental completed successfully",
+                "points_earned": points_earned
+            }), 200
+            
+        except Exception as e:
+            cursor.execute("ROLLBACK")
+            raise e
+            
     except Exception as e:
         logging.error(f"Error completing rental: {str(e)}")
         return jsonify({"error": "Failed to complete rental"}), 500
@@ -487,6 +515,62 @@ def cars(cursor, conn):
     except Exception as e:
         logging.error(f"Error loading cars: {str(e)}")
         return "Error loading cars", 500
+
+
+def calculate_tier(points):
+    if points >= 1000:
+        return 'Gold'
+    elif points >= 500:
+        return 'Silver'
+    else:
+        return 'Bronze'
+
+def calculate_points(amount):
+    # 1 point per ₹100
+    return int(amount / 100)
+
+@app.route('/rewards')
+@db_connection
+def rewards(cursor, conn):
+    customer_id = session.get('customer_id')
+    
+    # Get customer points
+    cursor.execute("""
+        SELECT cp.*, c.first_name, c.last_name 
+        FROM CustomerPoints cp
+        JOIN Customers c ON cp.customer_id = c.customer_id
+        WHERE cp.customer_id = %s
+    """, (customer_id,))
+    
+    points_data = cursor.fetchone()
+    if not points_data:
+        # Initialize points if not exists
+        cursor.execute("""
+            INSERT INTO CustomerPoints (customer_id, points, tier)
+            VALUES (%s, 0, 'Bronze')
+        """, (customer_id,))
+        conn.commit()
+        points_data = {'points': 0, 'tier': 'Bronze'}
+
+    # Get reward history
+    cursor.execute("""
+        SELECT * FROM RewardHistory
+        WHERE customer_id = %s
+        ORDER BY created_at DESC
+        LIMIT 10
+    """, (customer_id,))
+    history = cursor.fetchall()
+
+    # Calculate progress to next tier
+    current_points = points_data['points']
+    next_tier_points = 500 if current_points < 500 else 1000
+    progress = (current_points / next_tier_points) * 100 if current_points < 1000 else 100
+
+    return render_template('rewards.html',
+                         points_data=points_data,
+                         history=history,
+                         progress=progress,
+                         next_tier_points=next_tier_points)
 
 
 @app.route('/admin/customers')

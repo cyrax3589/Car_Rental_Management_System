@@ -21,9 +21,11 @@
         </div>
         
         <div class="nav-links">
-            <a href="{{ url_for('cars') }}" class="nav-link">Cars</a>
-            
             {% if session.get('customer_id') %}
+            <a href="{{ url_for('rewards') }}" class="nav-link rewards-link">
+                <i class="fas fa-crown"></i> Rewards
+            </a>
+            
             <div class="profile-dropdown" id="profileDropdown">
                 <button onclick="toggleDropdown()" class="profile-btn">
                     <i class="fas fa-user-circle"></i>
