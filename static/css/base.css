@@ -108,7 +108,7 @@ body {
 
 .status-tag {
     font-weight: bold;
-    color: #4caf50;
+    color: none;
 }
 
 /* --- Rent Button --- */
@@ -131,6 +131,7 @@ body {
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.6);
 }
 
+/* --- Navbar --- */
 .navbar {
     background-color: rgba(255, 255, 255, 0.1);
     padding: 1rem 2rem;
@@ -141,16 +142,46 @@ body {
 }
 
 /* --- Navbar Brand --- */
+.nav-brand {
+    display: flex;
+    align-items: center;
+}
+
 .nav-brand a {
+    display: flex;
+    align-items: center;
+    text-decoration: none;
+}
+
+.logo-container {
+    display: flex;
+    align-items: center;
+}
+
+.logo-image {
+    height: 50px;
+    max-width: 200px;
+    object-fit: contain;
+}
+
+/* Keep the navigation links and profile on the right */
+.nav-links {
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+.nav-link {
     color: rgb(154, 139, 55);
     font-size: 1.5rem;
     font-weight: 700;
     text-decoration: none;
     text-shadow: 0 1px 2px rgba(154, 139, 55, 0.5);
     letter-spacing: 0.5px;
+    padding-right: 20px;
 }
 
-.nav-brand a:hover {
+.nav-link:hover {
     color: rgba(255, 215, 0, 0.7);
 }
 
@@ -250,15 +281,27 @@ body {
     position: absolute;
     top: 100%;
     right: 0;
-    margin-top: 6px;
-    background-color: rgba(255, 255, 255, 0.1); /* semi-transparent white */
+    margin-top: 20px; /* Increased margin to position below the navbar */
+    background-color: rgba(255, 255, 255, 0.1);
     min-width: 160px;
     box-shadow: 0 8px 20px rgba(0, 0, 0, 0.15);
     border-radius: 10px;
     z-index: 1000;
     overflow: hidden;
-    backdrop-filter: blur(1px); /* subtle glass-like blur */
+    backdrop-filter: blur(1px);
     animation: fadeIn 0.15s ease-in-out;
+}
+
+/* Add a pseudo-element to create space between button and dropdown */
+.profile-dropdown::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    right: 20px;
+    width: 10px;
+    height: 20px; /* Height of the space between navbar and dropdown */
+    background-color: transparent;
+    z-index: 999;
 }
 
 .dropdown-content a {

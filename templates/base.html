@@ -13,31 +13,36 @@
     {% include 'includes/flash_messages.html' %}
     <nav class="navbar">
         <div class="nav-brand">
-            <a href="{{ url_for('home') }}">Premium Car Rentals</a>
-        </div>
-        <div class="nav-links">
-            <div class="auth-buttons">
-                <a href="{{ url_for('cars') }}" class="nav-link">Cars</a>
-                {% if session.customer_id %}
-                <div class="profile-dropdown" id="profileDropdown">
-                    <button class="profile-btn" onclick="toggleDropdown()">
-                        <i class="fas fa-user"></i>
-                        <span>{{ session.customer_name }}</span>
-                        <i class="fas fa-chevron-down"></i>
-                    </button>
-                    <div class="dropdown-content" id="dropdownContent">
-                        <a href="{{ url_for('profile') }}">Profile</a>
-                        <a href="{{ url_for('edit_profile') }}">Edit Profile</a>
-                        <a href="{{ url_for('logout') }}">Logout</a>
-                    </div>
+            <a href="{{ url_for('home') }}">
+                <div class="logo-container">
+                    <img src="{{ url_for('static', filename='images/logo/logo.png') }}" alt="Premium Car Rentals" class="logo-image">
                 </div>
-                {% else %}
-                <a href="{{ url_for('login') }}" class="login-button">Login</a>
-                <a href="{{ url_for('register') }}" class="reg-button">Register</a>
-                {% endif %}
-            </div>
+            </a>
         </div>
         
+        <div class="nav-links">
+            <a href="{{ url_for('cars') }}" class="nav-link">Cars</a>
+            
+            {% if session.get('customer_id') %}
+            <div class="profile-dropdown" id="profileDropdown">
+                <button onclick="toggleDropdown()" class="profile-btn">
+                    <i class="fas fa-user-circle"></i>
+                    {{ session.get('customer_name', 'User') }}
+                    <i class="fas fa-chevron-down"></i>
+                </button>
+                <div id="dropdownContent" class="dropdown-content">
+                    <a href="{{ url_for('profile') }}"><i class="fas fa-user"></i> Profile</a>
+                    <a href="{{ url_for('edit_profile') }}"><i class="fas fa-edit"></i> Edit Profile</a>
+                    <a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                </div>
+            </div>
+            {% else %}
+            <div class="auth-buttons">
+                <a href="{{ url_for('login') }}" class="login-button">Login</a>
+                <a href="{{ url_for('register') }}" class="reg-button">Register</a>
+            </div>
+            {% endif %}
+        </div>
     </nav>
 
     <main class="container">
