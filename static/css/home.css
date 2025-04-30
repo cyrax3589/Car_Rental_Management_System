@@ -661,3 +661,6 @@ body {
 .chatbot{
     color: black;
 }
+.chatbot-widget{
+    background-color: white;
+}
