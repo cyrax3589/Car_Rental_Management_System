@@ -674,3 +674,8 @@ body::-webkit-scrollbar {
 margin-bottom: 2rem;
 
 }
+
+.nav-logo{
+width: 200px;
+height: 300px;
+}

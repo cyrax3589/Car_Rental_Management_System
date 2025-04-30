@@ -156,12 +156,14 @@ body {
 .logo-container {
     display: flex;
     align-items: center;
+    width: 100px;
 }
 
 .logo-image {
-    height: 50px;
-    max-width: 200px;
+    height: 80px;
+    max-width: 300px;
     object-fit: contain;
+    margin: -10px 0; /* Negative margin to prevent navbar expansion */
 }
 
 /* Keep the navigation links and profile on the right */
@@ -322,4 +324,12 @@ body {
 @keyframes fadeIn {
     from { opacity: 0; transform: translateY(-5px); }
     to { opacity: 1; transform: translateY(0); }
+}
+
+.nav-logo {
+    display: flex;
+    width: 100;
+    height: 40px;
+    object-fit: contain;
+    margin: 5px 0;
 }
