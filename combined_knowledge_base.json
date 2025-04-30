@@ -1,5 +1,45 @@
 [
   {
+    "question": "hi",
+    "answer": "Hello! Welcome to Premium Car Rentals. How can I assist you today with your car rental needs?"
+  },
+  {
+    "question": "hello",
+    "answer": "Hello! Welcome to Premium Car Rentals. How can I assist you today with your car rental needs?"
+  },
+  {
+    "question": "hey",
+    "answer": "Hello! Welcome to Premium Car Rentals. How can I assist you today with your car rental needs?"
+  },
+  {
+    "question": "How do I login?",
+    "answer": "To login to your account, click on the 'Login' link at the top of the page. Enter your email address and password, then click the 'Login' button. If you've forgotten your password, you can use the 'Reset Password' option."
+  },
+  {
+    "question": "How do I register for an account?",
+    "answer": "To register for a new account, click on the 'Register' link at the top of the page. Fill in your personal details including first name, last name, email, phone number, address, and password. Then click 'Register' to create your account."
+  },
+  {
+    "question": "How do I rent a car?",
+    "answer": "To rent a car, first browse our available vehicles on the 'Cars' page. When you find a car you like, click on the 'Rent' button. Select your start and end dates, review the total cost, and click 'Confirm Rental' to complete your booking. You must be logged in to rent a car."
+  },
+  {
+    "question": "How do I cancel my rental?",
+    "answer": "To cancel an ongoing rental, go to your 'Profile' page and find the rental in your 'Active Rentals' section. Click on the 'Complete Rental' button to end the rental early. Please note that cancellation fees may apply as per our cancellation policy."
+  },
+  {
+    "question": "How do I view my rental history?",
+    "answer": "To view your rental history, login to your account and go to your 'Profile' page. Your rental history will be displayed in the 'Rental History' section, showing all your past rentals including completed and cancelled bookings."
+  },
+  {
+    "question": "How do I edit my profile?",
+    "answer": "To edit your profile information, login to your account and go to your 'Profile' page. Click on the 'Edit Profile' button. Update your personal details as needed, including the option to change your password, and click 'Save Changes' to update your information."
+  },
+  {
+    "question": "How do I logout?",
+    "answer": "To logout from your account, click on your name in the top navigation bar and select 'Logout' from the dropdown menu. This will end your session and return you to the home page."
+  },
+  {
     "question": "What are your business hours?",
     "answer": "Our car rental service is open from 8:00 AM to 8:00 PM, Monday through Saturday, and from 10:00 AM to 6:00 PM on Sundays."
   },
@@ -30,5 +70,29 @@
   {
     "question": "How do I extend my rental period?",
     "answer": "You can extend your rental by contacting our customer service team or visiting one of our locations. Extensions are subject to vehicle availability."
+  },
+  {
+    "question": "How do I check car availability?",
+    "answer": "To check car availability, visit the 'Cars' page on our website. Available cars will be clearly marked as 'Available' and you can filter the list to see only available vehicles."
+  },
+  {
+    "question": "How do I reset my password?",
+    "answer": "To reset your password, click on the 'Login' link and then select 'Forgot Password'. Enter your email address and follow the instructions sent to your email to create a new password."
+  },
+  {
+    "question": "Can I see my current rentals?",
+    "answer": "Yes, to view your current rentals, login to your account and go to your 'Profile' page. Your active rentals will be displayed in the 'Active Rentals' section."
+  },
+  {
+    "question": "How do I complete a rental?",
+    "answer": "To complete a rental, go to your 'Profile' page and find the rental in your 'Active Rentals' section. Click on the 'Complete Rental' button to finalize the rental process and return the car."
+  },
+  {
+    "question": "What information do I need to provide when registering?",
+    "answer": "When registering, you need to provide your first name, last name, email address, phone number, physical address, and create a password for your account."
+  },
+  {
+    "question": "How can I contact customer support?",
+    "answer": "You can contact our customer support team by phone at (555) 123-4567, by email at support@premiumcarrentals.com, or by using the contact form on our website."
   }
 ]
