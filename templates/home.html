@@ -179,17 +179,21 @@
 
     <div class="chatbot">
     <div id="chatbot-widget" style="position:fixed;bottom:30px;right:30px;z-index:9999;">
-        <div id="chatbot-box" style="width:320px;max-height:400px;background:#fff;border-radius:12px 12px 12px 12px;box-shadow:0 2px 16px rgba(0,0,0,0.2);display:none;flex-direction:column;margin-bottom: 10px;;">
-            <div style="background:#1e293b;color:#fff;padding:10px 16px;border-radius:12px 12px 0 0;font-weight:bold;">AI Assistant
-                <button onclick="closeChatbot()" style="float:right;background:none;border:none;color:#fff;font-size:18px;cursor:pointer;">&times;</button>
+        <div id="chatbot-box" style="width:320px;max-height:450px;background:#fff;border-radius:12px;box-shadow:0 5px 25px rgba(0,0,0,0.2);display:none;flex-direction:column;margin-bottom:15px;overflow:hidden;border:1px solid #e0e0e0;">
+            <div style="background:#2563eb;color:#fff;padding:12px 16px;font-weight:600;display:flex;justify-content:space-between;align-items:center;">
+                <div style="display:flex;align-items:center;gap:8px;">
+                    <img src="{{ url_for('static', filename='images/logo/chatbot_logo.png') }}" alt="AI" style="width:20px;height:20px;">
+                    <span>AI Assistant</span>
+                </div>
+                <button onclick="closeChatbot()" style="background:none;border:none;color:#fff;font-size:18px;cursor:pointer;padding:0;display:flex;align-items:center;justify-content:center;width:24px;height:24px;">&times;</button>
             </div>
-            <div id="chatbot-messages" style="flex:1;overflow-y:auto;padding:12px;height:220px;"></div>
-            <form id="chatbot-form" style="display:flex;border-top:1px solid #eee;" onsubmit="return sendMessage(event)">
-                <input id="chatbot-input" type="text" placeholder="Hi how can i help you?..." autocomplete="off" style="flex:1;padding:10px;border:none;">
-                <button type="submit" style="background:#2563eb;color:#fff;border:none;padding:0 18px;cursor:pointer;">Send</button>
+            <div id="chatbot-messages" style="flex:1;overflow-y:auto;padding:16px;height:280px;background:#f9fafc;font-size:14px;line-height:1.5;"></div>
+            <form id="chatbot-form" style="display:flex;border-top:1px solid #eee;background:white;" onsubmit="return sendMessage(event)">
+                <input id="chatbot-input" type="text" placeholder="Type your message here..." autocomplete="off" style="flex:1;padding:14px;border:none;outline:none;font-size:14px;font-family:'Poppins',sans-serif;">
+                <button type="submit" style="background:#2563eb;color:#fff;border:none;padding:0 18px;cursor:pointer;font-weight:500;transition:background 0.2s ease;">Send</button>
             </form>
         </div>
-        <button onclick="openChatbot()" style="width:60px;height:60px;border-radius:50%;background:#ffffff;color:#fff;font-size:24px;border:none;box-shadow:0 2px 8px rgba(0,0,0,0.2);cursor:pointer;display:flex;align-items:center;justify-content:center;">
+        <button onclick="openChatbot()" style="width:60px;height:60px;border-radius:50%;background:#ffffff;color:#fff;font-size:24px;border:none;box-shadow:0 4px 12px rgba(37,99,235,0.3);cursor:pointer;display:flex;align-items:center;justify-content:center;transition:transform 0.2s ease,box-shadow 0.2s ease;">
             <img src="{{ url_for('static', filename='images/logo/chatbot_logo.png') }}" alt="Chat" style="width:32px;height:32px;">
         </button>
     </div>
@@ -198,14 +202,31 @@
     <script>
     function openChatbot() {
         document.getElementById('chatbot-box').style.display = 'flex';
+        document.getElementById('chatbot-input').focus();
     }
     function closeChatbot() {
         document.getElementById('chatbot-box').style.display = 'none';
     }
     function appendMessage(sender, text) {
         const msgDiv = document.createElement('div');
-        msgDiv.style.margin = '8px 0';
-        msgDiv.innerHTML = `<b>${sender}:</b> ${text}`;
+        msgDiv.style.margin = '10px 0';
+        msgDiv.style.padding = '8px 12px';
+        msgDiv.style.borderRadius = '12px';
+        msgDiv.style.maxWidth = '85%';
+        msgDiv.style.wordBreak = 'break-word';
+        
+        if (sender === 'You') {
+            msgDiv.style.backgroundColor = '#2563eb';
+            msgDiv.style.color = 'white';
+            msgDiv.style.marginLeft = 'auto';
+            msgDiv.innerHTML = `${text}`;
+        } else {
+            msgDiv.style.backgroundColor = '#e9ecef';
+            msgDiv.style.color = '#333';
+            msgDiv.style.marginRight = 'auto';
+            msgDiv.innerHTML = `${text}`;
+        }
+        
         document.getElementById('chatbot-messages').appendChild(msgDiv);
         document.getElementById('chatbot-messages').scrollTop = document.getElementById('chatbot-messages').scrollHeight;
     }
@@ -216,7 +237,19 @@
         if (!text) return false;
         appendMessage('You', text);
         input.value = '';
-        appendMessage('Bot', '<span style="color:#888;">Thinking...</span>');
+        
+        const loadingDiv = document.createElement('div');
+        loadingDiv.style.margin = '10px 0';
+        loadingDiv.style.padding = '8px 12px';
+        loadingDiv.style.borderRadius = '12px';
+        loadingDiv.style.backgroundColor = '#e9ecef';
+        loadingDiv.style.color = '#333';
+        loadingDiv.style.marginRight = 'auto';
+        loadingDiv.style.display = 'flex';
+        loadingDiv.style.alignItems = 'center';
+        loadingDiv.innerHTML = '<div style="width:40px;text-align:center;"><span style="display:inline-block;animation:pulse 1.2s infinite;font-size:14px;">...</span></div>';
+        document.getElementById('chatbot-messages').appendChild(loadingDiv);
+        document.getElementById('chatbot-messages').scrollTop = document.getElementById('chatbot-messages').scrollHeight;
         
         // Call RAG chatbot API
         const resp = await fetch('/RAG_chatbot', {
@@ -226,7 +259,7 @@
         });
         const data = await resp.json();
         
-        // Remove "Thinking..." and add response
+        // Remove loading indicator and add response
         const messagesDiv = document.getElementById('chatbot-messages');
         messagesDiv.removeChild(messagesDiv.lastChild);
         appendMessage('Bot', data.reply || 'Sorry, no response.');
