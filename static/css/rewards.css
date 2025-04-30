@@ -88,6 +88,7 @@ body {
   font-weight: bold;
   cursor: pointer;
   transition: 0.3s;
+  margin-top: 20px;
 }
 
 .redeem-btn:hover:not(:disabled) {
@@ -98,6 +99,32 @@ body {
   background-color: #444;
   color: #999;
   cursor: not-allowed;
+}
+
+.bronze-redeem-btn {
+    background-color: rgba(11, 185, 48, 0.8);
+    color: #121212;
+    padding: 10px 20px;
+    border: none;
+    border-radius: 8px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: 0.3s; 
+}
+
+.bronze-redeem-btn:hover {
+    background-color: rgba(11, 185, 48, 0.4);
+    color: #121212;
+}
+
+.bronze-redeem-btn:hover:not(:disabled) {
+    background-color: #0bb930;
+}
+  
+.bronze-redeem-btn:disabled {
+background-color: #bf2020;
+color: #0a0a0a;
+cursor: not-allowed;
 }
 
 .tier-badge {
