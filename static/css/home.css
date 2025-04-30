@@ -27,7 +27,7 @@ body {
 .hero {
     background-color: transparent;
     padding: 4rem 3rem;
-    margin: 8rem auto 4rem;
+    margin: 1rem auto 4rem;
     max-width: 1000px;
     text-align: center;
     display: flex;
@@ -660,7 +660,4 @@ body {
 }
 .chatbot{
     color: black;
-}
-.chatbot-widget{
-    background-color: white;
 }
