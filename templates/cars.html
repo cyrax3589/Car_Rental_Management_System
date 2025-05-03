@@ -13,7 +13,7 @@
             <form method="GET" action="{{ url_for('cars') }}" id="filterForm">
                 <!-- Make filter -->
                 <select name="make" id="makeFilter" class="filter-dropdown" onchange="this.form.submit()">
-                    <option value="">All Makes</option>
+                    <option value="">All Cars</option>
                     {% for make in makes %}
                         <option value="{{ make }}" {% if selected_make == make %}selected{% endif %}>{{ make }}</option>
                     {% endfor %}
