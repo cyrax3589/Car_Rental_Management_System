@@ -12,20 +12,30 @@
         <div class="filter-container">
             <form method="GET" action="{{ url_for('cars') }}" id="filterForm">
                 <!-- Make filter -->
-                <select name="make" id="makeFilter" class="filter-dropdown" onchange="this.form.submit()">
-                    <option value="">All Cars</option>
-                    {% for make in makes %}
-                        <option value="{{ make }}" {% if selected_make == make %}selected{% endif %}>{{ make }}</option>
-                    {% endfor %}
-                </select>
+                <div class="fancy-select">
+                    <select name="make" id="makeFilter" class="filter-dropdown" onchange="this.form.submit()">
+                        <option value="">All Cars</option>
+                        {% for make in makes %}
+                            <option value="{{ make }}" {% if selected_make == make %}selected{% endif %}>{{ make }}</option>
+                        {% endfor %}
+                    </select>
+                    <div class="select-icon">
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
 
                 <!-- Sort options -->
-                <select name="sort" id="sortFilter" class="filter-dropdown" onchange="this.form.submit()">
-                    <option value="">Sort By</option>
-                    <option value="price_asc" {% if selected_sort == 'price_asc' %}selected{% endif %}>Price: Low to High</option>
-                    <option value="price_desc" {% if selected_sort == 'price_desc' %}selected{% endif %}>Price: High to Low</option>
-                    <option value="status" {% if selected_sort == 'status' %}selected{% endif %}>Availability</option>
-                </select>
+                <div class="fancy-select">
+                    <select name="sort" id="sortFilter" class="filter-dropdown" onchange="this.form.submit()">
+                        <option value="">Sort By</option>
+                        <option value="price_asc" {% if selected_sort == 'price_asc' %}selected{% endif %}>Price: Low to High</option>
+                        <option value="price_desc" {% if selected_sort == 'price_desc' %}selected{% endif %}>Price: High to Low</option>
+                        <option value="status" {% if selected_sort == 'status' %}selected{% endif %}>Availability</option>
+                    </select>
+                    <div class="select-icon">
+                        <i class="fas fa-chevron-down"></i>
+                    </div>
+                </div>
             </form>
         </div>
         
@@ -39,7 +49,7 @@
                     <p class="car-description">Premium vehicle for an exceptional driving experience</p>
                     <div class="price-status-container">
                         <span class="price">${{ "%.0f"|format(car.price_per_day) }}/day</span>
-                        <span class="status-tag {% if car.status == 'Rented' %}status-rented{% endif %}">{{ car.status }}</span>
+                        <span class="status-tag {% if car.status == 'Rented' %}status-rented{% elif car.status == 'Available' %}status-available{% endif %}">{{ car.status }}</span>
                     </div>
                     {% if car.status == 'Available' %}
                         {% if session.customer_id %}
@@ -63,10 +73,17 @@
 
 <style>
 .car-card.rented {
+    color: rgb(17, 193, 17);
     opacity: 0.8;
 }
 
+.status-tag.status-available {
+    color: #0dc10d;
+    background-color: none;
+}
+
 .status-tag.status-rented {
+    color: #ff4444;
     background-color: none;
 }
 
@@ -82,23 +99,59 @@
 }
 
 .filter-container {
-    margin-bottom: 20px;
+    margin-bottom: 30px;
     text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+    gap: 15px;
+}
+
+.fancy-select {
+    position: relative;
+    display: inline-block;
+    min-width: 180px;
 }
 
 .filter-dropdown {
-    padding: 8px 12px;
-    border-radius: 4px;
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 100%;
+    padding: 10px 35px 10px 15px;
+    border-radius: 6px;
     border: 1px solid #ddd;
     background-color: white;
     font-size: 14px;
-    min-width: 150px;
-    margin-left: 10px;
+    font-weight: 500;
+    color: #333;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    cursor: pointer;
 }
 
 .filter-dropdown:focus {
     outline: none;
     border-color: #007bff;
+    box-shadow: 0 3px 8px rgba(0,123,255,0.2);
+}
+
+.select-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #666;
+    transition: all 0.3s ease;
+}
+
+.fancy-select:hover .filter-dropdown {
+    border-color: #007bff;
+}
+
+.fancy-select:hover .select-icon {
+    color: #007bff;
 }
 </style>
 {% endblock %}

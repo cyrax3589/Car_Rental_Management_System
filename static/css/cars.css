@@ -115,55 +115,95 @@ body {
     border-radius: 20px;
     font-size: 0.8rem;
     font-weight: 500;
+    /* Remove color: white here to avoid override */
 }
 
-.car-details {
-    padding: 20px;
+.car-card.rented {
+    color: rgb(17, 193, 17);
+    opacity: 0.8;
 }
 
-.car-title {
-    margin: 0 0 10px;
-    font-size: 1.4rem;
-    color: #333;
+.status-tag.status-available {
+    color: #0dc10d;
+    background-color: none;
 }
 
-.car-description {
-    color: #666;
-    margin-bottom: 15px;
-    font-size: 0.9rem;
+.status-tag.status-rented {
+    color: #ff4444;
+    background-color: none;
 }
 
-.car-features {
+.rented-info {
+    color: #ff4444;
+    text-align: center;
+    padding: 10px;
+    font-weight: 500;
+}
+
+.user-rented {
+    color: #ff9900;
+}
+
+.filter-container {
+    margin-bottom: 30px;
+    text-align: right;
     display: flex;
+    justify-content: flex-end;
+    align-items: center;
     gap: 15px;
-    margin-bottom: 15px;
-    font-size: 0.9rem;
-    color: #555;
 }
 
-.feature i {
-    margin-right: 5px;
+.fancy-select {
+    position: relative;
+    display: inline-block;
+    min-width: 180px;
+}
+
+.filter-dropdown {
+    appearance: none;
+    -webkit-appearance: none;
+    -moz-appearance: none;
+    width: 100%;
+    padding: 10px 35px 10px 15px;
+    border-radius: 6px;
+    border: 1px solid #ddd;
+    background-color: white;
+    font-size: 14px;
+    font-weight: 500;
+    color: #333;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.05);
+    transition: all 0.3s ease;
+    cursor: pointer;
+}
+
+.filter-dropdown:focus {
+    outline: none;
+    border-color: #007bff;
+    box-shadow: 0 3px 8px rgba(0,123,255,0.2);
+}
+
+.select-icon {
+    position: absolute;
+    right: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    pointer-events: none;
+    color: #666;
+    transition: all 0.3s ease;
+}
+
+.fancy-select:hover .filter-dropdown {
+    border-color: #007bff;
+}
+
+.fancy-select:hover .select-icon {
     color: #007bff;
 }
 
-.price-status-container {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    margin-bottom: 15px;
-}
-
-.price {
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: #333;
-}
-
-.status-tag {
-    padding: 5px 10px;
-    border-radius: 20px;
-    font-size: 0.8rem;
-    font-weight: 500;
+.status-tag.status-rented {
+    background-color: #fdeaea;
+    color: #dc3545 !important; /* Red text */
+    border: 1px solid #dc3545;
 }
 
 .rent-btn {
