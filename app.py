@@ -268,31 +268,53 @@ def login(cursor, conn):
 
 @app.route('/cars', methods=['GET'])
 @db_connection
-def get_available_cars(cursor, conn):
-    try:
-        # Get customer ID from session
-        customer_id = session.get('customer_id')
-        
-        # Modified query to fetch ALL cars with rental information
-        cursor.execute("""
-            SELECT c.*, 
-                   r.customer_id as rented_by,
-                   DATE_FORMAT(r.end_date, '%d %b %Y') as end_date
-            FROM Cars c
-            LEFT JOIN Rentals r ON c.car_id = r.car_id AND r.status = 'Ongoing'
-            ORDER BY 
-                CASE 
-                    WHEN c.status = 'Available' THEN 1
-                    WHEN r.customer_id = %s THEN 2
-                    ELSE 3 
-                END
-        """, (customer_id or 0,))
-        
-        cars = cursor.fetchall()
-        return render_template("cars.html", cars=cars)
-    except Exception as e:
-        logging.error(f"Error loading cars: {str(e)}")
-        return "Error loading cars", 500
+def cars(cursor, conn):
+    make = request.args.get('make')
+    sort = request.args.get('sort')
+
+    query = "SELECT * FROM cars"
+    filters = []
+    params = []
+
+    if make:
+        filters.append("make = %s")
+        params.append(make)
+
+    if filters:
+        query += " WHERE " + " AND ".join(filters)
+
+    # Build the ORDER BY clause
+    order_by_clauses = ["CASE status WHEN 'Available' THEN 0 ELSE 1 END"]  # ensures Available cars come first
+
+    if sort == "price_asc":
+        order_by_clauses.append("price_per_day ASC")
+    elif sort == "price_desc":
+        order_by_clauses.append("price_per_day DESC")
+    elif sort == "status":
+        order_by_clauses.append("status ASC")
+
+    if order_by_clauses:
+        query += " ORDER BY " + ", ".join(order_by_clauses)
+
+    cursor.execute(query, tuple(params))
+    cars = cursor.fetchall()
+
+    # Get distinct makes for filter dropdown
+    cursor.execute("SELECT DISTINCT make FROM cars")
+    makes = [row['make'] for row in cursor.fetchall()]
+
+    selected_make = make
+    selected_sort = sort
+
+    return render_template(
+        'cars.html',
+        cars=cars,
+        makes=makes,
+        selected_make=selected_make,
+        selected_sort=selected_sort
+    )
+
+
 
 
 @app.route('/rentals', methods=['POST'])
@@ -491,25 +513,7 @@ def home():
 def root():
     return redirect(url_for('home'))
 
-@app.route('/cars')
-@db_connection
-def cars(cursor, conn):
-    try:
-        # Modified query to fetch ALL cars regardless of status
-        cursor.execute("""
-            SELECT * FROM Cars 
-            ORDER BY 
-                CASE 
-                    WHEN status = 'Available' THEN 1 
-                    WHEN status = 'Rented' THEN 2 
-                    ELSE 3 
-                END
-        """)
-        cars = cursor.fetchall()
-        return render_template('cars.html', cars=cars, customer_name=session.get('customer_name'))
-    except Exception as e:
-        logging.error(f"Error loading cars: {str(e)}")
-        return "Error loading cars", 500
+
 
 
 def calculate_tier(points):

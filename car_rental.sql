@@ -86,6 +86,20 @@ VALUES
     ('RC F', 'Lexus', 2024, 'LEX001', 'Available', 140.00),
     ('Stinger GT', 'Kia', 2024, 'KIA001', 'Available', 90.00);
 
+INSERT IGNORE INTO Cars (model, make, year, registration_number, status, price_per_day)
+VALUES 
+    ('EV6 GT', 'Kia', 2024, 'E1V2G', 'Available', 250.00),
+    ('Cerato GT', 'Kia', 2024, 'C1T2G', 'Available', 215.00),
+    ('Carnival', 'Kia', 2024, 'C1R2L', 'Available', 325.00),
+    ('AMG GT', 'Mercedes-Benz', 2024, 'A1M2GT', 'Available', 425.00),
+    ('SL-Class', 'Mercedes-Benz', 2024, 'S1L2C', 'Available', 550.00),
+    ('PB18 E-Tron', 'Audi', 2024, 'P1B2ET', 'Available', 1050.00),
+    ('AI:Trail Quattro', 'Audi', 2024, 'AI1TQ', 'Available', 950.00),
+    ('918 Spyder', 'Porsche', 2024, 'S1P2DR', 'Available', 650.00),
+    ('911 GT3 RS', 'Porsche', 2024, 'G1T2RS', 'Available', 400.00),
+    ('XUV 700', 'Mahindra', 2024, 'X1UV27', 'Available', 200.00),
+    ('XEV 9e', 'Mahindra', 2024, 'X1EV2E', 'Available', 250.00),
+
     -- Create CustomerPoints table
 CREATE TABLE IF NOT EXISTS CustomerPoints (
     customer_id INT PRIMARY KEY,
@@ -111,3 +125,5 @@ CREATE TABLE IF NOT EXISTS RewardHistory (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     FOREIGN KEY (customer_id) REFERENCES Customers(customer_id)
 );
+
+select * from car_rental.cars;

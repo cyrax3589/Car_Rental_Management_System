@@ -10,51 +10,52 @@
     {% block extra_css %}{% endblock %}
 </head>
 <body>
-    {% include 'includes/flash_messages.html' %}
-    <nav class="navbar">
-        <div class="nav-brand">
-            <a href="{{ url_for('home') }}">
-                <div class="logo-container">
-                    <img src="{{ url_for('static', filename='images/logo/nav-logo.gif') }}" alt="Premium Car Rentals" class="nav-logo">
-                </div>
-            </a>
-        </div>
-        
-        <div class="nav-links">
-            {% if session.get('customer_id') %}
-            <a href="{{ url_for('rewards') }}" class="nav-link rewards-link">
-                <i class="fas fa-crown"></i> Rewards
-            </a>
+    <div class="page-wrapper">
+        {% include 'includes/flash_messages.html' %}
+        <nav class="navbar">
+            <div class="nav-brand">
+                <a href="{{ url_for('home') }}">
+                    <div class="logo-container">
+                        <img src="{{ url_for('static', filename='images/logo/nav-logo.gif') }}" alt="Premium Car Rentals" class="nav-logo">
+                    </div>
+                </a>
+            </div>
             
-            <div class="profile-dropdown" id="profileDropdown">
-                <button onclick="toggleDropdown()" class="profile-btn">
-                    <i class="fas fa-user-circle"></i>
-                    {{ session.get('customer_name', 'User') }}
-                    <i class="fas fa-chevron-down"></i>
-                </button>
-                <div id="dropdownContent" class="dropdown-content">
-                    <a href="{{ url_for('profile') }}"><i class="fas fa-user"></i> Profile</a>
-                    <a href="{{ url_for('edit_profile') }}"><i class="fas fa-edit"></i> Edit Profile</a>
-                    <a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+            <div class="nav-links">
+                {% if session.get('customer_id') %}
+                <a href="{{ url_for('rewards') }}" class="nav-link rewards-link">
+                    <i class="fas fa-crown"></i> Rewards
+                </a>
+                
+                <div class="profile-dropdown" id="profileDropdown">
+                    <button onclick="toggleDropdown()" class="profile-btn">
+                        <i class="fas fa-user-circle"></i>
+                        {{ session.get('customer_name', 'User') }}
+                        <i class="fas fa-chevron-down"></i>
+                    </button>
+                    <div id="dropdownContent" class="dropdown-content">
+                        <a href="{{ url_for('profile') }}"><i class="fas fa-user"></i> Profile</a>
+                        <a href="{{ url_for('edit_profile') }}"><i class="fas fa-edit"></i> Edit Profile</a>
+                        <a href="{{ url_for('logout') }}"><i class="fas fa-sign-out-alt"></i> Logout</a>
+                    </div>
                 </div>
+                {% else %}
+                <div class="auth-buttons">
+                    <a href="{{ url_for('login') }}" class="login-button">Login</a>
+                    <a href="{{ url_for('register') }}" class="reg-button">Register</a>
+                </div>
+                {% endif %}
             </div>
-            {% else %}
-            <div class="auth-buttons">
-                <a href="{{ url_for('login') }}" class="login-button">Login</a>
-                <a href="{{ url_for('register') }}" class="reg-button">Register</a>
-            </div>
-            {% endif %}
-        </div>
-    </nav>
+        </nav>
 
-    <main class="container">
-        {% block content %}{% endblock %}
-    </main>
+        <main class="container">
+            {% block content %}{% endblock %}
+        </main>
 
-    <footer>
-        <p>&copy; 2024 Car Rental System. All rights reserved.</p>
-    </footer>
-    
+        <footer>
+            <p>&copy; 2024 Car Rental System. All rights reserved.</p>
+        </footer>
+    </div> <!-- End of page-wrapper -->
 
     {% block extra_js %}{% endblock %}
     <script>
@@ -62,8 +63,7 @@
             const dropdown = document.getElementById("dropdownContent");
             dropdown.style.display = dropdown.style.display === "block" ? "none" : "block";
         }
-    
-        // Optional: Close dropdown when clicking outside
+
         window.addEventListener("click", function (e) {
             const profileDropdown = document.getElementById("profileDropdown");
             if (!profileDropdown.contains(e.target)) {
@@ -71,6 +71,5 @@
             }
         });
     </script>
-    
 </body>
 </html>

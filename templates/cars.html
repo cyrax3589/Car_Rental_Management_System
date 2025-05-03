@@ -7,6 +7,29 @@
     
     <div class="cars-section">
         <h2 class="section-title">All Cars</h2>
+        
+        <!-- Filter and Sort dropdowns -->
+        <div class="filter-container">
+            <form method="GET" action="{{ url_for('cars') }}" id="filterForm">
+                <!-- Make filter -->
+                <select name="make" id="makeFilter" class="filter-dropdown" onchange="this.form.submit()">
+                    <option value="">All Makes</option>
+                    {% for make in makes %}
+                        <option value="{{ make }}" {% if selected_make == make %}selected{% endif %}>{{ make }}</option>
+                    {% endfor %}
+                </select>
+
+                <!-- Sort options -->
+                <select name="sort" id="sortFilter" class="filter-dropdown" onchange="this.form.submit()">
+                    <option value="">Sort By</option>
+                    <option value="price_asc" {% if selected_sort == 'price_asc' %}selected{% endif %}>Price: Low to High</option>
+                    <option value="price_desc" {% if selected_sort == 'price_desc' %}selected{% endif %}>Price: High to Low</option>
+                    <option value="status" {% if selected_sort == 'status' %}selected{% endif %}>Availability</option>
+                </select>
+            </form>
+        </div>
+        
+        <!-- Car listing -->
         <div class="car-grid">
             {% for car in cars %}
             <div class="car-card {% if car.status == 'Rented' %}rented{% endif %}">
@@ -56,6 +79,26 @@
 
 .user-rented {
     color: #ff9900;
+}
+
+.filter-container {
+    margin-bottom: 20px;
+    text-align: right;
+}
+
+.filter-dropdown {
+    padding: 8px 12px;
+    border-radius: 4px;
+    border: 1px solid #ddd;
+    background-color: white;
+    font-size: 14px;
+    min-width: 150px;
+    margin-left: 10px;
+}
+
+.filter-dropdown:focus {
+    outline: none;
+    border-color: #007bff;
 }
 </style>
 {% endblock %}
