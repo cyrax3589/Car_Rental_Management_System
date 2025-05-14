@@ -10,7 +10,7 @@ body {
 .cars-hero {
     text-align: center;
     padding: 3rem 2rem 2rem;
-    background-image: url('/static/images/base.jpg'); /* replace with your cityscape image path */
+    background-image: url('/static/images/allcarsbg.jpg'); /* replace with your cityscape image path */
     background-size: cover;
     background-position: center;
     color: white;
