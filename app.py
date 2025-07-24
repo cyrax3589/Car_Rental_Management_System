@@ -1048,6 +1048,12 @@ def manage_cars(cursor, conn):
         cursor.execute("DELETE FROM Cars WHERE car_id = %s", (car_id,))
         conn.commit()
         return jsonify({"message": "Car deleted successfully"})
+    
+
+    
+@app.route('/payment_gateway', methods=['GET', 'POST'])
+def payments():
+    return render_template('payments.html')
 
 
 

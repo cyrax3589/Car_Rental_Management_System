@@ -1,0 +1,102 @@
+/* ====================
+   Theme Variables
+   ==================== */
+:root {
+  --bg-color: #f4f6f9;
+  --primary-color: rgb(45, 137, 239);
+  --accent-color: #ffffff;
+  --text-color: #333;
+  --input-bg: #ffffff;
+  --border-radius: 10px;
+  --font-family: 'Segoe UI', sans-serif;
+  --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  --background-image: url('/static/images/payments.jpg');
+}
+
+/* ====================
+   Global Styles
+   ==================== */
+body {
+  margin: 0;
+  font-family: var(--font-family);
+  background: var(--bg-color) url(var(--background-image)) no-repeat center center/cover;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background-image: url('/static/images/payments.jpg');
+}
+
+/* ====================
+   Payment Box
+   ==================== */
+.payment-wrapper {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 30px;
+  border-radius: var(--border-radius);
+  box-shadow: var(--box-shadow);
+  max-width: 400px;
+  width: 100%;
+}
+
+.payment-title {
+  text-align: center;
+  margin-bottom: 20px;
+  color: var(--text-color);
+}
+
+.payment-form .form-group {
+  margin-bottom: 15px;
+}
+
+.payment-form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.payment-form input {
+  width: 100%;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: var(--border-radius);
+  background-color: var(--input-bg);
+  box-sizing: border-box;
+  font-size: 14px;
+}
+
+.form-row {
+  display: flex;
+  gap: 10px;
+}
+
+.form-row .form-group {
+  flex: 1;
+}
+
+.pay-button {
+  width: 100%;
+  padding: 12px;
+  background-color: var(--primary-color);
+  color: white;
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 16px;
+  cursor: pointer;
+  margin-top: 15px;
+  transition: background 0.3s;
+}
+
+.pay-button:hover {
+  background: rgba(45, 137, 239, 25);;
+}
+
+/* ====================
+   Responsive
+   ==================== */
+@media (max-width: 480px) {
+  .form-row {
+    flex-direction: column;
+  }
+}
