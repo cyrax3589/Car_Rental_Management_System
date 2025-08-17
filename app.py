@@ -1051,9 +1051,73 @@ def manage_cars(cursor, conn):
     
 
     
-@app.route('/payment_gateway', methods=['GET', 'POST'])
-def payments():
+@app.route('/payments', methods=['GET', 'POST'])
+@db_connection
+def payments(cursor, conn):
+    if not session.get('customer_id'):
+        flash('Please login to rent a car', 'error')
+        return redirect(url_for('login'))
+    
+    # For GET requests, redirect to cars page
+    if request.method == 'GET':
+        return redirect(url_for('cars'))
+    
+    # For POST requests, render the payments page
     return render_template('payments.html')
+
+@app.route('/confirm_booking', methods=['POST'])
+@db_connection
+def confirm_booking(cursor, conn):
+    if not session.get('customer_id'):
+        flash('Please login to rent a car', 'error')
+        return redirect(url_for('login'))
+    
+    try:
+        # Get form data
+        car_id = request.form.get('car_id')
+        start_date = request.form.get('start_date')
+        end_date = request.form.get('end_date')
+        payment_method = request.form.get('payment_method')
+        customer_id = session.get('customer_id')
+        
+        # Validate data
+        if not all([car_id, start_date, end_date, payment_method, customer_id]):
+            flash("Missing required information", "error")
+            return redirect(url_for('cars'))
+        
+        # Convert dates
+        start_date = datetime.strptime(start_date, '%Y-%m-%d')
+        end_date = datetime.strptime(end_date, '%Y-%m-%d')
+        
+        # Calculate rental duration and cost
+        cursor.execute("SELECT price_per_day FROM Cars WHERE car_id = %s AND status = 'Available'", (car_id,))
+        car = cursor.fetchone()
+        
+        if not car:
+            flash("Car is not available for rent", "error")
+            return redirect(url_for('cars'))
+        
+        days = (end_date - start_date).days
+        total_cost = days * car['price_per_day']
+        
+        # Insert rental record
+        cursor.execute("""
+            INSERT INTO Rentals (customer_id, car_id, start_date, end_date, total_cost, status) 
+            VALUES (%s, %s, %s, %s, %s, 'Ongoing')
+        """, (customer_id, car_id, start_date, end_date, total_cost))
+        
+        # Update car status
+        cursor.execute("UPDATE Cars SET status = 'Rented' WHERE car_id = %s", (car_id,))
+        
+        conn.commit()
+        
+        flash("Booking confirmed successfully!", "success")
+        return redirect(url_for('cars'))
+        
+    except Exception as e:
+        conn.rollback()
+        flash(f"Error confirming booking: {str(e)}", "error")
+        return redirect(url_for('cars'))
 
 
 

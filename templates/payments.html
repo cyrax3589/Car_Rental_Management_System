@@ -62,7 +62,11 @@
   <!-- Dynamic Form Sections -->
   <div id="payment-details">
     <!-- Card Form -->
-    <form id="card-form" class="payment-form">
+    <form id="card-form" class="payment-form" action="{{ url_for('confirm_booking') }}" method="POST">
+      <input type="hidden" name="payment_method" value="card">
+      <input type="hidden" name="car_id" value="{{ request.form.get('car_id') }}">
+      <input type="hidden" name="start_date" value="{{ request.form.get('start_date') }}">
+      <input type="hidden" name="end_date" value="{{ request.form.get('end_date') }}">
       <div class="form-group">
         <label>Cardholder Name</label>
         <input type="text" placeholder="Enter Name" required>
@@ -85,19 +89,28 @@
     </form>
 
     <!-- UPI Form -->
-    <form id="upi-form" class="payment-form" style="display:none;">
+    <form id="upi-form" class="payment-form" style="display:none;" action="{{ url_for('confirm_booking') }}" method="POST">
+      <input type="hidden" name="payment_method" value="upi">
+      <input type="hidden" name="car_id" value="{{ request.form.get('car_id') }}">
+      <input type="hidden" name="start_date" value="{{ request.form.get('start_date') }}">
+      <input type="hidden" name="end_date" value="{{ request.form.get('end_date') }}">
       <div class="form-group">
         <label>UPI ID</label>
-        <input type="text" placeholder="example@upi" required>
+        <input type="text" id="upi-id" name="upi_id" placeholder="example@upi" required>
+        <span id="upi-error" style="color: red; display: none;">UPI ID must contain @ symbol</span>
       </div>
-      <button class="pay-button">Pay Now</button>
+      <button class="pay-button" id="upi-submit">Pay Now</button>
     </form>
 
     <!-- Cash -->
-    <div id="cash-form" class="payment-form" style="display:none; text-align: center;">
+    <form id="cash-form" class="payment-form" style="display:none; text-align: center;" action="{{ url_for('confirm_booking') }}" method="POST">
+      <input type="hidden" name="payment_method" value="cash">
+      <input type="hidden" name="car_id" value="{{ request.form.get('car_id') }}">
+      <input type="hidden" name="start_date" value="{{ request.form.get('start_date') }}">
+      <input type="hidden" name="end_date" value="{{ request.form.get('end_date') }}">
       <p>You can pay with cash at the counter during vehicle handover.</p>
-      <button  class="pay-button">Confirm Booking</button>
-    </div>
+      <button class="pay-button">Confirm Booking</button>
+    </form>
   </div>
 </div>
 
@@ -137,6 +150,39 @@
       } else {
         e.target.style.borderColor = "";      // reset if valid
       }
+    }
+  });
+
+  // UPI ID validation
+  const upiIdInput = document.getElementById('upi-id');
+  const upiError = document.getElementById('upi-error');
+  const upiSubmit = document.getElementById('upi-submit');
+
+  upiIdInput.addEventListener('input', function() {
+    if (this.value === '') {
+      // Return to normal state when empty
+      upiError.style.display = 'none';
+      upiSubmit.disabled = false;
+      this.style.borderColor = '';
+    } else if (this.value.includes('@')) {
+      // Valid UPI ID with @ symbol
+      upiError.style.display = 'none';
+      upiSubmit.disabled = false;
+      this.style.borderColor = '';
+    } else {
+      // Invalid UPI ID without @ symbol
+      upiError.style.display = 'block';
+      upiSubmit.disabled = true;
+      this.style.borderColor = 'red';
+    }
+  });
+
+  // Validate on form submission
+  upiForm.addEventListener('submit', function(e) {
+    if (!upiIdInput.value.includes('@')) {
+      e.preventDefault();
+      upiError.style.display = 'block';
+      upiIdInput.style.borderColor = 'red';
     }
   });
 });
