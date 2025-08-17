@@ -2,7 +2,7 @@
    Theme Variables
    ==================== */
 :root {
-  --bg-color: #f4f6f9;
+
   --primary-color: rgb(45, 137, 239);
   --accent-color: #ffffff;
   --text-color: #333;
@@ -11,6 +11,7 @@
   --font-family: 'Segoe UI', sans-serif;
   --box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
   --background-image: url('/static/images/payments.jpg');
+  --transition: 0.3s ease;
 }
 
 /* ====================
@@ -19,30 +20,80 @@
 body {
   margin: 0;
   font-family: var(--font-family);
-  background: var(--bg-color) url(var(--background-image)) no-repeat center center/cover;
+  background: 
+    linear-gradient(rgba(255, 255, 255, 0.5), rgba(255, 255, 255, 0.1)), /* Light overlay */
+    url('/static/images/payments.jpg') no-repeat center center / cover;
   display: flex;
   align-items: center;
   justify-content: center;
   min-height: 100vh;
-  background-image: url('/static/images/payments.jpg');
 }
+
+
+
 
 /* ====================
    Payment Box
    ==================== */
 .payment-wrapper {
-  background-color: rgba(255, 255, 255, 0.9);
+  background-color: rgba(255, 255, 255, 0.92);
   padding: 30px;
   border-radius: var(--border-radius);
   box-shadow: var(--box-shadow);
-  max-width: 400px;
+  max-width: 420px;
   width: 100%;
+  animation: fadeIn var(--transition);
 }
 
 .payment-title {
   text-align: center;
   margin-bottom: 20px;
   color: var(--text-color);
+  font-weight: 700;
+  font-size: 1.4rem;
+}
+
+/* ====================
+   Payment Method Options
+   ==================== */
+.payment-options {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+  gap: 10px;
+}
+
+.payment-options label {
+  flex: 1;
+  padding: 12px;
+  border: 2px solid #ccc;
+  border-radius: var(--border-radius);
+  background: var(--accent-color);
+  text-align: center;
+  font-weight: 600;
+  color: var(--text-color);
+  cursor: pointer;
+  transition: all var(--transition);
+  box-shadow: var(--box-shadow);
+}
+
+.payment-options input[type="radio"] {
+  display: none;
+}
+
+.payment-options input[type="radio"]:checked + label {
+  border-color: var(--primary-color);
+  background: var(--primary-color);
+  color: #fff;
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(45, 137, 239, 0.3);
+}
+
+/* ====================
+   Forms
+   ==================== */
+.payment-form {
+  animation: fadeIn var(--transition);
 }
 
 .payment-form .form-group {
@@ -64,6 +115,13 @@ body {
   background-color: var(--input-bg);
   box-sizing: border-box;
   font-size: 14px;
+  transition: border var(--transition), box-shadow var(--transition);
+}
+
+.payment-form input:focus {
+  border-color: var(--primary-color);
+  box-shadow: 0 0 6px rgba(45, 137, 239, 0.3);
+  outline: none;
 }
 
 .form-row {
@@ -75,6 +133,9 @@ body {
   flex: 1;
 }
 
+/* ====================
+   Buttons
+   ==================== */
 .pay-button {
   width: 100%;
   padding: 12px;
@@ -83,13 +144,23 @@ body {
   border: none;
   border-radius: var(--border-radius);
   font-size: 16px;
+  font-weight: 600;
   cursor: pointer;
   margin-top: 15px;
-  transition: background 0.3s;
+  transition: background var(--transition), transform var(--transition);
 }
 
 .pay-button:hover {
-  background: rgba(45, 137, 239, 25);;
+  background: rgba(45, 137, 239, 0.9);
+  transform: translateY(-2px);
+}
+
+/* ====================
+   Animations
+   ==================== */
+@keyframes fadeIn {
+  from { opacity: 0; transform: translateY(5px); }
+  to { opacity: 1; transform: translateY(0); }
 }
 
 /* ====================
@@ -99,4 +170,62 @@ body {
   .form-row {
     flex-direction: column;
   }
+  .payment-options {
+    flex-direction: column;
+  }
+}
+.payment-options-list {
+  display: flex;
+  flex-direction: column;
+  border: 1px solid #ddd;
+  border-radius: 12px;
+  overflow: hidden;
+}
+
+.payment-option {
+  border-bottom: 1px solid #eee;
+  cursor: pointer;
+}
+
+.payment-option:last-child {
+  border-bottom: none;
+}
+
+.payment-option input {
+  display: none;
+}
+
+.option-content {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 14px 16px;
+  transition: background 0.3s, border 0.3s;
+}
+
+.option-left {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  color: var(--text-color);
+}
+
+.option-right img {
+  height: 20px;
+  margin-left: 6px;
+}
+
+.payment-option input:checked + .option-content {
+  background: #f0f7ff;
+  border-left: 4px solid var(--primary-color);
+}
+
+.payment-option:hover .option-content {
+  background: #fafafa;
+}
+
+#card-number-mask {
+  letter-spacing: 2px;
+  font-size: 16px;
 }
