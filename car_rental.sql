@@ -1,5 +1,4 @@
--- Active: 1744720891582@@127.0.0.1@3306@car_rental
--- First check if tables exist and drop them in correct order
+
 
 CREATE DATABASE IF NOT EXISTS car_rental;
 

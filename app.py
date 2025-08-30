@@ -994,7 +994,7 @@ def edit_profile(cursor, conn):
 
 
 
-# Define the RAG chatbot route properly
+# Define the RAG chatbot route
 @app.route('/RAG_chatbot', methods=['POST'])
 def rag_chatbot():
     data = request.get_json()
