@@ -1,6 +1,7 @@
 # Car Rental Management System
 
-<img width="1898" height="429" alt="image" src="https://github.com/user-attachments/assets/ff26eae4-5553-470c-80f7-f9e540a93f2a" />
+<img width="1898" height="429" alt="Untitled-1" src="https://github.com/user-attachments/assets/f4ddcb64-30d0-42ec-811d-bbf2d56c95f1" />
+
 
 
 ---
