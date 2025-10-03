@@ -1,6 +1,10 @@
 # Car Rental Management System
 
-![Project Banner](./assets/banner.png) <!-- Placeholder for a top banner image -->
+<img width="1898" height="429" alt="image" src="https://github.com/user-attachments/assets/ff26eae4-5553-470c-80f7-f9e540a93f2a" />
+
+
+---
+
 
 ## Overview
 This project is a **Car Rental Management System** built using **Flask (Python)** and **MySQL**, with additional features like:
@@ -97,18 +101,25 @@ car-rental-system/
 ## 📸 Screenshots / Visuals
 
 ### 🏠 Home Page
-![Home Page](./assets/home_page.png)
+<img width="1901" height="909" alt="image" src="https://github.com/user-attachments/assets/1506d8f4-0dd3-4102-8b8a-80614a2b41a9" />
+
 
 ### 🚘 Car Listings
-![Car Listings](./assets/cars.png)
+<img width="1895" height="341" alt="image" src="https://github.com/user-attachments/assets/009126cd-ea0d-4819-9eb8-91a6a100929e" />
+<img width="1897" height="912" alt="image" src="https://github.com/user-attachments/assets/b91958d6-b594-4f6b-8c65-698f8df7eccf" />
+
 
 ### 📊 Admin Dashboard
-![Admin Dashboard](./assets/admin_dashboard.png)
+<img width="1898" height="909" alt="image" src="https://github.com/user-attachments/assets/07121174-a18f-4d3d-8ce8-04e55fa3db16" />
+<img width="1902" height="501" alt="image" src="https://github.com/user-attachments/assets/fde1ab95-3b7f-428c-b0ba-ac2f39233bf0" />
+
 
 ### 🎁 Rewards Page
-![Rewards](./assets/rewards.png)
+<img width="1895" height="910" alt="image" src="https://github.com/user-attachments/assets/70323f4e-1823-4525-857e-e6efecd96603" />
+<img width="1899" height="902" alt="image" src="https://github.com/user-attachments/assets/79ce59e0-509a-46f7-8496-12de599134d0" />
+<img width="1897" height="225" alt="image" src="https://github.com/user-attachments/assets/6926a162-5fb4-4276-880f-3ddd5e34fbe9" />
 
-*(Add screenshots in `/assets/` folder and update the paths above)*
+
 
 ---
 
