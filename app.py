@@ -1,4 +1,7 @@
 import os
+os.environ["TF_ENABLE_ONEDNN_OPTS"] = "0"  # disables oneDNN logs
+os.environ["TF_CPP_MIN_LOG_LEVEL"] = "3"   # suppresses TF warnings & info
+
 from flask import Flask, render_template, request, jsonify, flash, url_for, redirect, session, g
 from mysql.connector import pooling
 from datetime import datetime, timedelta
@@ -12,6 +15,9 @@ import numpy as np
 from sentence_transformers import SentenceTransformer
 import faiss
 import uuid
+
+
+
 
 # Load environment variables from .env file
 load_dotenv()
@@ -948,6 +954,27 @@ def disclaimer():
 def FAQs():
     return render_template('FAQs.html')
 
+@app.route('/about_us', methods=['GET', 'POST'])
+def about_us():
+    return render_template('about_us.html')
+
+@app.route('/blogs', methods=['GET', 'POST'])
+def blogs():
+    return render_template('blogs.html')
+
+@app.route('/blog1', methods=['GET', 'POST'])
+def blog1():
+    return render_template('blog1.html')
+
+@app.route('/blog2', methods=['GET', 'POST'])
+def blog2():
+    return render_template('blog2.html')
+
+@app.route('/blog3', methods=['GET', 'POST'])
+def blog3():
+    return render_template('blog3.html')
+
+
 @app.route('/edit_profile', methods=['GET', 'POST'])
 @db_connection
 def edit_profile(cursor, conn):
@@ -1122,4 +1149,4 @@ def confirm_booking(cursor, conn):
 
 
 if __name__ == '__main__':
-    app.run(host='127.0.0.1', port=10000, debug=True)
+    app.run(host='127.0.0.1', port=10000, debug=True, use_reloader=False)

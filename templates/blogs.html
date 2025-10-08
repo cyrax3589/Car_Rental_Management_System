@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Our Blogs | Premium Car Rentals</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/blogs.css') }}" />
+</head>
+<body>
+  <div class="site-zoom-wrapper">
+     <nav class="navbar">
+        <div class="nav-brand">
+          <a href="{{ url_for('home') }}">
+            <div class="logo-container">
+              <img src="{{ url_for('static', filename='images/logo/nav-logo.gif') }}" alt="Premium Car Rentals" class="nav-logo">
+            </div>
+          </a>
+        </div>
+      </nav>
+    <section class="blogs-section">
+      <div class="blogs-overlay"></div>
+      <div class="blogs-content">
+        <h2>From Our <span class="highlight">Blog</span></h2>
+        <p class="blogs-desc">
+          Expert advice, travel tips, and the latest updates from the world of premium car rentals.
+        </p>
+        <div class="blogs-list">
+          <!-- Blog cards -->
+          <div class="blog-card">
+            <img src="{{ url_for('static', filename='images/blog1.jpg') }}" alt="Roadtrip in Sports Car" class="blog-img">
+            <div class="blog-body">
+              <div class="blog-meta">
+                <span><i class="fas fa-calendar-alt"></i> Sep 28, 2025</span>
+                <span><i class="fas fa-user"></i> Admin</span>
+              </div>
+              <h3>The Ultimate Guide to Luxury Road Trips</h3>
+              <p>
+                Experience scenic drives across the country in our top-of-the-line fleet. Discover routes, stops, and travel essentials for an unforgettable journey.
+              </p>
+              <a href="{{ url_for('blog1') }}" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+            </div>
+          </div>
+          <div class="blog-card">
+            <img src="{{ url_for('static', filename='images/blog2.jpg') }}" alt="Car Rental Tips" class="blog-img">
+            <div class="blog-body">
+              <div class="blog-meta">
+                <span><i class="fas fa-calendar-alt"></i> Sep 21, 2025</span>
+                <span><i class="fas fa-user"></i> Priya Shah</span>
+              </div>
+              <h3>5 Tips for Choosing the Right Rental Car</h3>
+              <p>
+                Not sure which car fits your occasion? Our experts break down what to look for in luxury and comfort when selecting your perfect ride.
+              </p>
+              <a href="{{ url_for('blog2') }}" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+            </div>
+          </div>
+          <div class="blog-card">
+            <img src="{{ url_for('static', filename='images/blog3.jpg') }}" alt="Customer Experience" class="blog-img">
+            <div class="blog-body">
+              <div class="blog-meta">
+                <span><i class="fas fa-calendar-alt"></i> Sep 15, 2025</span>
+                <span><i class="fas fa-user"></i> Sohail M.</span>
+              </div>
+              <h3>How We Ensure Safety & Comfort on Every Trip</h3>
+              <p>
+                Go behind the scenes to learn how our team maintains world-class standards in car safety and customer satisfaction.
+              </p>
+              <a href="{{ url_for('blog3') }}" class="read-more">Read More <i class="fas fa-arrow-right"></i></a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </div>
+</body>
+</html>

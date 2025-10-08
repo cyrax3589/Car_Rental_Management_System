@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>About Us | Premium Car Rentals</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;900&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/about_us.css') }}" />
+</head>
+<body>
+  <section class="about-section">
+    <div class="about-overlay"></div>
+    <div class="about-content">
+      <h2>About <span class="highlight">Premium Car Rentals</span></h2>
+      <p>
+        Premium Car Rentals is committed to providing you with the finest selection of luxury vehicles,
+        exceptional service, and an unforgettable driving experience. Whether it’s a business trip,
+        holiday, or special occasion, our fleet and team ensure your journey is always smooth, stylish,
+        and safe.
+      </p>
+      <div class="about-features">
+        <div class="feature">
+          <i class="fas fa-car-side"></i>
+          <h4>Luxury Fleet</h4>
+          <p>
+            Choose from top-tier sports, luxury, and executive cars—always pristine and ready for adventure.
+          </p>
+        </div>
+        <div class="feature">
+          <i class="fas fa-user-shield"></i>
+          <h4>Expert Team</h4>
+          <p>
+            Our experienced professionals guide and assist, delivering outstanding service at every step.
+          </p>
+        </div>
+        <div class="feature">
+          <i class="fas fa-shield-alt"></i>
+          <h4>Safety First</h4>
+          <p>
+            Comprehensive insurance, routine maintenance, and 24/7 support for your peace of mind.
+          </p>
+        </div>
+      </div>
+      <a href="/home" class="about-cta">Discover Our Cars</a>
+    </div>
+  </section>
+</body>
+</html>

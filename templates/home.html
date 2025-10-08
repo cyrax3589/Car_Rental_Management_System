@@ -153,8 +153,8 @@
                 <h3>Quick Links</h3>
                 <ul>
                     {% if not session.get('customer_id') %}
-                    <li><a href="{{ url_for('login') }}">Login</a></li>
-                    <li><a href="{{ url_for('register') }}">Register</a></li>
+                    <li><a href="{{ url_for('blogs') }}">Blogs</a></li>
+                    <li><a href="{{ url_for('about_us') }}">About Us</a></li>
                     {% endif %}
                     <li><a href="{{ url_for('policy') }}" target="_blank">Privacy Policy</a></li>
                     <li><a href="{{ url_for('terms') }}" target="_blank">Terms Of Service</a></li>

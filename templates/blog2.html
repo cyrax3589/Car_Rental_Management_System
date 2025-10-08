@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>5 Tips for Choosing the Right Rental Car</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', Arial, sans-serif;
+      background: #202020;
+      color: #fff;
+    }
+    .blog-hero {
+      width: 100%;
+      height: 320px;
+      background: url('/static/images/blog2.jpg') center/cover no-repeat;
+      position: relative;
+    }
+    .blog-hero-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(30, 30, 30, 0.66);
+      z-index: 1;
+    }
+    .blog-header {
+      max-width: 920px;
+      margin: 32px auto 12px auto;
+      padding: 24px 24px 24px;
+      text-align: left;
+      background: rgba(25, 25, 25, 0.96);
+      border-radius: 22px;
+      box-shadow: 0 8px 26px rgba(80, 206, 138, 0.05), 0 2px 24px rgba(0, 0, 0, 0.14);
+      position: relative;
+      z-index: 2;
+    }
+    .blog-title {
+      font-size: 2.18rem;
+      font-weight: 700;
+      color: #50ce8a;
+      margin: 0 0 10px 0;
+      text-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    }
+    .blog-meta {
+      font-size: 1rem;
+      color: #ffd500;
+      margin-bottom: 8px;
+      display: flex;
+      gap: 1.7rem;
+      align-items: center;
+    }
+    .blog-meta i {
+      margin-right: 6px;
+    }
+    .blog-content {
+      max-width: 920px;
+      background: rgba(28, 28, 28, 0.97);
+      margin: 24px auto 54px auto;
+      border-radius: 22px;
+      box-shadow: 0 6px 28px rgba(80, 206, 138, 0.10), 0 2px 24px rgba(0, 0, 0, 0.18);
+      padding: 44px 36px 38px 36px;
+      text-align: left;
+      position: relative;
+      z-index: 2;
+    }
+    .blog-content p {
+      color: #dedede;
+      font-size: 1.16rem;
+      margin-top: 1.1em;
+      margin-bottom: 1.1em;
+      line-height: 1.7;
+    }
+    .blog-content h2,
+    .blog-content h3 {
+      color: #ffd500;
+      margin: 2.0em 0 1.2em 0;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+    .blog-back {
+      display: inline-block;
+      margin-top: 18px;
+      color: #ffd500;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1.07rem;
+      transition: color 0.2s;
+    }
+    .blog-back:hover {
+      color: #50ce8a;
+    }
+    @media (max-width: 900px) {
+      .blog-header,
+      .blog-content {
+        max-width: 97vw;
+        padding: 22px 2vw;
+      }
+    }
+    @media (max-width: 700px) {
+      .blog-hero {
+        height: 180px;
+      }
+      .blog-header {
+        margin: 24px 3vw 12px 3vw;
+        padding: 18px 3vw;
+      }
+      .blog-content {
+        margin: 24px 3vw 32px 3vw;
+        padding: 14px 3vw;
+      }
+      .blog-title {
+        font-size: 1.15rem;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="blog-hero">
+    <div class="blog-hero-overlay"></div>
+  </div>
+  <div class="blog-header">
+    <div class="blog-meta">
+      <span><i class="fas fa-calendar-alt"></i> Sep 21, 2025</span>
+      <span><i class="fas fa-user"></i> Priya Shah</span>
+    </div>
+    <h1 class="blog-title">5 Tips for Choosing the Right Rental Car</h1>
+  </div>
+  <div class="blog-content">
+    <p>
+      Choosing a rental car for your trip shouldn’t be stressful. With Premium Car Rentals, it’s easy! Here are five essential tips to help you make the best choice for your journey.
+    </p>
+    <h2>1. Know Your Needs</h2>
+    <p>
+      Consider the purpose of your trip. Business meeting? Family vacation? A special occasion? Each calls for a different vehicle—our range of sedans, SUVs, and sports cars fits all lifestyles.
+    </p>
+    <h2>2. Prioritize Comfort and Features</h2>
+    <p>
+      Look for amenities like leather interiors, ample trunk space, modern infotainment, and climate control. Your comfort is our priority.
+    </p>
+    <h2>3. Consider Efficiency & Performance</h2>
+    <p>
+      Short trips might call for city-friendly hybrids, while adventurous routes are best enjoyed with our luxury SUVs or high-performance convertibles.
+    </p>
+    <h2>4. Safety Matters</h2>
+    <p>
+      All our vehicles are safety inspected, cleaned, and sanitized. We provide the latest tech for secure and smooth driving.
+    </p>
+    <h2>5. Consult Our Experts</h2>
+    <p>
+      Contact our experienced team for personalized advice and recommendations—you’ll never feel lost when you rent with us.
+    </p>
+    <p>
+      Planning ahead ensures you get the car best suited for your trip, and our experts are always happy to help!
+    </p>
+    <a href="{{ url_for('blogs') }}" class="blog-back"><i class="fas fa-arrow-left"></i> Back to Blogs</a>
+  </div>
+</body>
+</html>

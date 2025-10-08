@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>The Ultimate Guide to Luxury Road Trips</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.2.0/css/all.min.css" />
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Poppins', Arial, sans-serif;
+      background: #202020;
+      color: #fff;
+    }
+    .blog-hero {
+      width: 100%;
+      height: 320px;
+      background: url('/static/images/blog1.jpg') center/cover no-repeat;
+      position: relative;
+    }
+    .blog-hero-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(30, 30, 30, 0.66);
+      z-index: 1;
+    }
+    .blog-header {
+      max-width: 920px;
+      margin: 32px auto 12px auto;
+      padding: 24px 24px 24px;
+      text-align: left;
+      background: rgba(25, 25, 25, 0.96);
+      border-radius: 22px;
+      box-shadow: 0 8px 26px rgba(80, 206, 138, 0.05), 0 2px 24px rgba(0, 0, 0, 0.14);
+      position: relative;
+      z-index: 2;
+    }
+    .blog-title {
+      font-size: 2.18rem;
+      font-weight: 700;
+      color: #50ce8a;
+      margin: 0 0 10px 0;
+      text-shadow: 0 4px 14px rgba(0, 0, 0, 0.08);
+    }
+    .blog-meta {
+      font-size: 1rem;
+      color: #ffd500;
+      margin-bottom: 8px;
+      display: flex;
+      gap: 1.7rem;
+      align-items: center;
+    }
+    .blog-meta i {
+      margin-right: 6px;
+    }
+    .blog-content {
+      max-width: 920px;
+      background: rgba(28, 28, 28, 0.97);
+      margin: 24px auto 54px auto;
+      border-radius: 22px;
+      box-shadow: 0 6px 28px rgba(80, 206, 138, 0.10), 0 2px 24px rgba(0, 0, 0, 0.18);
+      padding: 44px 36px 38px 36px;
+      text-align: left;
+      position: relative;
+      z-index: 2;
+    }
+    .blog-content p {
+      color: #dedede;
+      font-size: 1.16rem;
+      margin-top: 1.1em;
+      margin-bottom: 1.1em;
+      line-height: 1.7;
+    }
+    .blog-content h2,
+    .blog-content h3 {
+      color: #ffd500;
+      margin: 2.0em 0 1.2em 0;
+      font-weight: 700;
+      letter-spacing: 1px;
+    }
+    .blog-back {
+      display: inline-block;
+      margin-top: 18px;
+      color: #ffd500;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 1.07rem;
+      transition: color 0.2s;
+    }
+    .blog-back:hover {
+      color: #50ce8a;
+    }
+    @media (max-width: 900px) {
+      .blog-header,
+      .blog-content {
+        max-width: 97vw;
+        padding: 22px 2vw;
+      }
+    }
+    @media (max-width: 700px) {
+      .blog-hero {
+        height: 180px;
+      }
+      .blog-header {
+        margin: 24px 3vw 12px 3vw;
+        padding: 18px 3vw;
+      }
+      .blog-content {
+        margin: 24px 3vw 32px 3vw;
+        padding: 14px 3vw;
+      }
+      .blog-title {
+        font-size: 1.15rem;
+      }
+      
+    }
+  </style>
+</head>
+<body>
+  <div class="blog-hero">
+    <div class="blog-hero-overlay"></div>
+  </div>
+  <div class="blog-header">
+    <div class="blog-meta">
+      <span><i class="fas fa-calendar-alt"></i> Sep 28, 2025</span>
+      <span><i class="fas fa-user"></i> Admin</span>
+    </div>
+    <h1 class="blog-title">The Ultimate Guide to Luxury Road Trips</h1>
+  </div>
+  <div class="blog-content">
+    <p>
+      There’s nothing like hitting the open road in the comfort of a luxury car. At Premium Car Rentals, we believe a road trip should be more than just travel—it should be an experience to remember.
+    </p>
+    <h2>Choose Your Perfect Vehicle</h2>
+    <p>
+      From sleek sports cars to powerful SUVs, selecting the right ride sets the tone for your journey. Our fleet features top brands maintained in pristine condition for both comfort and performance.
+    </p>
+    <h3>Scenic Routes & Must-See Stops</h3>
+    <p>
+      Plan your adventure with a mix of scenic highways and hidden gems. Ask our team for route recommendations designed for driving enthusiasts or explore classic road trip destinations known for their beauty.
+    </p>
+    <h2>Travel Essentials for a Smooth Ride</h2>
+    <p>
+      Bring along navigation tools, your favorite playlists, cozy travel gear, and a sense of curiosity. Our vehicles are supplied with the latest tech—just add your personal touch.
+    </p>
+    <p>
+      Ready to make memories? Explore, enjoy, and let us help you create the ultimate road trip experience.
+    </p>
+    <a href="{{ url_for('blogs') }}" class="blog-back"><i class="fas fa-arrow-left"></i> Back to Blogs</a>
+  </div>
+</body>
+</html>
