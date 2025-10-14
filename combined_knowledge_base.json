@@ -12,6 +12,10 @@
     "answer": "Hello! Welcome to Premium Car Rentals. How can I assist you today with your car rental needs?"
   },
   {
+    "question": "yo",
+    "answer": "Hello! Welcome to Premium Car Rentals. How can I assist you today with your car rental needs?"
+  },
+  {
     "question": "How do I login?",
     "answer": "To login to your account, click on the 'Login' link at the top of the page. Enter your email address and password, then click the 'Login' button. If you've forgotten your password, you can use the 'Reset Password' option."
   },
@@ -85,7 +89,7 @@
   },
   {
     "question": "How do I complete a rental?",
-    "answer": "To complete a rental, go to your 'Profile' page and find the rental in your 'Active Rentals' section. Click on the 'Complete Rental' button to finalize the rental process and return the car."
+    "answer": "It will automatically be completed when you return the car to the drop-off location. If you need to end the rental early, please contact our customer support team for assistance."
   },
   {
     "question": "What information do I need to provide when registering?",
@@ -94,5 +98,86 @@
   {
     "question": "How can I contact customer support?",
     "answer": "You can contact our customer support team by phone at (+91) 863-706-7507, by email at <i>cyrax.3589@gmail.com</i> , or by using the contact form on our website."
+  },
+  {
+    "question": "What payment methods do you accept?",
+    "answer": "We accept payments via credit card, debit card, UPI, and net banking. Cash payments are only available at selected locations."
+  },
+  {
+    "question": "Is there a security deposit required?",
+    "answer": "Yes, a refundable security deposit is required for all rentals. The amount depends on the car category and will be released after the vehicle is returned in good condition."
+  },
+  {
+    "question": "How do I update my password?",
+    "answer": "To update your password, login to your account, go to your 'Profile' page, click on 'Edit Profile', and enter your new password. Click 'Save Changes' to confirm."
+  },
+  {
+    "question": "Can I add an additional driver?",
+    "answer": "No till now we do not allow additional drivers. The person who rents the car must be the only driver."
+  },
+  {
+    "question": "What should I do in case of an accident?",
+    "answer": "If you are involved in an accident, ensure everyone's safety first. Then contact our customer support immediately and follow the instructions provided. Also, notify local law enforcement as required."
+  },
+  {
+    "question": "Are there any mileage limits?",
+    "answer": "Some of our vehicles come with a daily mileage limit. Exceeding the limit may result in additional charges. Please check the terms for your selected vehicle while booking."
+  },
+  {
+    "question": "Can I rent a car for outstation travel?",
+    "answer": "Yes, you can use our vehicles for outstation travel within India. Please specify your travel plans during booking, as additional charges or documentation may apply."
+  },
+  {
+    "question": "What happens if the car breaks down?",
+    "answer": "If the car breaks down, contact our roadside assistance at the number provided in your booking confirmation. We will provide support or a replacement vehicle as quickly as possible."
+  },
+  {
+    "question": "How will I get the car keys?",
+    "answer": "Car keys will be handed over to you at the pickup location after verifying your documents. For contactless pickups, follow the instructions sent to your registered email."
+  },
+  {
+    "question": "Do you provide chauffeur service?",
+    "answer": "Yes, chauffeur service is available for an additional fee. Please contact customer support to arrange this service."
+  },
+  {
+    "question": "Can I modify my booking?",
+    "answer": "You can modify your booking by logging into your account and visiting the 'Bookings' section. Modifications are subject to availability and may incur additional charges."
+  },
+  {
+    "question": "Are pets allowed in the rental cars?",
+    "answer": "Pets are allowed in selected vehicles. Please check the policy before booking and ensure the car is cleaned before return to avoid additional fees."
+  },
+  {
+    "question": "Is fuel included in the rental price?",
+    "answer": "Fuel is not included in the rental price. You are required to return the car with the same fuel level as at the time of pickup. Refueling charges will apply if the tank is less than full."
+  },
+  {
+    "question": "Do you provide child seats?",
+    "answer": "Child seats are available upon request for an additional fee. Please contact customer support to add it."
+  },
+  {
+    "question": "What should I do if I left something in the car after return?",
+    "answer": "If you left personal items in the car, contact customer support as soon as possible. We will check and assist you in retrieving your belongings."
+  },
+  {
+    "question": "Can I rent a specific car model?",
+    "answer": "While we try our best to provide your preferred model, car assignment depends on availability. You can select your preferred category, and we will accommodate model requests when possible."
+  },
+  {
+    "question": "Do you offer discounts for long-term rentals?",
+    "answer": "Yes, we offer special rates and discounts for long-term rentals. Please check the 'Rewards' section or contact customer support for more details."
+  },
+  {
+    "question": "How do I get invoices for my rentals?",
+    "answer": "Invoices are automatically generated and sent to your registered mobile and email."
+  },
+  {
+    "question": "Is there a penalty for smoking in the car?",
+    "answer": "Yes, smoking is strictly prohibited in all vehicles. A cleaning fee will be charged if any evidence of smoking is found after return."
+  },
+  {
+    "question": "Can I rent a car without a credit card?",
+    "answer": "A credit card is preferred for securing the security deposit, but you can pay using Cash, Debit Card or UPI. Please contact support for your specific situation."
   }
+
 ]
