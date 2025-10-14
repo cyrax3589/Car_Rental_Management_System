@@ -101,8 +101,11 @@ car-rental-system/
 
 ## Screenshots / Visuals
 
-### Home Page
+### Home
 <img width="1901" height="909" alt="image" src="https://github.com/user-attachments/assets/1506d8f4-0dd3-4102-8b8a-80614a2b41a9" />
+<img width="1903" height="535" alt="image" src="https://github.com/user-attachments/assets/1d4b0b3f-f6a2-4edd-87f5-e92f19ca078b" />
+<img width="1898" height="688" alt="image" src="https://github.com/user-attachments/assets/33e792cd-85de-4a79-8ee8-fad513eec6db" />
+<img width="1899" height="900" alt="image" src="https://github.com/user-attachments/assets/042cd91b-17ff-4b0c-b7cb-06da194651ae" />
 
 
 ### Car Listings
@@ -115,10 +118,14 @@ car-rental-system/
 <img width="1902" height="501" alt="image" src="https://github.com/user-attachments/assets/fde1ab95-3b7f-428c-b0ba-ac2f39233bf0" />
 
 
-### Rewards Page
+### Rewards
 <img width="1895" height="910" alt="image" src="https://github.com/user-attachments/assets/70323f4e-1823-4525-857e-e6efecd96603" />
 <img width="1899" height="902" alt="image" src="https://github.com/user-attachments/assets/79ce59e0-509a-46f7-8496-12de599134d0" />
 <img width="1897" height="225" alt="image" src="https://github.com/user-attachments/assets/6926a162-5fb4-4276-880f-3ddd5e34fbe9" />
+
+
+### Blogs
+<img width="1898" height="914" alt="image" src="https://github.com/user-attachments/assets/3b409bfa-7ffc-4d8e-9cd9-9063def628a1" />
 
 
 
